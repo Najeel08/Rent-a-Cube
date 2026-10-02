@@ -1,3 +1,4 @@
+from datetime import date, datetime
 from pathlib import Path
 
 from django.core.exceptions import ValidationError
@@ -6,6 +7,8 @@ from PIL import Image, UnidentifiedImageError
 
 MAX_IMAGE_UPLOAD_BYTES = 5 * 1024 * 1024
 ALLOWED_IMAGE_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.webp'}
+MAX_BOOKING_DURATION_HOURS = 72
+MAX_HOURLY_PRICE = 1_000_000
 
 
 def validate_image_upload(upload, field_label):
@@ -35,7 +38,7 @@ def required_text(data, field_name, label, max_length=None):
     return value
 
 
-def positive_integer(value, label):
+def positive_integer(value, label, maximum=None):
     """Parse a positive integer while keeping validation feedback consistent."""
     try:
         number = int(value)
@@ -43,7 +46,20 @@ def positive_integer(value, label):
         raise ValidationError(f'{label} must be a whole number.') from exc
     if number <= 0:
         raise ValidationError(f'{label} must be greater than zero.')
+    if maximum is not None and number > maximum:
+        raise ValidationError(f'{label} must be {maximum} or less.')
     return number
+
+
+def validate_booking_date(value):
+    """Accept future and current ISO calendar dates only."""
+    try:
+        booking_date = datetime.strptime(str(value or ''), '%Y-%m-%d').date()
+    except ValueError as exc:
+        raise ValidationError('Enter a valid booking date.') from exc
+    if booking_date < date.today():
+        raise ValidationError('Booking date cannot be in the past.')
+    return booking_date.isoformat()
 
 
 def validate_phone_number(value):

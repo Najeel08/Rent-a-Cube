@@ -24,6 +24,7 @@ from workspace.auth_utils import (
     upgrade_password_if_needed,
 )
 from workspace.validation import (
+    MAX_HOURLY_PRICE,
     positive_integer,
     required_text,
     validate_image_upload,
@@ -145,7 +146,7 @@ def vaddwork(request):
             state = required_text(request.POST, 'state', 'State', max_length=80)
             city = required_text(request.POST, 'city', 'City', max_length=50)
             location = required_text(request.POST, 'location', 'Location', max_length=60)
-            price = positive_integer(request.POST.get('price'), 'Hourly price')
+            price = positive_integer(request.POST.get('price'), 'Hourly price', MAX_HOURLY_PRICE)
             pincode = required_text(request.POST, 'pincode', 'Pincode', max_length=25)
             workspace_type = required_text(request.POST, 'type', 'Workspace type', max_length=80)
             facility = required_text(request.POST, 'facility', 'Facilities', max_length=50)
@@ -198,11 +199,25 @@ def Ovupdate(request, pin):
     guard = _owner_guard(request)
     if guard:
         return guard
-    owner_work = get_object_or_404(owvaddwork, id=pin, owner_id=request.session['id'])
+    try:
+        workspace_id = positive_integer(pin, 'Workspace')
+    except ValidationError as exc:
+        messages.info(request, exc.message)
+        return redirect('oviewwork')
+    owner_work = get_object_or_404(owvaddwork, id=workspace_id, owner_id=request.session['id'])
 
     if request.method == "POST":
         try:
-            price = positive_integer(request.POST.get('price'), 'Hourly price')
+            name = required_text(request.POST, 'name', 'Workspace name', max_length=20)
+            sqft = required_text(request.POST, 'sqft', 'Square footage', max_length=50)
+            state = required_text(request.POST, 'state', 'State', max_length=80)
+            city = required_text(request.POST, 'city', 'City', max_length=50)
+            location = required_text(request.POST, 'location', 'Location', max_length=60)
+            price = positive_integer(request.POST.get('price'), 'Hourly price', MAX_HOURLY_PRICE)
+            pincode = required_text(request.POST, 'pincode', 'Pincode', max_length=25)
+            workspace_type = required_text(request.POST, 'type', 'Workspace type', max_length=80)
+            facility = required_text(request.POST, 'facility', 'Facilities', max_length=50)
+            capability = required_text(request.POST, 'capability', 'Capacity', max_length=60)
             if request.FILES.get('image'):
                 validate_image_upload(request.FILES['image'], 'Workspace image')
         except ValidationError as exc:
@@ -212,16 +227,16 @@ def Ovupdate(request, pin):
             _remove_file(owner_work.Image)
             owner_work.Image = request.FILES["image"]
         # Update all workspace fields
-        owner_work.Name = request.POST.get("name")
-        owner_work.Sqft = request.POST.get("sqft")
-        owner_work.State = request.POST.get("state")
-        owner_work.City = request.POST.get("city")
-        owner_work.Location = request.POST.get("location")
+        owner_work.Name = name
+        owner_work.Sqft = sqft
+        owner_work.State = state
+        owner_work.City = city
+        owner_work.Location = location
         owner_work.Price = str(price)
-        owner_work.Pincode = request.POST.get("pincode")
-        owner_work.Type = request.POST.get("type")
-        owner_work.Facility = request.POST.get("facility")
-        owner_work.Capability = request.POST.get("capability")
+        owner_work.Pincode = pincode
+        owner_work.Type = workspace_type
+        owner_work.Facility = facility
+        owner_work.Capability = capability
         owner_work.save()
         messages.info(request, "Workspace updated")
         return redirect('oviewwork')
@@ -262,16 +277,27 @@ def ownerprofileupdate(request, pim=None):
     profile = get_object_or_404(owner_tb, id=request.session['id'])
 
     # Prevent updating another owner's profile
-    if pim and int(pim) != profile.id:
-        messages.info(request, "You can update only your own profile")
-        return redirect('PROFILE')
+    if pim:
+        try:
+            profile_id = positive_integer(pim, 'Profile')
+        except ValidationError as exc:
+            messages.info(request, exc.message)
+            return redirect('PROFILE')
+        if profile_id != profile.id:
+            messages.info(request, "You can update only your own profile")
+            return redirect('PROFILE')
 
     if request.method == "POST":
-        new_email = normalize_email(request.POST.get("email", ""))
         try:
+            name = required_text(request.POST, 'name', 'Name', max_length=20)
+            new_email = normalize_email(
+                required_text(request.POST, 'email', 'Email address', max_length=50)
+            )
             if not is_valid_email(new_email):
                 raise ValidationError('Please enter a valid email address.')
             phone = validate_phone_number(request.POST.get('phonenumber'))
+            workex = required_text(request.POST, 'workex', 'Work experience', max_length=25)
+            place = required_text(request.POST, 'place', 'Place', max_length=50)
             if request.FILES.get('image'):
                 validate_image_upload(request.FILES['image'], 'Profile image')
         except ValidationError as exc:
@@ -287,11 +313,11 @@ def ownerprofileupdate(request, pim=None):
             profile.Image = request.FILES["image"]
 
         # Update profile fields
-        profile.Name = request.POST.get("name")
+        profile.Name = name
         profile.Email = new_email
         profile.Phonenumber = phone
-        profile.Workex = request.POST.get("workex")
-        profile.Place = request.POST.get("place")
+        profile.Workex = workex
+        profile.Place = place
 
         # Update password only if provided and confirmed
         new_password = request.POST.get("password")
@@ -325,8 +351,20 @@ def confirmpayment(request, pk):
     if guard:
         return guard
     if request.method == "POST":
-        cart.objects.filter(id=pk, owner_id=request.session['id']).update(Status=True)
-        messages.info(request, "Payment confirmed")
+        try:
+            booking_id = positive_integer(pk, 'Booking')
+        except ValidationError as exc:
+            messages.info(request, exc.message)
+            return redirect('ownerorder', pk=request.session['id'])
+        updated = cart.objects.filter(
+            id=booking_id,
+            owner_id=request.session['id'],
+            Paystatus=True,
+        ).update(Status=True)
+        messages.info(
+            request,
+            'Payment confirmed' if updated else 'Paid booking was not found.',
+        )
     return redirect('ownerorder', pk=request.session['id'])
 
 
@@ -344,7 +382,12 @@ def assign(request, bid):
     guard = _owner_guard(request)
     if guard:
         return guard
-    reqs = get_object_or_404(request_tb, id=bid, owner_id=request.session['id'])
+    try:
+        request_id = positive_integer(bid, 'Request')
+    except ValidationError as exc:
+        messages.info(request, exc.message)
+        return redirect('requests')
+    reqs = get_object_or_404(request_tb, id=request_id, owner_id=request.session['id'])
     options = addtech.objects.filter(owner_id=request.session['id'])
 
     if request.method == 'POST':
@@ -456,9 +499,14 @@ def owner_chat(request, uid):
     if guard:
         return guard
 
+    try:
+        user_id = positive_integer(uid, 'User')
+    except ValidationError as exc:
+        messages.info(request, exc.message)
+        return redirect('chat')
     owner_id = request.session['id']
     owner = get_object_or_404(owner_tb, id=owner_id)
-    user = get_object_or_404(user_tb, id=uid)
+    user = get_object_or_404(user_tb, id=user_id)
     has_relationship = (
         cart.objects.filter(owner_id=owner_id, user_id=user.id).exists()
         or request_tb.objects.filter(owner_id=owner_id, user_id=user.id).exists()

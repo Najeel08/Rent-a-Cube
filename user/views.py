@@ -19,8 +19,11 @@ from workspace.auth_utils import (
     upgrade_password_if_needed,
 )
 from workspace.validation import (
+    MAX_BOOKING_DURATION_HOURS,
+    MAX_HOURLY_PRICE,
     positive_integer,
     required_text,
+    validate_booking_date,
     validate_image_upload,
     validate_phone_number,
 )
@@ -177,7 +180,12 @@ def cartdetails(request, pk):
     guard = _user_guard(request)
     if guard:
         return guard
-    owner = get_object_or_404(owner_tb, id=pk)
+    try:
+        owner_id = positive_integer(pk, 'Workspace provider')
+    except ValidationError as exc:
+        messages.info(request, exc.message)
+        return redirect('selectownercart')
+    owner = get_object_or_404(owner_tb, id=owner_id)
     cart_items = cart.objects.filter(
         owner_id=owner.id,
         user_id=request.session['id'],
@@ -344,15 +352,34 @@ def uviewownerwork(request, pi):
     guard = _user_guard(request)
     if guard:
         return guard
-    workspace = get_object_or_404(owvaddwork, id=pi, owner__accept=True)
+    try:
+        workspace_id = positive_integer(pi, 'Workspace')
+    except ValidationError as exc:
+        messages.info(request, exc.message)
+        return redirect('showworkspace1')
+    workspace = get_object_or_404(owvaddwork, id=workspace_id, owner__accept=True)
 
     if request.method == "POST":
         try:
-            hours = positive_integer(request.POST.get('nohrs'), 'Number of hours')
-            booking_date = required_text(request.POST, 'date', 'Booking date', max_length=100)
-            price = positive_integer(workspace.Price, 'Workspace price')
+            hours = positive_integer(
+                request.POST.get('nohrs'),
+                'Number of hours',
+                MAX_BOOKING_DURATION_HOURS,
+            )
+            booking_date = validate_booking_date(request.POST.get('date'))
+            price = positive_integer(workspace.Price, 'Workspace price', MAX_HOURLY_PRICE)
         except ValidationError as exc:
             messages.info(request, exc.message)
+            return render(request, "user/uviewownerwork.html", {'owr': [workspace]})
+
+        if cart.objects.filter(
+            user_id=request.session['id'],
+            owner_id=workspace.owner_id,
+            WsName=workspace.Name,
+            Location=workspace.Location,
+            Date=booking_date,
+        ).exists():
+            messages.info(request, 'This workspace is already in your cart for that date.')
             return render(request, "user/uviewownerwork.html", {'owr': [workspace]})
 
         # Add workspace to cart
@@ -377,7 +404,12 @@ def uviewownerprof(request, id):
     guard = _user_guard(request)
     if guard:
         return guard
-    owner = get_object_or_404(owner_tb, id=id, accept=True)
+    try:
+        owner_id = positive_integer(id, 'Workspace provider')
+    except ValidationError as exc:
+        messages.info(request, exc.message)
+        return redirect('showworkspace1')
+    owner = get_object_or_404(owner_tb, id=owner_id, accept=True)
     return render(request, 'user/uviewownerprof.html', {'uviewprof': owner})
 
 
@@ -386,7 +418,12 @@ def showworkspace(request, jk):
     guard = _user_guard(request)
     if guard:
         return guard
-    workspaces = owvaddwork.objects.filter(owner_id=jk, owner__accept=True)
+    try:
+        owner_id = positive_integer(jk, 'Workspace provider')
+    except ValidationError as exc:
+        messages.info(request, exc.message)
+        return redirect('showworkspace1')
+    workspaces = owvaddwork.objects.filter(owner_id=owner_id, owner__accept=True)
     return render(request, "user/showworkspace1.html", {'Up': workspaces})
 
 
