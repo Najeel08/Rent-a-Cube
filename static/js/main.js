@@ -1587,3 +1587,14 @@ $window.on('resize', function(){
 });
 //end of IIFE function
 })(jQuery);
+
+(function () {
+	var currentScript = document.currentScript;
+	if (!currentScript || !currentScript.src) {
+		return;
+	}
+	var navbarScript = document.createElement('script');
+	navbarScript.src = currentScript.src.replace(/main\.js(?:\?.*)?$/, 'responsive-navbar.js');
+	navbarScript.defer = true;
+	document.head.appendChild(navbarScript);
+})();

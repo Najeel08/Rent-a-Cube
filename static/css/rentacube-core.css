@@ -2292,3 +2292,266 @@ body.inner_page {
   .cube-navbar { padding: 0.75rem 1rem; }
   .cube-btn-lg { padding: 0.7rem 1.25rem; font-size: 0.95rem; }
 }
+
+/* Responsive navigation and containment */
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.cube-navbar-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  position: relative;
+}
+
+.cube-nav-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-left: auto;
+  padding: 0;
+  border: 1px solid var(--rc-border);
+  border-radius: var(--rc-radius-md);
+  background: var(--rc-bg-surface);
+  color: var(--rc-dark);
+  font-size: 1.2rem;
+}
+
+.cube-nav-toggle:hover,
+.cube-nav-toggle[aria-expanded="true"] {
+  border-color: var(--rc-primary);
+  background: var(--rc-primary-light);
+  color: var(--rc-primary);
+}
+
+.cube-nav-panel {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-left: auto;
+}
+
+.cube-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.cube-nav-dropdown-toggle {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.cube-nav-dropdown-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.cube-nav-submenu {
+  position: absolute;
+  z-index: 1040;
+  min-width: 210px;
+  padding: 0.5rem;
+  border: 1px solid var(--rc-border);
+  border-radius: var(--rc-radius-md);
+  background: #fff;
+  box-shadow: var(--rc-shadow-lg);
+}
+
+.cube-nav-dropdown {
+  position: relative;
+}
+
+.cube-nav-link:focus-visible,
+.cube-nav-toggle:focus-visible,
+.dropdown-item:focus-visible,
+.cube-nav-dropdown-toggle:focus-visible {
+  outline: 3px solid var(--rc-primary-ring);
+  outline-offset: 2px;
+}
+
+.cube-table,
+.admin-table {
+  min-width: 640px;
+}
+
+.table-responsive,
+.cube-table-container,
+.admin-table-wrapper {
+  max-width: 100%;
+}
+
+@media (max-width: 991px) {
+  .cube-navbar,
+  .cube-portal-navbar {
+    overflow: visible;
+  }
+
+  .cube-navbar-row {
+    min-height: 44px;
+    width: 100%;
+  }
+
+  .cube-navbar .navbar-brand img {
+    height: 42px;
+    max-height: 42px;
+  }
+
+  .cube-nav-toggle {
+    display: inline-flex;
+    flex: 0 0 44px;
+  }
+
+  .cube-responsive-navbar .cube-nav-toggle,
+  .cube-portal-navbar .cube-nav-toggle {
+    display: inline-flex !important;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    visibility: visible;
+  }
+
+  .cube-nav-panel {
+    display: none;
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0.5rem;
+    left: 0.5rem;
+    z-index: 1040;
+    max-height: calc(100vh - 5.5rem);
+    margin: 0;
+    padding: 0.5rem;
+    overflow-y: auto;
+    border: 1px solid var(--rc-border);
+    border-radius: var(--rc-radius-md);
+    background: #fff;
+    box-shadow: var(--rc-shadow-lg);
+  }
+
+  .cube-nav-panel.is-open {
+    display: block;
+  }
+
+  .cube-nav-panel .cube-nav-links {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.2rem;
+  }
+
+  .cube-nav-panel .cube-nav-link,
+  .cube-nav-panel .dropdown-item {
+    display: flex;
+    width: 100%;
+    min-height: 44px;
+    align-items: center;
+    padding: 0.65rem 0.8rem;
+    text-align: left;
+  }
+
+  .cube-nav-panel .cube-nav-dropdown-toggle {
+    justify-content: space-between;
+  }
+
+  .cube-nav-panel .cube-nav-submenu,
+  .cube-nav-panel .dropdown-menu {
+    position: static;
+    float: none;
+    width: 100%;
+    min-width: 0;
+    margin: 0.15rem 0 0.35rem;
+    padding: 0.25rem;
+    border: 0;
+    border-radius: var(--rc-radius-sm);
+    background: var(--rc-bg-surface);
+    box-shadow: none;
+  }
+
+  .cube-nav-panel .dropdown-menu {
+    display: none;
+  }
+
+  .cube-nav-panel .dropdown.show .dropdown-menu {
+    display: block;
+  }
+
+  .cube-nav-panel .cube-nav-actions {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+  }
+
+  .cube-nav-panel .cube-logout-form,
+  .cube-nav-panel .cube-logout-form .cube-btn {
+    width: 100%;
+  }
+
+  .cube-nav-panel .cube-user-badge {
+    flex: 1 1 auto;
+  }
+
+  .cube-chat-header,
+  .cube-chat-input-wrap {
+    padding: 0.85rem 1rem;
+  }
+
+  .cube-chat-messages {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 575px) {
+  .cube-navbar {
+    padding: 0.65rem 0.75rem;
+  }
+
+  .cube-navbar-row {
+    gap: 0.5rem;
+  }
+
+  .cube-navbar .navbar-brand img {
+    height: 38px;
+    max-width: min(190px, calc(100vw - 86px));
+  }
+
+  .cube-nav-panel {
+    right: 0.25rem;
+    left: 0.25rem;
+  }
+
+  .cube-form-card,
+  .cube-card,
+  .cube-checkout-card {
+    max-width: 100%;
+  }
+
+  .cube-chat-container {
+    height: min(560px, calc(100vh - 7rem));
+    margin: 1rem 0;
+    border-radius: var(--rc-radius-md);
+  }
+
+  .cube-chat-partner {
+    min-width: 0;
+  }
+
+  .cube-chat-partner h5,
+  .cube-chat-partner small {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

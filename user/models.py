@@ -24,6 +24,13 @@ class cart(models.Model):
     Date_book = models.DateField(default=timezone.now)
     user = models.ForeignKey(user_tb, on_delete=models.CASCADE)
     owner = models.ForeignKey(owner_tb, on_delete=models.CASCADE)
+    workspace = models.ForeignKey(
+        owvaddwork,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='bookings',
+    )
     Image = models.ImageField(upload_to="cart", null=True)
     Status = models.BooleanField(default=False)           # Owner payment confirmation
     Paystatus = models.BooleanField(default=False)         # Razorpay payment completed
@@ -34,6 +41,7 @@ class cart(models.Model):
     RazorpayRefundId = models.CharField(max_length=100, blank=True)
     nohrs = models.IntegerField()
     Date = models.CharField(max_length=100)
+    StartTime = models.TimeField(null=True, blank=True)
     totalsum = models.IntegerField(default=0)
 
     def __str__(self):

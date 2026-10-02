@@ -101,6 +101,11 @@
 												<span class="cube-badge cube-badge-primary">
 													<i class="fa fa-clock-o mr-1"></i> {{i.nohrs}} hrs
 												</span>
+												{% if i.StartTime %}
+												<span class="cube-badge cube-badge-secondary">
+													<i class="fa fa-clock-o mr-1"></i> {{ i.StartTime|time:"H:i" }}
+												</span>
+												{% endif %}
 											</div>
 										</div>
 

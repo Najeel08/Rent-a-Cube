@@ -62,6 +62,14 @@ def validate_booking_date(value):
     return booking_date.isoformat()
 
 
+def validate_booking_start_time(value):
+    """Accept a valid 24-hour booking start time."""
+    try:
+        return datetime.strptime(str(value or ''), '%H:%M').time()
+    except ValueError as exc:
+        raise ValidationError('Enter a valid booking start time.') from exc
+
+
 def validate_phone_number(value):
     """Accept a practical international phone-number length without coercing it to an integer."""
     phone = str(value or '').strip()

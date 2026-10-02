@@ -1,0 +1,40 @@
+{% load static %}
+<header class="cube-navbar cube-responsive-navbar">
+	<div class="container cube-navbar-row">
+		<a class="navbar-brand" href="/">
+			<img src="{% static 'images/logo.svg' %}" alt="Rent-a-Cube Logo">
+		</a>
+		<button class="cube-nav-toggle" type="button" data-nav-toggle aria-controls="public-navbar" aria-expanded="false" aria-label="Open navigation">
+			<i class="fa fa-bars" aria-hidden="true"></i>
+		</button>
+		<nav class="cube-nav-panel" id="public-navbar" aria-label="Primary navigation">
+			<ul class="cube-nav-links">
+				<li><a href="/" class="cube-nav-link{% if active_page == 'home' %} active{% endif %}"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
+				<li><a href="/contact4" class="cube-nav-link{% if active_page == 'contact' %} active{% endif %}"><i class="fa fa-envelope-o" aria-hidden="true"></i> Contact</a></li>
+				<li class="cube-nav-dropdown">
+					<button class="cube-nav-link cube-nav-dropdown-toggle" type="button" data-nav-dropdown aria-expanded="false" aria-controls="register-nav-menu">
+						<span class="cube-nav-dropdown-label"><i class="fa fa-user-plus" aria-hidden="true"></i> Register</span>
+						<i class="fa fa-angle-down" aria-hidden="true"></i>
+					</button>
+					<div class="cube-nav-submenu" id="register-nav-menu" hidden>
+						<a class="dropdown-item" href="/user/ureg"><i class="fa fa-user text-primary" aria-hidden="true"></i> User Registration</a>
+						<a class="dropdown-item" href="/owners/vreg"><i class="fa fa-building text-info" aria-hidden="true"></i> Owner Registration</a>
+					</div>
+				</li>
+				<li class="cube-nav-dropdown">
+					<button class="cube-nav-link cube-nav-dropdown-toggle" type="button" data-nav-dropdown aria-expanded="false" aria-controls="signin-nav-menu">
+						<span class="cube-nav-dropdown-label"><i class="fa fa-sign-in" aria-hidden="true"></i> Sign In</span>
+						<i class="fa fa-angle-down" aria-hidden="true"></i>
+					</button>
+					<div class="cube-nav-submenu" id="signin-nav-menu" hidden>
+						<a class="dropdown-item" href="/user/ulog"><i class="fa fa-user text-primary" aria-hidden="true"></i> User Portal</a>
+						<a class="dropdown-item" href="/owners/vlog"><i class="fa fa-briefcase text-success" aria-hidden="true"></i> Owner Portal</a>
+						<a class="dropdown-item" href="/workadmin/alogin"><i class="fa fa-shield text-danger" aria-hidden="true"></i> Admin Portal</a>
+						<a class="dropdown-item" href="/technician/tlog"><i class="fa fa-wrench text-warning" aria-hidden="true"></i> Technician Portal</a>
+					</div>
+				</li>
+			</ul>
+		</nav>
+	</div>
+</header>
+<script src="{% static 'js/responsive-navbar.js' %}" defer></script>

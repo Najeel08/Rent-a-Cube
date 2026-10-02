@@ -19,26 +19,7 @@
 </head>
 
 <body>
-	<!-- Main Modern SaaS Header -->
-	<header class="cube-navbar">
-		<div class="container d-flex align-items-center justify-content-between">
-			<a class="navbar-brand d-flex align-items-center" href="/">
-				<img src="{% static 'images/logo.svg' %}" alt="Rent-a-Cube Logo" style="height: 50px; max-height: 54px; width: auto; object-fit: contain;">
-			</a>
-
-			<nav class="d-none d-lg-flex align-items-center">
-				<ul class="cube-nav-links">
-					<li><a href="/" class="cube-nav-link"><i class="fa fa-home"></i> Home</a></li>
-					<li><a href="/contact4" class="cube-nav-link active"><i class="fa fa-envelope-o"></i> Contact Support</a></li>
-				</ul>
-			</nav>
-
-			<div class="d-flex align-items-center gap-2">
-				<a href="/user/ulog" class="cube-btn cube-btn-outline cube-btn-sm">Sign In</a>
-				<a href="/user/ureg" class="cube-btn cube-btn-primary cube-btn-sm">Get Started</a>
-			</div>
-		</div>
-	</header>
+	{% include 'includes/public_navbar.html' with active_page='contact' %}
 
 	<!-- Contact Header -->
 	<section class="contact-header">

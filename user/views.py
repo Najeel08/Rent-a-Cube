@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 
 import razorpay
 from django.conf import settings
@@ -24,6 +24,7 @@ from workspace.validation import (
     positive_integer,
     required_text,
     validate_booking_date,
+    validate_booking_start_time,
     validate_image_upload,
     validate_phone_number,
 )
@@ -367,6 +368,7 @@ def uviewownerwork(request, pi):
                 MAX_BOOKING_DURATION_HOURS,
             )
             booking_date = validate_booking_date(request.POST.get('date'))
+            start_time = validate_booking_start_time(request.POST.get('start_time'))
             price = positive_integer(workspace.Price, 'Workspace price', MAX_HOURLY_PRICE)
         except ValidationError as exc:
             messages.info(request, exc.message)
@@ -374,13 +376,36 @@ def uviewownerwork(request, pi):
 
         if cart.objects.filter(
             user_id=request.session['id'],
-            owner_id=workspace.owner_id,
-            WsName=workspace.Name,
-            Location=workspace.Location,
+            workspace=workspace,
             Date=booking_date,
+            StartTime=start_time,
         ).exists():
-            messages.info(request, 'This workspace is already in your cart for that date.')
+            messages.info(request, 'This reservation is already in your cart.')
             return render(request, "user/uviewownerwork.html", {'owr': [workspace]})
+
+        requested_start = datetime.combine(
+            datetime.strptime(booking_date, '%Y-%m-%d').date(),
+            start_time,
+        )
+        requested_end = requested_start + timedelta(hours=hours)
+        for existing_booking in cart.objects.filter(
+            workspace=workspace,
+            StartTime__isnull=False,
+        ):
+            try:
+                existing_date = datetime.strptime(existing_booking.Date, '%Y-%m-%d').date()
+                existing_duration = positive_integer(
+                    existing_booking.nohrs,
+                    'Existing booking duration',
+                    MAX_BOOKING_DURATION_HOURS,
+                )
+            except (TypeError, ValueError, ValidationError):
+                continue
+            existing_start = datetime.combine(existing_date, existing_booking.StartTime)
+            existing_end = existing_start + timedelta(hours=existing_duration)
+            if requested_start < existing_end and existing_start < requested_end:
+                messages.info(request, 'This workspace is already reserved for the selected time.')
+                return render(request, "user/uviewownerwork.html", {'owr': [workspace]})
 
         # Add workspace to cart
         cart.objects.create(
@@ -392,6 +417,8 @@ def uviewownerwork(request, pi):
             Image=workspace.Image.name,
             nohrs=hours,
             Date=booking_date,
+            StartTime=start_time,
+            workspace=workspace,
         )
         messages.info(request, "Workspace added to cart")
         return redirect("selectownercart")
