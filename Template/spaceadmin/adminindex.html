@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	
+	<title>RENT A CUBE - Admin Dashboard</title>
+	<meta name="description" content="Rent-a-Cube Admin Management Dashboard">
+	
+	<!-- Bootstrap & Font Awesome -->
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
+	<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
+</head>
+
+<body class="admin-body-wrapper">
+	<div class="admin-layout">
+		
+		<!-- Sidebar Navigation -->
+		<aside id="sidebar" class="admin-sidebar">
+			<div class="admin-sidebar-header">
+				<a href="{% url 'aindex' %}">
+					<img src="{% static 'images/logo-footer.svg' %}" alt="Rent-a-Cube Logo" style="height: 40px; width: auto; object-fit: contain;">
+				</a>
+			</div>
+
+			<div class="admin-sidebar-user">
+				<img class="admin-sidebar-user-avatar" src="{% static 'admin/images/layout_img/user_img.jpg' %}" alt="Admin Avatar" style="width: 44px; height: 44px; min-width: 44px; border-radius: 50%; object-fit: cover; border: 2px solid #4F46E5;">
+				<div>
+					<h6 class="admin-sidebar-user-name">John David</h6>
+					<p class="admin-sidebar-user-role"><span class="online-dot"></span> Administrator</p>
+				</div>
+			</div>
+
+			<div class="admin-sidebar-nav">
+				<div class="admin-sidebar-nav-title">Management</div>
+				<ul class="admin-sidebar-links">
+					<li>
+						<a href="{% url 'aindex' %}" class="admin-sidebar-link active">
+							<i class="fa fa-th-large text-primary"></i> <span>Dashboard</span>
+						</a>
+					</li>
+					<li>
+						<a href="#ownerMenu" data-toggle="collapse" aria-expanded="false" class="admin-sidebar-link dropdown-toggle">
+							<i class="fa fa-building-o"></i> <span>Owner Hub</span> <i class="fa fa-angle-down submenu-arrow"></i></a>
+						<ul class="collapse admin-sidebar-submenu" id="ownerMenu">
+							<li><a href="{% url 'ownerlists' %}" class="admin-sidebar-sublink"><i class="fa fa-id-card-o mr-1"></i> Owner Lists</a></li>
+							<li><a href="{% url 'spaceview' %}" class="admin-sidebar-sublink"><i class="fa fa-cubes mr-1"></i> Workspace View</a></li>
+							<li><a href="{% url 'worder' %}" class="admin-sidebar-sublink"><i class="fa fa-shopping-bag mr-1"></i> Orders</a></li>
+						</ul>
+					</li>
+					<li>
+						<a href="#userMenu" data-toggle="collapse" aria-expanded="false" class="admin-sidebar-link dropdown-toggle">
+							<i class="fa fa-users"></i> <span>User Hub</span> <i class="fa fa-angle-down submenu-arrow"></i></a>
+						<ul class="collapse admin-sidebar-submenu" id="userMenu">
+							<li><a href="{% url 'userlist' %}" class="admin-sidebar-sublink"><i class="fa fa-user-circle-o mr-1"></i> User Lists</a></li>
+							<li><a href="{% url 'bookingdetail' %}" class="admin-sidebar-sublink"><i class="fa fa-calendar-check-o mr-1"></i> Booking Details</a></li>
+							<li><a href="{% url 'viewsuggestion' %}" class="admin-sidebar-sublink"><i class="fa fa-commenting-o mr-1"></i> View Suggestions</a></li>
+						</ul>
+					</li>
+					<li>
+						<a href="{% url 'spaceimage' %}" class="admin-sidebar-link">
+							<i class="fa fa-file-image-o"></i> <span>Workspace Images</span>
+						</a>
+					</li>
+					<li>
+						<a href="{% url 'profile' %}" class="admin-sidebar-link">
+							<i class="fa fa-user"></i> <span>Admin Profile</span>
+						</a>
+					</li>
+					<li class="mt-3 pt-3 border-top" style="border-color: #1E293B !important;">
+						<form method="post" action="{% url 'logout' %}" class="cube-logout-form">
+{% csrf_token %}
+<button type="submit" class="admin-sidebar-link text-danger cube-logout-admin"><i class="fa fa-sign-out text-danger"></i> <span class="text-danger">Logout</span></button>
+</form>
+					</li>
+				</ul>
+			</div> 
+		</aside>
+
+		<!-- Main Content Area -->
+		<div class="admin-content-wrapper">
+			
+			<!-- Topbar Navigation -->
+			<header class="admin-topbar">
+				<div class="d-flex align-items-center gap-3">
+					<button type="button" id="sidebarCollapse" class="admin-toggle-btn mr-3" title="Toggle Sidebar">
+						<i class="fa fa-bars"></i>
+					</button>
+					<div>
+						<h2 class="admin-topbar-title">Rent-a-Cube Admin</h2>
+						<p class="admin-topbar-subtitle">Platform Overview & Live System Analytics</p>
+					</div>
+				</div>
+
+				<div class="d-flex align-items-center gap-3">
+					<a href="{% url 'profile' %}" class="admin-user-chip">
+						<img class="admin-user-chip-avatar" src="{% static 'admin/images/layout_img/user_img.jpg' %}" alt="Admin Avatar" style="width: 32px; height: 32px; min-width: 32px; border-radius: 50%; object-fit: cover;">
+						<span class="admin-user-chip-name">John David</span>
+						<i class="fa fa-angle-down text-muted ml-1" style="font-size: 0.8rem;"></i>
+					</a>
+				</div>
+			</header>
+			
+			<!-- Main Page Content -->
+			<main class="admin-page-content">
+				
+				<!-- Flash Messages -->
+				{% if messages %}
+				<div class="mb-4">
+					{% for msg in messages %}
+					<div class="cube-alert cube-alert-info">
+						<i class="fa fa-info-circle mr-2"></i> {{ msg }}
+					</div>
+					{% endfor %}
+				</div>
+				{% endif %}
+
+				<!-- Statistics Metric Cards -->
+				<div class="cube-stat-grid mb-4">
+					<div class="cube-stat-box">
+						<div class="cube-stat-icon primary">
+							<i class="fa fa-building-o"></i>
+						</div>
+						<div class="cube-stat-info">
+							<span class="cube-stat-val">{{ ow.count|default:"0" }}</span>
+							<span class="cube-stat-label">Registered Owners</span>
+						</div>
+					</div>
+
+					<div class="cube-stat-box">
+						<div class="cube-stat-icon success">
+							<i class="fa fa-users"></i>
+						</div>
+						<div class="cube-stat-info">
+							<span class="cube-stat-val">{{ us.count|default:"0" }}</span>
+							<span class="cube-stat-label">Platform Users</span>
+						</div>
+					</div>
+
+					<div class="cube-stat-box">
+						<div class="cube-stat-icon warning">
+							<i class="fa fa-wrench"></i>
+						</div>
+						<div class="cube-stat-info">
+							<span class="cube-stat-val">{{ ad.count|default:"0" }}</span>
+							<span class="cube-stat-label">Technicians</span>
+						</div>
+					</div>
+
+					<div class="cube-stat-box">
+						<div class="cube-stat-icon info">
+							<i class="fa fa-calendar-check-o"></i>
+						</div>
+						<div class="cube-stat-info">
+							<span class="cube-stat-val">{{ ct.count|default:"0" }}</span>
+							<span class="cube-stat-label">Total Bookings</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Quick Platform Operations -->
+				<div class="admin-card mb-4">
+					<div class="admin-card-header">
+						<h3 class="admin-card-title">
+							<i class="fa fa-bolt text-warning"></i> Quick Platform Operations
+						</h3>
+						<span class="cube-badge cube-badge-success">System Active</span>
+					</div>
+					
+					<div class="admin-operations-grid">
+						<a href="{% url 'ownerlists' %}" class="admin-op-card">
+							<div class="admin-op-icon indigo">
+								<i class="fa fa-id-card-o"></i>
+							</div>
+							<div>
+								<h4 class="admin-op-title">Owner Verifications</h4>
+								<p class="admin-op-desc">Review & approve IDs</p>
+							</div>
+						</a>
+
+						<a href="{% url 'spaceview' %}" class="admin-op-card">
+							<div class="admin-op-icon emerald">
+								<i class="fa fa-cubes"></i>
+							</div>
+							<div>
+								<h4 class="admin-op-title">Workspace Catalog</h4>
+								<p class="admin-op-desc">Explore all properties</p>
+							</div>
+						</a>
+
+						<a href="{% url 'bookingdetail' %}" class="admin-op-card">
+							<div class="admin-op-icon sky">
+								<i class="fa fa-calendar"></i>
+							</div>
+							<div>
+								<h4 class="admin-op-title">Booking Details</h4>
+								<p class="admin-op-desc">Manage reservations</p>
+							</div>
+						</a>
+
+						<a href="{% url 'userlist' %}" class="admin-op-card">
+							<div class="admin-op-icon amber">
+								<i class="fa fa-user-circle-o"></i>
+							</div>
+							<div>
+								<h4 class="admin-op-title">User Directory</h4>
+								<p class="admin-op-desc">View client accounts</p>
+							</div>
+						</a>
+					</div>
+				</div>
+
+				<!-- Analytics Chart Section -->
+				<div class="admin-card">
+					<div class="admin-card-header">
+						<h3 class="admin-card-title">
+							<i class="fa fa-line-chart text-primary"></i> Workspace Platform Growth & Activity Trends
+						</h3>
+						<span class="cube-badge cube-badge-info">Weekly Trend</span>
+					</div>
+					<div style="position: relative; height: 320px; width: 100%;">
+						<canvas id="growthChart"></canvas>
+					</div>
+				</div>
+				
+			</main>
+
+			<!-- Admin Footer -->
+			<footer class="py-3 px-4 text-center mt-auto" style="background: #FFFFFF; border-top: 1px solid #E2E8F0;">
+				<p class="m-0 text-muted small">&copy; 2026 Rent-a-Cube Platform. All rights reserved. Designed for optimal workspace management.</p>
+			</footer>
+
+		</div>
+	</div>
+
+	<!-- JavaScript Files -->
+	<script src="{% static 'admin/js/jquery.min.js' %}"></script>
+	<script src="{% static 'admin/js/bootstrap.bundle.min.js' %}"></script>
+	<script src="{% static 'admin/js/Chart.min.js' %}"></script>
+	
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			// Sidebar Toggle for Mobile & Desktop
+			var toggleBtn = document.getElementById('sidebarCollapse');
+			if (toggleBtn) {
+				toggleBtn.addEventListener('click', function() {
+					var sidebar = document.getElementById('sidebar');
+					if (sidebar) {
+						sidebar.classList.toggle('d-none');
+					}
+				});
+			}
+
+			// Dropdown Toggle for Owner Hub & User Hub
+			document.querySelectorAll('.admin-sidebar-link.dropdown-toggle').forEach(function(toggle) {
+				toggle.addEventListener('click', function(e) {
+					e.preventDefault();
+					var targetSelector = this.getAttribute('href') || this.getAttribute('data-target');
+					if (targetSelector && targetSelector.startsWith('#')) {
+						var menu = document.querySelector(targetSelector);
+						if (menu) {
+							var isShown = menu.classList.contains('show');
+							if (isShown) {
+								menu.classList.remove('show');
+								this.setAttribute('aria-expanded', 'false');
+								this.classList.remove('dropdown-open');
+							} else {
+								menu.classList.add('show');
+								this.setAttribute('aria-expanded', 'true');
+								this.classList.add('dropdown-open');
+							}
+						}
+					}
+				});
+			});
+		});
+
+		// Growth & Activity Trends Chart
+		var ctx = document.getElementById('growthChart').getContext('2d');
+		var growthChart = new Chart(ctx, {
+			type: 'bar',
+			data: {
+				labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+				datasets: [
+					{
+						label: 'Workspace Bookings',
+						data: [12, 19, 15, 25, 22, 30, 28],
+						backgroundColor: '#4F46E5',
+						borderRadius: 6,
+						barPercentage: 0.5,
+					},
+					{
+						label: 'Active User Sessions',
+						data: [20, 28, 24, 38, 35, 45, 42],
+						backgroundColor: '#06B6D4',
+						borderRadius: 6,
+						barPercentage: 0.5,
+					}
+				]
+			},
+			options: {
+				responsive: true,
+				maintainAspectRatio: false,
+				plugins: {
+					legend: {
+						position: 'top',
+						labels: {
+							boxWidth: 12,
+							font: { family: 'Plus Jakarta Sans, sans-serif', weight: '600' }
+						}
+					}
+				},
+				scales: {
+					y: {
+						beginAtZero: true,
+						grid: { color: '#F1F5F9' },
+						ticks: { color: '#64748B' }
+					},
+					x: {
+						grid: { display: false },
+						ticks: { color: '#64748B' }
+					}
+				}
+			}
+		});
+	</script>
+</body>
+</html>

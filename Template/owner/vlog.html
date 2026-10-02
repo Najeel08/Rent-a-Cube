@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<title>Owner Login | Rent-a-Cube</title>
+	<meta charset="utf-8">
+	<meta name="description" content="Workspace Owner Sign In">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Stylesheets -->
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
+	<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
+</head>
+
+<body style="background-color: var(--rc-bg-main);">
+	<!-- Preloader -->
+	<div class="preloader">
+		<div class="preloader_image"></div>
+	</div>
+
+	<!-- Main Canvas Wrapper -->
+	<div id="canvas">
+		<div id="box_wrapper">
+
+			<!-- Modern Navigation Header -->
+			<header class="cube-navbar d-flex justify-content-between align-items-center flex-wrap px-4 py-3">
+				<div class="d-flex align-items-center">
+					<a class="navbar-brand d-flex align-items-center gap-2" href="/">
+						<img src="{% static 'images/logo.svg' %}" alt="Rent-a-Cube Logo" style="height: 48px; width: auto; object-fit: contain;">
+					</a>
+				</div>
+				<ul class="cube-nav-links d-flex align-items-center flex-wrap gap-2 m-0 p-0">
+					<li>
+						<a class="cube-nav-link" href="/">
+							<i class="fa fa-home mr-1"></i> Home
+						</a>
+					</li>
+					<li>
+						<a class="cube-btn cube-btn-primary cube-btn-sm" href="{% url 'vreg' %}">
+							<i class="fa fa-user-plus mr-1"></i> Partner Registration
+						</a>
+					</li>
+				</ul>
+			</header>
+
+			<!-- Main Login Section -->
+			<main class="py-5 d-flex align-items-center" style="background-color: var(--rc-bg-main); min-height: 85vh;">
+				<div class="container">
+
+					<div class="cube-form-card mx-auto shadow-lg" style="max-width: 460px;">
+						
+						<!-- Header Brand Icon -->
+						<div class="text-center mb-4">
+							<div class="cube-stat-icon primary mx-auto mb-3" style="width: 60px; height: 60px; font-size: 1.6rem;">
+								<i class="fa fa-building"></i>
+							</div>
+							<h3 class="cube-form-title mb-1">Owner Portal Login</h3>
+							<p class="cube-form-subtitle mb-0">Sign in to manage your workspace listings and bookings.</p>
+						</div>
+
+						<!-- Flash Messages -->
+						{% if messages %}
+						<div class="mb-4">
+							{% for msg in messages %}
+							<div class="cube-alert cube-alert-danger" role="alert">
+								<i class="fa fa-exclamation-circle mr-2"></i> {{ msg }}
+							</div>
+							{% endfor %}
+						</div>
+						{% endif %}
+
+						<form method="post" action="">
+							{% csrf_token %}
+
+							<div class="cube-form-group mb-3">
+								<label class="cube-label" for="email">
+									Email Address <span class="text-danger">*</span>
+								</label>
+								<input type="email" name="email" id="email" class="cube-input" placeholder="vikram@cowork.in" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Please enter a valid email address (e.g. vikram@cowork.in)" required autofocus>
+							</div>
+
+							<div class="cube-form-group mb-4">
+								<label class="cube-label" for="password">
+									Password <span class="text-danger">*</span>
+								</label>
+								<input type="password" name="password" id="password" class="cube-input" placeholder="••••••••" required>
+							</div>
+
+							<div class="cube-form-group mb-4">
+								<button type="submit" id="contact_form_submit" name="contact_submit" class="cube-btn cube-btn-primary cube-btn-block cube-btn-lg">
+									<i class="fa fa-sign-in mr-1"></i> Sign In to Dashboard
+								</button>
+							</div>
+
+							<div class="text-center pt-3 border-top">
+								<p class="small text-muted mb-0">
+									Want to list your spaces on Rent-a-Cube? 
+									<a href="{% url 'vreg' %}" class="font-weight-bold text-primary">Apply as Partner</a>
+								</p>
+							</div>
+						</form>
+
+					</div>
+
+				</div>
+			</main>
+
+			<!-- Modern Footer -->
+			<footer class="cube-footer">
+				<div class="container text-center">
+					<p style="margin: 0; color: #FFFFFF !important; font-weight: 500; font-size: 0.875rem;">&copy; 2026 Rent-a-Cube Platform. All rights reserved. Designed for optimal workspace efficiency.</p>
+				</div>
+			</footer>
+
+		</div><!-- eof #box_wrapper -->
+	</div><!-- eof #canvas -->
+
+	<!-- Footer Scripts -->
+	<script src="{% static 'admin/js/jquery.min.js' %}"></script>
+	<script src="{% static 'admin/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

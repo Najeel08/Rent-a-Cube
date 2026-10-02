@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<title>Owner Registration | Rent-a-Cube</title>
+	<meta charset="utf-8">
+	<meta name="description" content="Register as a Workspace Owner Partner">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Stylesheets -->
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
+	<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
+</head>
+
+<body style="background-color: var(--rc-bg-main);">
+	<!-- Preloader -->
+	<div class="preloader">
+		<div class="preloader_image"></div>
+	</div>
+
+	<!-- Main Canvas Wrapper -->
+	<div id="canvas">
+		<div id="box_wrapper">
+
+			<!-- Modern Navigation Header -->
+			<header class="cube-navbar d-flex justify-content-between align-items-center flex-wrap px-4 py-3">
+				<div class="d-flex align-items-center">
+					<a class="navbar-brand d-flex align-items-center gap-2" href="/">
+						<img src="{% static 'images/logo.svg' %}" alt="Rent-a-Cube Logo" style="height: 48px; width: auto; object-fit: contain;">
+					</a>
+				</div>
+				<ul class="cube-nav-links d-flex align-items-center flex-wrap gap-2 m-0 p-0">
+					<li>
+						<a class="cube-nav-link" href="/">
+							<i class="fa fa-home mr-1"></i> Home
+						</a>
+					</li>
+					<li>
+						<a class="cube-btn cube-btn-outline cube-btn-sm" href="{% url 'vlog' %}">
+							<i class="fa fa-sign-in mr-1"></i> Owner Login
+						</a>
+					</li>
+				</ul>
+			</header>
+
+			<!-- Main Registration Section -->
+			<main class="py-5" style="background-color: var(--rc-bg-main); min-height: 85vh;">
+				<div class="container">
+
+					<div class="cube-form-card cube-form-card-wide mx-auto shadow-lg">
+						<div class="text-center mb-4">
+							<span class="cube-badge cube-badge-primary mb-2">Partner Application</span>
+							<h3 class="cube-form-title mb-1">List Your Spaces on Rent-a-Cube</h3>
+							<p class="cube-form-subtitle">Register your business, provide verification proof, and begin accepting reservations.</p>
+						</div>
+
+						<!-- Flash Messages -->
+						{% if messages %}
+						<div class="mb-4">
+							{% for msg in messages %}
+							<div class="cube-alert cube-alert-info" role="alert">
+								<i class="fa fa-info-circle mr-2"></i> {{ msg }}
+							</div>
+							{% endfor %}
+						</div>
+						{% endif %}
+
+						<form method="post" action="" enctype="multipart/form-data" id="ownerRegForm" onsubmit="return validateOwnerForm()">
+							{% csrf_token %}
+
+							<div class="row">
+								<!-- Full Name -->
+								<div class="col-md-6 mb-3">
+									<div class="cube-form-group">
+										<label class="cube-label" for="name">
+											Full Name / Business Owner <span class="text-danger">*</span>
+										</label>
+										<input type="text" name="name" id="name" class="cube-input" placeholder="e.g. Vikram Mehta" minlength="2" maxlength="50" pattern="^[a-zA-Z\s\.]+$" title="Full name should contain letters and spaces only" required>
+										<small id="nameError" class="text-danger mt-1 d-block"></small>
+									</div>
+								</div>
+
+								<!-- Phone Number -->
+								<div class="col-md-6 mb-3">
+									<div class="cube-form-group">
+										<label class="cube-label" for="phonenumber">
+											Phone Number <span class="text-danger">*</span>
+										</label>
+										<input type="tel" name="phonenumber" id="phonenumber" class="cube-input" placeholder="10-digit mobile number" minlength="10" maxlength="10" pattern="^[6-9][0-9]{9}$" title="Please enter a valid 10-digit mobile number starting with 6, 7, 8, or 9" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);" required>
+										<small id="phoneError" class="text-danger mt-1 d-block"></small>
+									</div>
+								</div>
+
+								<!-- Email Address -->
+								<div class="col-md-6 mb-3">
+									<div class="cube-form-group">
+										<label class="cube-label" for="email">
+											Email Address <span class="text-danger">*</span>
+										</label>
+										<input type="email" name="email" id="email" class="cube-input" placeholder="vikram@cowork.in" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Please enter a valid email address (e.g. vikram@cowork.in)" oninput="validateOwnerEmailField(this, 'emailError')" required>
+										<small id="emailError" class="text-danger mt-1 d-block"></small>
+									</div>
+								</div>
+
+								<!-- Place / Region -->
+								<div class="col-md-6 mb-3">
+									<div class="cube-form-group">
+										<label class="cube-label" for="place">
+											City / Region <span class="text-danger">*</span>
+										</label>
+										<input type="text" name="place" id="place" class="cube-input" placeholder="e.g. Mumbai Suburban" minlength="2" maxlength="60" required>
+										<small id="placeError" class="text-danger mt-1 d-block"></small>
+									</div>
+								</div>
+
+								<!-- Work Experience -->
+								<div class="col-md-6 mb-3">
+									<div class="cube-form-group">
+										<label class="cube-label" for="workex">
+											Commercial Experience <span class="text-danger">*</span>
+										</label>
+										<input type="text" name="workex" id="workex" class="cube-input" placeholder="e.g. 5 Years Commercial Leasing" minlength="2" maxlength="60" required>
+										<small id="workexError" class="text-danger mt-1 d-block"></small>
+									</div>
+								</div>
+
+								<!-- Gender -->
+								<div class="col-md-6 mb-3">
+									<div class="cube-form-group">
+										<label class="cube-label">Gender <span class="text-danger">*</span></label>
+										<div class="d-flex align-items-center gap-4 pt-2">
+											<label class="d-flex align-items-center gap-2 mb-0" style="cursor: pointer;">
+												<input type="radio" name="gender" value="male" required> Male
+											</label>
+											<label class="d-flex align-items-center gap-2 mb-0" style="cursor: pointer;">
+												<input type="radio" name="gender" value="female"> Female
+											</label>
+										</div>
+									</div>
+								</div>
+
+								<!-- Profile Photo -->
+								<div class="col-md-6 mb-3">
+									<div class="cube-form-group">
+										<label class="cube-label" for="image">
+											Owner Photo / Avatar <span class="text-danger">*</span>
+										</label>
+										<input type="file" name="image" id="image" class="cube-input" accept="image/*" required>
+										<small class="text-muted mt-1 d-block">JPG, PNG, or WebP format</small>
+									</div>
+								</div>
+
+								<!-- Identification Proof -->
+								<div class="col-md-6 mb-3">
+									<div class="cube-form-group">
+										<label class="cube-label" for="proof">
+											Verification Proof (ID / GST Document) <span class="text-danger">*</span>
+										</label>
+										<input type="file" name="proof" id="proof" class="cube-input" accept="image/*,.pdf" required>
+										<small class="text-muted mt-1 d-block">Official document (PDF or Image)</small>
+									</div>
+								</div>
+
+								<!-- Password -->
+								<div class="col-md-6 mb-3">
+									<div class="cube-form-group">
+										<label class="cube-label" for="password">
+											Password <span class="text-danger">*</span>
+										</label>
+										<input type="password" name="password" id="password" class="cube-input" placeholder="Min 8 characters" minlength="8" maxlength="20" required oninput="checkOwnerPasswordStrength()">
+										
+										<!-- Password Strength Recommendation Guide -->
+										<div class="p-2 mt-2 rounded bg-light border" style="font-size: 0.78rem;">
+											<span class="font-weight-bold text-dark d-block mb-1"><i class="fa fa-shield text-primary mr-1"></i> Recommended Strong Password:</span>
+											<ul class="pl-3 mb-0 text-muted" id="pwdCriteria" style="line-height: 1.4;">
+												<li id="critLength">At least 8 characters</li>
+												<li id="critUpper">At least 1 uppercase letter (A-Z)</li>
+												<li id="critLower">At least 1 lowercase letter (a-z)</li>
+												<li id="critNumber">At least 1 number (0-9)</li>
+												<li id="critSpecial">At least 1 special symbol (@$!%*?&#)</li>
+											</ul>
+										</div>
+										<small id="passwordError" class="text-danger mt-1 d-block"></small>
+									</div>
+								</div>
+
+								<!-- Confirm Password -->
+								<div class="col-md-6 mb-3">
+									<div class="cube-form-group">
+										<label class="cube-label" for="cpassword">
+											Confirm Password <span class="text-danger">*</span>
+										</label>
+										<input type="password" name="cpassword" id="cpassword" class="cube-input" placeholder="Repeat password" minlength="8" maxlength="20" required oninput="checkOwnerPasswordMatch()">
+										<small id="cpasswordError" class="text-danger mt-1 d-block"></small>
+									</div>
+								</div>
+							</div>
+
+							<!-- Submit Buttons -->
+							<div class="mt-4 pt-3 border-top d-flex gap-3">
+								<button type="submit" id="contact_form_submit" name="contact_submit" class="cube-btn cube-btn-primary cube-btn-lg flex-fill">
+									<i class="fa fa-paper-plane mr-1"></i> Submit Partner Application
+								</button>
+								<a href="{% url 'vlog' %}" class="cube-btn cube-btn-outline cube-btn-lg">
+									Already Registered? Login
+								</a>
+							</div>
+						</form>
+					</div>
+
+				</div>
+			</main>
+
+			<!-- Modern Footer -->
+			<footer class="cube-footer">
+				<div class="container text-center">
+					<p style="margin: 0; color: #FFFFFF !important; font-weight: 500; font-size: 0.875rem;">&copy; 2026 Rent-a-Cube Platform. All rights reserved. Designed for optimal workspace efficiency.</p>
+				</div>
+			</footer>
+
+		</div><!-- eof #box_wrapper -->
+	</div><!-- eof #canvas -->
+
+	<!-- Interactive Form Validation Script -->
+	<script>
+		function validateOwnerEmailField(input, errorId) {
+			const email = input.value.trim();
+			const errElem = document.getElementById(errorId);
+			if (!errElem) return;
+			const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+			if (!email) {
+				errElem.textContent = "";
+				return false;
+			}
+			if (!emailRegex.test(email)) {
+				errElem.textContent = "Please enter a valid email address with a domain and extension (e.g., name@example.com).";
+				errElem.className = "text-danger mt-1 d-block";
+				return false;
+			} else {
+				errElem.textContent = "✓ Valid email format";
+				errElem.className = "text-success mt-1 d-block";
+				return true;
+			}
+		}
+
+		function checkOwnerPasswordStrength() {
+			const pwd = document.getElementById("password").value;
+			
+			const hasLength = pwd.length >= 8;
+			const hasUpper = /[A-Z]/.test(pwd);
+			const hasLower = /[a-z]/.test(pwd);
+			const hasNumber = /[0-9]/.test(pwd);
+			const hasSpecial = /[@$!%*?&#^()_+\-=]/.test(pwd);
+
+			updateCriterion("critLength", hasLength);
+			updateCriterion("critUpper", hasUpper);
+			updateCriterion("critLower", hasLower);
+			updateCriterion("critNumber", hasNumber);
+			updateCriterion("critSpecial", hasSpecial);
+
+			checkOwnerPasswordMatch();
+		}
+
+		function updateCriterion(elemId, isValid) {
+			const elem = document.getElementById(elemId);
+			if (!elem) return;
+			if (isValid) {
+				elem.style.color = "#10B981";
+				elem.style.fontWeight = "600";
+			} else {
+				elem.style.color = "#64748B";
+				elem.style.fontWeight = "normal";
+			}
+		}
+
+		function checkOwnerPasswordMatch() {
+			const pwd = document.getElementById("password").value;
+			const cpwd = document.getElementById("cpassword").value;
+			const cpwdErr = document.getElementById("cpasswordError");
+
+			if (!cpwd) {
+				cpwdErr.textContent = "";
+				return;
+			}
+
+			if (pwd !== cpwd) {
+				cpwdErr.textContent = "Passwords do not match.";
+				cpwdErr.className = "text-danger mt-1 d-block";
+			} else {
+				cpwdErr.textContent = "✓ Passwords match";
+				cpwdErr.className = "text-success mt-1 d-block";
+			}
+		}
+
+		function validateOwnerForm() {
+			const emailInput = document.getElementById("email");
+			if (!validateOwnerEmailField(emailInput, "emailError")) {
+				emailInput.focus();
+				return false;
+			}
+
+			const phone = document.getElementById("phonenumber").value.trim();
+			const phoneErr = document.getElementById("phoneError");
+			if (!/^[6-9][0-9]{9}$/.test(phone)) {
+				phoneErr.textContent = "Please enter a valid 10-digit Indian mobile number (starting with 6, 7, 8, or 9).";
+				document.getElementById("phonenumber").focus();
+				return false;
+			} else {
+				phoneErr.textContent = "";
+			}
+
+			const pwd = document.getElementById("password").value;
+			const cpwd = document.getElementById("cpassword").value;
+			const pwdErr = document.getElementById("passwordError");
+
+			const strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#^()_+\-=])[A-Za-z\d@$!%*?&#^()_+\-=]{8,20}$/;
+			if (!strongRegex.test(pwd)) {
+				pwdErr.textContent = "Password must meet all 5 security recommendations (8+ chars, uppercase, lowercase, number, and special character).";
+				document.getElementById("password").focus();
+				return false;
+			} else {
+				pwdErr.textContent = "";
+			}
+
+			if (pwd !== cpwd) {
+				document.getElementById("cpasswordError").textContent = "Passwords do not match.";
+				document.getElementById("cpassword").focus();
+				return false;
+			}
+
+			return true;
+		}
+	</script>
+</body>
+</html>

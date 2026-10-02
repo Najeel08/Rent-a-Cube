@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<title>RENT A CUBE - Technician Duty Assignments</title>
+	<meta charset="utf-8">
+	<meta name="description" content="Rent-a-Cube Technician Work Assignments">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Google Fonts -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+	<!-- Stylesheets -->
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/animations.css' %}">
+	<link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
+	<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+	<!-- Modern Navbar -->
+	<header class="cube-navbar">
+		<div class="container d-flex align-items-center justify-content-between">
+			<a class="navbar-brand d-flex align-items-center" href="{% url 'thome' %}">
+				<img src="{% static 'images/logo.svg' %}" alt="Rent-a-Cube Logo" style="height: 44px; width: auto; object-fit: contain;">
+				<span class="cube-badge cube-badge-warning ml-2">Technician</span>
+			</a>
+			
+			<ul class="cube-nav-links">
+				<li>
+					<a href="{% url 'thome' %}" class="cube-nav-link">
+						<i class="fa fa-home mr-1"></i> Home
+					</a>
+				</li>
+				<li>
+					<a href="{% url 'requests' %}" class="cube-nav-link active">
+						<i class="fa fa-wrench mr-1"></i> Work Assignments
+					</a>
+				</li>
+				<li>
+					<form method="post" action="{% url 'logout' %}" class="cube-logout-form">
+{% csrf_token %}
+<button type="submit" class="cube-btn cube-btn-sm cube-btn-outline ml-3"><i class="fa fa-sign-out mr-1"></i> Log Out</button>
+</form>
+				</li>
+			</ul>
+		</div>
+	</header>
+
+	<!-- Page Header Banner -->
+	<section class="tech-requests-header">
+		<div class="container">
+			<div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+				<div>
+					<h1><i class="fa fa-tasks text-warning mr-2"></i> Work Assignments & Duties</h1>
+					<p>Assigned workspace setup, hardware verification, and customer maintenance tickets</p>
+				</div>
+				{% if duty %}
+				<div>
+					<span class="cube-badge cube-badge-primary" style="font-size:0.9rem; padding:0.5rem 1rem;">
+						<i class="fa fa-user mr-1"></i> Engineer: {{ duty }}
+					</span>
+				</div>
+				{% endif %}
+			</div>
+		</div>
+	</section>
+
+	<!-- Main Assignments Container -->
+	<div class="container mb-5 flex-grow-1">
+		
+		<!-- Feedback Messages -->
+		{% for msg in messages %}
+		<div class="cube-alert cube-alert-info mb-4">
+			<i class="fa fa-info-circle mr-2"></i> {{ msg }}
+		</div>
+		{% endfor %}
+
+		<div class="row">
+			{% for req in req %}
+			<div class="col-lg-4 col-md-6 mb-4">
+				<div class="assignment-card">
+					
+					<div class="assignment-card-header">
+						<div class="d-flex align-items-center gap-2">
+							<div class="cube-user-avatar" style="width:34px; height:34px; font-size:0.85rem;">
+								{{ req.Name|slice:":1" }}
+							</div>
+							<div>
+								<strong style="color:var(--rc-dark);">{{ req.Name }}</strong>
+							</div>
+						</div>
+						<span class="cube-badge cube-badge-warning">
+							<i class="fa fa-clock-o"></i> Pending
+						</span>
+					</div>
+
+					<div class="assignment-card-body">
+						<div class="mb-2" style="font-size:0.875rem;">
+							<i class="fa fa-envelope-o text-muted mr-1"></i>
+							<a href="mailto:{{ req.Email }}" class="text-muted">{{ req.Email }}</a>
+						</div>
+						<div class="mb-2" style="font-size:0.875rem;">
+							<i class="fa fa-phone text-muted mr-1"></i>
+							<a href="tel:{{ req.Phonenumber }}" class="text-primary font-weight-bold">{{ req.Phonenumber }}</a>
+						</div>
+
+						<div class="assignment-msg-box">
+							<div class="text-muted mb-1" style="font-size:0.75rem; text-transform:uppercase; font-weight:700; letter-spacing:0.05em;">
+								Request Details
+							</div>
+							{{ req.requestmssg }}
+						</div>
+					</div>
+
+					<div class="assignment-card-footer">
+						<form method="post" action="{% url 'gaccept' req.id %}" class="flex-grow-1 m-0">
+							{% csrf_token %}
+							<button type="submit" class="cube-btn cube-btn-success cube-btn-sm cube-btn-block">
+								<i class="fa fa-check mr-1"></i> Accept Duty
+							</button>
+						</form>
+						<form method="post" action="{% url 'greject' req.id %}" class="flex-grow-1 m-0">
+							{% csrf_token %}
+							<button type="submit" class="cube-btn cube-btn-danger cube-btn-sm cube-btn-block">
+								<i class="fa fa-times mr-1"></i> Reject
+							</button>
+						</form>
+					</div>
+
+				</div>
+			</div>
+			{% empty %}
+			<div class="col-12 text-center py-5">
+				<div class="cube-form-card text-center" style="max-width:520px; margin:2rem auto;">
+					<div class="cube-user-avatar mb-3" style="width:64px; height:64px; font-size:1.75rem; margin:0 auto; background:var(--rc-primary-light); color:var(--rc-primary);">
+						<i class="fa fa-check-circle"></i>
+					</div>
+					<h3 class="font-weight-bold" style="color:var(--rc-dark);">No Pending Work Assignments</h3>
+					<p class="text-muted mb-4">You have cleared all pending duty assignments. New maintenance requests assigned to you will appear here.</p>
+					<a href="{% url 'thome' %}" class="cube-btn cube-btn-primary">
+						<i class="fa fa-home mr-1"></i> Return to Technician Dashboard
+					</a>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+
+	</div>
+
+	<!-- Modern Footer -->
+	<footer class="cube-footer mt-auto" style="padding: 2rem 0; margin-top: auto;">
+		<div class="container text-center" style="font-size: 0.875rem; color: var(--rc-text-muted);">
+			&copy; 2026 Rent-a-Cube Platform. Technician Portal Operations.
+		</div>
+	</footer>
+
+	<!-- JavaScript Files -->
+	<script src="{% static 'admin/js/jquery.min.js' %}"></script>
+	<script src="{% static 'admin/js/bootstrap.min.js' %}"></script>
+</body>
+</html>

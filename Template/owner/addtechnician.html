@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<title>Add Technician | Rent-a-Cube</title>
+	<meta charset="utf-8">
+	<meta name="description" content="Add a new staff technician">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Stylesheets -->
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/animations.css' %}">
+	<link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
+	<link rel="stylesheet" href="{% static 'css/main.css' %}" class="color-switcher-link">
+	<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
+	<script src="{% static 'js/vendor/modernizr-custom.js' %}"></script>
+</head>
+
+<body>
+	<!-- Preloader -->
+	<div class="preloader">
+		<div class="preloader_image"></div>
+	</div>
+
+	<!-- Main Canvas Wrapper -->
+	<div id="canvas">
+		<div id="box_wrapper">
+
+			<!-- Modern Navigation Header -->
+			<header class="cube-navbar d-flex justify-content-between align-items-center flex-wrap px-4 py-2">
+				<div class="d-flex align-items-center">
+					<a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'vhome' %}">
+						<img src="{% static 'images/logo.svg' %}" alt="Rent-a-Cube Logo" style="height: 42px; width: auto; object-fit: contain;">
+					</a>
+				</div>
+				<ul class="cube-nav-links d-flex align-items-center flex-wrap gap-1 m-0 p-0">
+					<li>
+						<a class="cube-nav-link" href="{% url 'vhome' %}">
+							<i class="fa fa-th-large"></i> Dashboard
+						</a>
+					</li>
+					<li class="dropdown">
+						<a class="cube-nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+							<i class="fa fa-building-o"></i> Workspaces
+						</a>
+						<div class="dropdown-menu shadow-sm border-0 mt-2">
+							<a class="dropdown-item py-2" href="{% url 'vaddwork' %}">
+								<i class="fa fa-plus-circle mr-2 text-primary"></i> Add Workspace
+							</a>
+							<a class="dropdown-item py-2" href="{% url 'oviewwork' %}">
+								<i class="fa fa-list mr-2 text-primary"></i> View Workspaces
+							</a>
+						</div>
+					</li>
+					<li class="dropdown">
+						<a class="cube-nav-link active dropdown-toggle" href="#" data-toggle="dropdown">
+							<i class="fa fa-wrench text-primary"></i> Technicians
+						</a>
+						<div class="dropdown-menu shadow-sm border-0 mt-2">
+							<a class="dropdown-item py-2 active" href="{% url 'addtechnician' %}">
+								<i class="fa fa-user-plus mr-2 text-primary"></i> Add Technician
+							</a>
+							<a class="dropdown-item py-2" href="{% url 'viewtechnician' %}">
+								<i class="fa fa-users mr-2 text-primary"></i> View Technicians
+							</a>
+						</div>
+					</li>
+					<li>
+						<a class="cube-nav-link" href="{% url 'requests' %}">
+							<i class="fa fa-inbox"></i> Requests
+						</a>
+					</li>
+					{% if request.session.id %}
+					<li>
+						<a class="cube-nav-link" href="{% url 'ownerorder' request.session.id %}">
+							<i class="fa fa-shopping-bag"></i> Bookings
+						</a>
+					</li>
+					<li>
+						<a class="cube-nav-link" href="{% url 'PROFILE' %}">
+							<i class="fa fa-user-circle"></i> Profile
+						</a>
+					</li>
+					{% endif %}
+					<li>
+						<a class="cube-nav-link" href="{% url 'refund' %}">
+							<i class="fa fa-undo"></i> Refunds
+						</a>
+					</li>
+					<li>
+						<a class="cube-nav-link" href="{% url 'chat' %}">
+							<i class="fa fa-comments-o"></i> Chats
+						</a>
+					</li>
+					<li class="ml-2">
+						<form method="post" action="{% url 'logout' %}" class="cube-logout-form">
+{% csrf_token %}
+<button type="submit" class="cube-btn cube-btn-outline cube-btn-sm"><i class="fa fa-sign-out"></i> Logout</button>
+</form>
+					</li>
+				</ul>
+			</header>
+
+			<!-- Flash Messages -->
+			{% if messages %}
+			<div class="container mt-4">
+				{% for message in messages %}
+				<div class="cube-alert cube-alert-info">
+					<i class="fa fa-info-circle mr-2"></i> {{ message }}
+				</div>
+				{% endfor %}
+			</div>
+			{% endif %}
+
+			<!-- Main Form Section -->
+			<main class="py-5" style="background-color: var(--rc-bg-main); min-height: 85vh;">
+				<div class="container">
+
+					<div class="cube-form-card cube-form-card-wide mx-auto">
+						<div class="text-center mb-4">
+							<span class="cube-badge cube-badge-primary mb-2">Staff Onboarding</span>
+							<h3 class="cube-form-title mb-1">Add New Technician</h3>
+							<p class="cube-form-subtitle">Register a maintenance technician under your workspace management account.</p>
+						</div>
+
+						<form method="POST" action="" enctype="multipart/form-data">
+							{% csrf_token %}
+
+							<div class="row">
+								<!-- Full Name -->
+								<div class="col-md-6 mb-3">
+									<div class="cube-form-group">
+										<label class="cube-label" for="name">
+											Full Name <span class="text-danger">*</span>
+										</label>
+										<input type="text" name="name" id="name" class="cube-input" placeholder="e.g. Rahul Sharma" required>
+									</div>
+								</div>
+
+								<!-- Email -->
+								<div class="col-md-6 mb-3">
+									<div class="cube-form-group">
+										<label class="cube-label" for="email">
+											Email Address <span class="text-danger">*</span>
+										</label>
+										<input type="email" name="email" id="email" class="cube-input" placeholder="e.g. rahul@example.com" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Please enter a valid email address (e.g. rahul@example.com)" required>
+									</div>
+								</div>
+
+								<!-- Phone Number -->
+								<div class="col-md-6 mb-3">
+									<div class="cube-form-group">
+										<label class="cube-label" for="phonenumber">
+											Phone Number <span class="text-danger">*</span>
+										</label>
+										<input type="tel" minlength="10" maxlength="10" name="phonenumber" id="phonenumber" class="cube-input" placeholder="10-digit mobile number" pattern="^[6-9][0-9]{9}$" title="Please enter a valid 10-digit mobile number starting with 6, 7, 8, or 9" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);" required>
+									</div>
+								</div>
+
+								<!-- Place / Location -->
+								<div class="col-md-6 mb-3">
+									<div class="cube-form-group">
+										<label class="cube-label" for="place">
+											City / Service Location <span class="text-danger">*</span>
+										</label>
+										<input type="text" name="place" id="place" class="cube-input" placeholder="e.g. Bangalore Central" minlength="2" maxlength="60" required>
+									</div>
+								</div>
+
+								<!-- Work Experience -->
+								<div class="col-md-6 mb-3">
+									<div class="cube-form-group">
+										<label class="cube-label" for="workex">
+											Work Experience <span class="text-danger">*</span>
+										</label>
+										<input type="text" name="workex" id="workex" class="cube-input" placeholder="e.g. 3 Years (Electrical & HVAC)" minlength="2" maxlength="60" required>
+									</div>
+								</div>
+
+								<!-- Qualification -->
+								<div class="col-md-6 mb-3">
+									<div class="cube-form-group">
+										<label class="cube-label" for="qualification">
+											Educational / Technical Qualification <span class="text-danger">*</span>
+										</label>
+										<input type="text" name="qualification" id="qualification" class="cube-input" placeholder="e.g. Diploma in Electrical Engineering" minlength="2" maxlength="60" required>
+									</div>
+								</div>
+
+								<!-- Profile Photo -->
+								<div class="col-12 mb-4">
+									<div class="cube-form-group">
+										<label class="cube-label" for="image">
+											Technician Photo <span class="text-danger">*</span>
+										</label>
+										<input type="file" name="image" id="image" class="cube-input" accept="image/*" required>
+										<small class="text-muted mt-1 d-block">Upload a clear passport-style or professional headshot.</small>
+									</div>
+								</div>
+							</div>
+
+							<div hidden class="form-group">
+								<select name="wid">
+									{% if request.session.id %}
+									<option value="{{ request.session.id }}">{{ request.session.id }}</option>
+									{% endif %}
+								</select>
+							</div>
+
+							<!-- Submit Buttons -->
+							<div class="mt-4 pt-3 border-top d-flex gap-3">
+								<button type="submit" id="contact_form_submit" name="contact_submit" class="cube-btn cube-btn-primary cube-btn-lg flex-fill">
+									<i class="fa fa-user-plus mr-1"></i> Register Technician
+								</button>
+								<a href="{% url 'viewtechnician' %}" class="cube-btn cube-btn-outline cube-btn-lg">
+									Cancel
+								</a>
+							</div>
+						</form>
+					</div>
+
+				</div>
+			</main>
+
+			<!-- Modern Footer -->
+			<footer class="cube-footer">
+				<div class="container text-center">
+					<p style="margin: 0; color: #FFFFFF !important; font-weight: 500; font-size: 0.875rem;">&copy; 2026 Rent-a-Cube Platform. All rights reserved. Designed for optimal workspace efficiency.</p>
+				</div>
+			</footer>
+
+		</div><!-- eof #box_wrapper -->
+	</div><!-- eof #canvas -->
+
+	<!-- Footer Scripts -->
+	<script src="{% static 'js/compressed.js' %}"></script>
+	<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

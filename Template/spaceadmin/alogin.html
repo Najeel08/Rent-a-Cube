@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>RENT A CUBE - Admin Login</title>
+	<meta name="description" content="Rent-a-Cube Admin Secure Login Portal">
+
+	<!-- Bootstrap & Font Awesome -->
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
+	<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
+</head>
+
+<body class="admin-auth-body">
+	<div class="admin-login-wrap">
+		
+		<!-- Brand Header -->
+		<div class="admin-brand-header">
+			<div class="mb-3">
+				<a href="/">
+					<img src="{% static 'images/logo-footer.svg' %}" alt="Rent-a-Cube Logo" style="height: 48px; width: auto; object-fit: contain;">
+				</a>
+			</div>
+			<div class="mb-3" style="width: 52px; height: 52px; border-radius: 14px; background: rgba(239, 68, 68, 0.2); color: #EF4444; display: inline-flex; align-items: center; justify-content: center; font-size: 1.4rem; border: 1px solid rgba(239, 68, 68, 0.4);">
+				<i class="fa fa-shield"></i>
+			</div>
+			<h1 style="color: #FFFFFF !important; font-weight: 800; font-size: 1.75rem; margin: 0.25rem 0 0.25rem 0;">Admin Portal</h1>
+			<p style="color: #CBD5E1 !important; font-size: 0.95rem; margin: 0;">Authorized administrator access only</p>
+		</div>
+
+		<!-- Login Card -->
+		<div class="admin-login-card">
+			<!-- Alert Messages -->
+			{% for msg in messages %}
+			<div class="cube-alert cube-alert-danger mb-4" role="alert">
+				<i class="fa fa-exclamation-triangle mr-2"></i> {{ msg }}
+			</div>
+			{% endfor %}
+
+			<!-- Admin Login Form -->
+			<form action="" method="POST">
+				{% csrf_token %}
+				
+				<div class="cube-form-group mb-3">
+					<label class="cube-label" for="admin-email" style="color: #1E293B !important; font-weight: 600;">Administrator Email <span class="text-danger">*</span></label>
+					<input type="email" id="admin-email" name="email" class="cube-input" placeholder="admin@rentacube.com" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Please enter a valid email address (e.g. admin@rentacube.com)" required autofocus />
+				</div>
+
+				<div class="cube-form-group mb-4">
+					<label class="cube-label" for="admin-password" style="color: #1E293B !important; font-weight: 600;">Password <span class="text-danger">*</span></label>
+					<input type="password" id="admin-password" name="password" class="cube-input" placeholder="••••••••" required />
+				</div>
+				
+				<button type="submit" class="cube-btn cube-btn-primary cube-btn-block cube-btn-lg">
+					<i class="fa fa-sign-in mr-2"></i> Sign In to Portal
+				</button>
+			</form>
+
+			<div class="text-center mt-4 pt-3 border-top">
+				<a href="/" class="return-link">
+					<i class="fa fa-arrow-left mr-1"></i> Return to Homepage
+				</a>
+			</div>
+		</div>
+
+		<!-- Footer Copyright -->
+		<div class="text-center mt-4">
+			<p style="margin: 0; color: #94A3B8 !important; font-size: 0.8rem; font-weight: 500;">&copy; 2026 Rent-a-Cube Platform. All rights reserved.</p>
+		</div>
+
+	</div>
+
+	<!-- JavaScript Files -->
+	<script src="{% static 'admin/js/jquery.min.js' %}"></script>
+	<script src="{% static 'admin/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

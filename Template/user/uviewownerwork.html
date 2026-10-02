@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<title>RENT A CUBE - Workspace Booking Details</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Bootstrap & Font Awesome -->
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/animations.css' %}">
+	<link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
+	
+	<!-- Rent-a-Cube Core Design System -->
+	<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
+	<link rel="stylesheet" href="{% static 'css/main.css' %}" class="color-switcher-link">
+	<script src="{% static 'js/vendor/modernizr-custom.js' %}"></script>
+</head>
+
+<body>
+	<!-- Preloader -->
+	<div class="preloader">
+		<div class="preloader_image"></div>
+	</div>
+
+	<div id="canvas">
+		<div id="box_wrapper">
+			{% for t in owr %}
+			<!-- Navigation Header -->
+			<header class="cube-navbar d-flex justify-content-between align-items-center">
+				<a class="navbar-brand" href="{% url 'uhome' %}">
+					<img src="{% static 'images/logo.svg' %}" alt="Rent-a-Cube Logo" style="height: 42px; width: auto; object-fit: contain;">
+				</a>
+
+				<div class="d-flex align-items-center gap-3">
+					<a href="{% url 'showworkspace1' %}" class="cube-btn cube-btn-outline cube-btn-sm">
+						<i class="fa fa-arrow-left"></i> Back to Workspaces
+					</a>
+					<a href="{% url 'uviewownerprof' t.owner.id %}" class="cube-btn cube-btn-secondary cube-btn-sm">
+						<i class="fa fa-user-circle"></i> Owner Profile
+					</a>
+					<div class="cube-user-badge d-none d-md-inline-flex">
+						<div class="cube-user-avatar">
+							{{ request.session.Name|default:"U"|slice:":1"|upper }}
+						</div>
+						<span>{{ request.session.Name|default:"Member" }}</span>
+					</div>
+				</div>
+			</header>
+
+			<!-- Main Booking Section -->
+			<section class="py-5" style="background-color: var(--rc-bg-main); min-height: 85vh;">
+				<div class="container">
+					<!-- Flash Messages -->
+					{% for msg in messages %}
+					<div class="cube-alert cube-alert-info mb-4">
+						<i class="fa fa-info-circle"></i> {{ msg }}
+					</div>
+					{% endfor %}
+
+					<div class="row">
+						<!-- Workspace Presentation Card (Left) -->
+						<div class="col-lg-7 mb-4">
+							<div class="cube-card shadow-md">
+								<div class="cube-card-img-wrap" style="height: 340px;">
+									<img src="{{t.Image.url}}" alt="{{t.Name}}" class="cube-card-img">
+									<span class="cube-card-type-badge">{{ t.Type|default:"Workspace" }}</span>
+									<span class="cube-card-price-badge">₹{{ t.Price }}/hr</span>
+								</div>
+
+								<div class="cube-card-body p-4">
+									<div class="d-flex justify-content-between align-items-start mb-2">
+										<h2 class="cube-card-title mb-0" style="font-size: 1.65rem;">{{ t.Name }}</h2>
+										<span class="cube-badge cube-badge-success">Verified Space</span>
+									</div>
+									
+									<div class="cube-card-location mb-3" style="font-size: 0.95rem;">
+										<i class="fa fa-map-marker text-danger"></i>
+										<span>{{ t.Location }}, {{ t.City }}, {{ t.State }} - {{ t.Pincode }}</span>
+									</div>
+
+									<hr class="my-3" style="border-color: var(--rc-border-light);">
+
+									<h5 class="font-weight-bold mb-3" style="font-size: 1.05rem;">Specifications & Amenities</h5>
+									<div class="cube-card-specs mb-4" style="font-size: 0.875rem;">
+										{% if t.Sqft %}
+										<span class="cube-spec-item p-2">
+											<i class="fa fa-arrows-alt text-primary"></i> <b>Area:</b> {{ t.Sqft }} sq ft
+										</span>
+										{% endif %}
+										{% if t.Capability %}
+										<span class="cube-spec-item p-2">
+											<i class="fa fa-users text-info"></i> <b>Capacity:</b> {{ t.Capability }} Seats
+										</span>
+										{% endif %}
+										{% if t.Type %}
+										<span class="cube-spec-item p-2">
+											<i class="fa fa-briefcase text-warning"></i> <b>Category:</b> {{ t.Type }}
+										</span>
+										{% endif %}
+										{% if t.Facility %}
+										<span class="cube-spec-item p-2">
+											<i class="fa fa-check-square-o text-success"></i> <b>Facilities:</b> {{ t.Facility }}
+										</span>
+										{% endif %}
+									</div>
+
+									<div class="p-3 rounded" style="background: var(--rc-bg-surface); border: 1px solid var(--rc-border);">
+										<div class="d-flex align-items-center justify-content-between">
+											<div>
+												<div class="text-muted small">Space Provider</div>
+												<div class="font-weight-bold">{{ t.owner.Name }}</div>
+											</div>
+											<a href="{% url 'uviewownerprof' t.owner.id %}" class="cube-btn cube-btn-outline-primary cube-btn-sm">
+												View Host <i class="fa fa-external-link ml-1"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Hourly Calculator & Reservation Card (Right) -->
+						<div class="col-lg-5 mb-4">
+							<div class="cube-form-card mt-0 shadow-md p-4" style="max-width: 100%;">
+								<div class="d-flex align-items-center justify-content-between mb-3">
+									<h4 class="font-weight-bold mb-0">Reserve Hours</h4>
+									<div class="font-weight-bold text-primary" style="font-size: 1.25rem;">₹{{ t.Price }}<small class="text-muted">/hr</small></div>
+								</div>
+								<p class="text-muted small mb-4">Choose your preferred date and booking duration to calculate the total price.</p>
+
+								<form method="POST">
+									{% csrf_token %}
+									
+									<!-- Hidden Inputs for View Processing -->
+									<input type="text" name="name" value="{{t.Name}}" hidden>
+									<input type="text" name="image" value="{{t.Image}}" hidden>
+									<input type="text" name="location" value="{{t.Location}}" hidden>
+									<input type="text" name="price" id="unit_price" value="{{t.Price}}" hidden>
+									<input type="text" name="wid" value="{{t.owner.id}}" hidden>
+									{% if request.session.id %}
+									<input type="text" name="uid" value="{{request.session.id}}" hidden>
+									{% endif %}
+
+									<!-- Date Selection -->
+									<div class="cube-form-group mb-3">
+										<label class="cube-label">Booking Date <span class="text-danger">*</span></label>
+										<div class="input-group">
+											<input type="date" name="date" id="booking_date" class="cube-input" required>
+										</div>
+									</div>
+
+									<!-- Hours Selection -->
+									<div class="cube-form-group mb-3">
+										<label class="cube-label">Duration (Hours) <span class="text-danger">*</span></label>
+										<input type="number" id="nohrs" name="nohrs" min="1" max="72" class="cube-input" placeholder="e.g. 4" required oninput="calculateTotal()">
+									</div>
+
+									<!-- Live Estimation Summary Box -->
+									<div class="p-3 mb-4 rounded" style="background: var(--rc-primary-light); border: 1px dashed var(--rc-border-focus);">
+										<div class="d-flex justify-content-between align-items-center mb-1">
+											<span class="text-muted small">Hourly Rate:</span>
+											<span class="font-weight-bold">₹{{ t.Price }}</span>
+										</div>
+										<div class="d-flex justify-content-between align-items-center mb-2">
+											<span class="text-muted small">Selected Duration:</span>
+											<span class="font-weight-bold" id="display_hours">1 hr</span>
+										</div>
+										<hr class="my-2" style="border-color: var(--rc-border-focus);">
+										<div class="d-flex justify-content-between align-items-center">
+											<span class="font-weight-bold" style="color: var(--rc-dark);">Estimated Total:</span>
+											<span class="font-weight-bold text-primary" style="font-size: 1.35rem;" id="calc_total">₹{{ t.Price }}</span>
+										</div>
+									</div>
+
+									<button type="submit" class="cube-btn cube-btn-primary cube-btn-lg cube-btn-block">
+										<i class="fa fa-shopping-cart mr-1"></i> Add to Cart & Reserve
+									</button>
+								</form>
+
+								<div class="cube-trust-badges mt-4">
+									<div class="cube-trust-item">
+										<i class="fa fa-shield text-success"></i> SSL Secure
+									</div>
+									<div class="cube-trust-item">
+										<i class="fa fa-bolt text-warning"></i> Instant Hold
+									</div>
+									<div class="cube-trust-item">
+										<i class="fa fa-check-circle text-primary"></i> Free Support
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+			{% endfor %}
+
+			<!-- Modern Footer -->
+			<footer class="cube-footer">
+				<div class="container text-center">
+					<p style="margin: 0; color: #FFFFFF !important; font-weight: 500; font-size: 0.875rem;">&copy; 2026 Rent-a-Cube Platform. All rights reserved. Designed for optimal workspace efficiency.</p>
+				</div>
+			</footer>
+		</div>
+	</div>
+
+	<!-- Price Calculator Script -->
+	<script>
+		function calculateTotal() {
+			const priceInput = document.getElementById('unit_price');
+			const hoursInput = document.getElementById('nohrs');
+			const totalDisplay = document.getElementById('calc_total');
+			const hoursDisplay = document.getElementById('display_hours');
+
+			const price = parseFloat(priceInput ? priceInput.value : 0) || 0;
+			const hours = parseInt(hoursInput ? hoursInput.value : 1) || 1;
+
+			const total = price * hours;
+			if (totalDisplay) {
+				totalDisplay.innerText = '₹' + total;
+			}
+			if (hoursDisplay) {
+				hoursDisplay.innerText = hours + (hours === 1 ? ' hr' : ' hrs');
+			}
+		}
+
+		// Set minimum date to today
+		document.addEventListener("DOMContentLoaded", function() {
+			const dateInput = document.getElementById('booking_date');
+			if (dateInput) {
+				const today = new Date().toISOString().split('T')[0];
+				dateInput.setAttribute('min', today);
+			}
+		});
+	</script>
+
+	<!-- Scripts -->
+	<script src="{% static 'js/compressed.js' %}"></script>
+	<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

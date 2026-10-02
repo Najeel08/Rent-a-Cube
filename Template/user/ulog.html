@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<title>RENT A CUBE - Member Login</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Bootstrap & Font Awesome -->
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
+	<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
+</head>
+
+<body style="background-color: var(--rc-bg-main);">
+	<!-- Preloader -->
+	<div class="preloader">
+		<div class="preloader_image"></div>
+	</div>
+
+	<div id="canvas">
+		<div id="box_wrapper">
+			<!-- Modern Navigation Header -->
+			<header class="cube-navbar d-flex justify-content-between align-items-center">
+				<a class="navbar-brand" href="/">
+					<img src="{% static 'images/logo.svg' %}" alt="Rent-a-Cube Logo" style="height: 48px; width: auto; object-fit: contain;">
+				</a>
+
+				<div class="d-flex align-items-center gap-3">
+					<a href="/" class="cube-btn cube-btn-outline cube-btn-sm">
+						<i class="fa fa-home"></i> Home
+					</a>
+					<a href="{% url 'ureg' %}" class="cube-btn cube-btn-primary cube-btn-sm">
+						<i class="fa fa-user-plus"></i> Create Account
+					</a>
+				</div>
+			</header>
+
+			<!-- User Login Section -->
+			<section class="py-5 d-flex align-items-center" style="min-height: 80vh;">
+				<div class="container">
+					<div class="cube-form-card shadow-lg my-0 mx-auto" style="max-width: 460px;">
+						<div class="text-center mb-4">
+							<div class="mb-3" style="width: 56px; height: 56px; border-radius: 14px; background: var(--rc-primary-light); color: var(--rc-primary); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto;">
+								<i class="fa fa-user"></i>
+							</div>
+							<h2 class="cube-form-title">Member Login</h2>
+							<p class="cube-form-subtitle mb-0">Sign in to book workspaces and manage your orders</p>
+						</div>
+
+						<!-- Flash Messages -->
+						{% for msg in messages %}
+						<div class="cube-alert cube-alert-danger mb-4">
+							<i class="fa fa-exclamation-circle mr-2"></i> {{msg}}
+						</div>
+						{% endfor %}
+
+						<form method="post" action="">
+							{% csrf_token %}
+							<div class="cube-form-group">
+								<label for="email" class="cube-label">Email Address <span class="text-danger">*</span></label>
+								<input type="email" name="email" id="email" class="cube-input" placeholder="alex@company.com" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Please enter a valid email address (e.g. alex@company.com)" required autofocus>
+							</div>
+
+							<div class="cube-form-group">
+								<label for="password" class="cube-label">Password <span class="text-danger">*</span></label>
+								<input type="password" name="password" id="password" class="cube-input" placeholder="••••••••" required>
+							</div>
+
+							<div class="mt-4">
+								<button type="submit" class="cube-btn cube-btn-primary cube-btn-lg cube-btn-block">
+									<i class="fa fa-sign-in mr-2"></i> Log In
+								</button>
+							</div>
+						</form>
+
+						<div class="text-center mt-4 pt-3 border-top">
+							<span class="text-muted small">Don't have an account? </span>
+							<a href="{% url 'ureg' %}" class="small font-weight-bold text-primary">Register Here</a>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- Modern Footer -->
+			<footer class="cube-footer">
+				<div class="container text-center">
+					<p style="margin: 0; color: #FFFFFF !important; font-weight: 500; font-size: 0.875rem;">&copy; 2026 Rent-a-Cube Platform. All rights reserved. Designed for optimal workspace efficiency.</p>
+				</div>
+			</footer>
+		</div>
+	</div>
+
+	<!-- Scripts -->
+	<script src="{% static 'admin/js/jquery.min.js' %}"></script>
+	<script src="{% static 'admin/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

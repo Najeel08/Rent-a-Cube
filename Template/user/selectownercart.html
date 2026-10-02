@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<title>RENT A CUBE - Select Workspace Provider</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Bootstrap & Font Awesome -->
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/animations.css' %}">
+	<link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
+	
+	<!-- Rent-a-Cube Core Design System -->
+	<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
+	<link rel="stylesheet" href="{% static 'css/main.css' %}" class="color-switcher-link">
+	<script src="{% static 'js/vendor/modernizr-custom.js' %}"></script>
+</head>
+
+<body>
+	<!-- Preloader -->
+	<div class="preloader">
+		<div class="preloader_image"></div>
+	</div>
+
+	<div id="canvas">
+		<div id="box_wrapper">
+			<!-- Modern Navigation Header -->
+			<header class="cube-navbar d-flex justify-content-between align-items-center">
+				<a class="navbar-brand" href="{% url 'uhome' %}">
+					<img src="{% static 'images/logo.svg' %}" alt="Rent-a-Cube Logo" style="height: 42px; width: auto; object-fit: contain;">
+				</a>
+
+				<nav class="d-none d-md-flex">
+					<ul class="cube-nav-links">
+						<li>
+							<a href="{% url 'uhome' %}" class="cube-nav-link">
+								<i class="fa fa-home"></i> Home
+							</a>
+						</li>
+						<li>
+							<a href="{% url 'showworkspace1' %}" class="cube-nav-link">
+								<i class="fa fa-building"></i> Workspaces
+							</a>
+						</li>
+						<li class="dropdown">
+							<a href="#" class="cube-nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+								<i class="fa fa-wrench"></i> Requests <i class="fa fa-angle-down"></i>
+							</a>
+							<div class="dropdown-menu shadow-sm border-0" style="border-radius: var(--rc-radius-md);">
+								<a class="dropdown-item py-2" href="{% url 'request' %}"><i class="fa fa-plus-circle text-primary mr-2"></i> Submit Request</a>
+								<a class="dropdown-item py-2" href="{% url 'viewrequest' %}"><i class="fa fa-list-alt text-primary mr-2"></i> View Status</a>
+							</div>
+						</li>
+						<li>
+							<a href="{% url 'selectownercart' %}" class="cube-nav-link active">
+								<i class="fa fa-shopping-cart"></i> Cart
+							</a>
+						</li>
+						{% if request.session.id %}
+						<li>
+							<a href="{% url 'uvieworder' request.session.id %}" class="cube-nav-link">
+								<i class="fa fa-calendar-check-o"></i> Orders
+							</a>
+						</li>
+						{% endif %}
+					</ul>
+				</nav>
+
+				<div class="d-flex align-items-center gap-3">
+					<div class="cube-user-badge">
+						<div class="cube-user-avatar">
+							{{ request.session.Name|default:"U"|slice:":1"|upper }}
+						</div>
+						<span class="d-none d-sm-inline">{{ request.session.Name|default:"Member" }}</span>
+					</div>
+					<form method="post" action="{% url 'logout' %}" class="cube-logout-form">
+{% csrf_token %}
+<button type="submit" class="cube-btn cube-btn-outline cube-btn-sm" title="Logout"><i class="fa fa-sign-out"></i> <span class="d-none d-sm-inline">Logout</span></button>
+</form>
+				</div>
+			</header>
+
+			<!-- Select Owner Header Banner -->
+			<section class="py-5" style="background: linear-gradient(180deg, var(--rc-primary-light) 0%, var(--rc-bg-main) 100%);">
+				<div class="container">
+					<div class="text-center max-w-700 mx-auto">
+						<span class="cube-badge cube-badge-primary mb-2">Cart Selection</span>
+						<h1 class="font-weight-bold" style="font-size: 2.2rem;">Choose Workspace Provider</h1>
+						<p class="text-muted">You have items reserved from the following providers. Select a host to review items and complete checkout.</p>
+					</div>
+				</div>
+			</section>
+
+			<!-- Providers Grid Section -->
+			<section class="py-5" style="background-color: var(--rc-bg-main); min-height: 70vh;">
+				<div class="container">
+					<div class="row">
+						{% for t in owner_gen %}
+						<div class="col-md-6 col-lg-4 mb-4 d-flex">
+							<div class="cube-card w-100 shadow-sm">
+								<div class="cube-card-img-wrap" style="height: 180px;">
+									<a href="{% url 'cartdetails' t.id %}">
+										<img src="{{t.Image.url}}" alt="{{t.Name}}" class="cube-card-img">
+									</a>
+									<span class="cube-card-type-badge">Host Provider</span>
+								</div>
+
+								<div class="cube-card-body">
+									<h4 class="cube-card-title mb-1">
+										<a href="{% url 'cartdetails' t.id %}" style="color: var(--rc-dark);">{{t.Name}}</a>
+									</h4>
+									<div class="text-muted small mb-3">
+										<i class="fa fa-envelope-o mr-1"></i> {{t.Email}}
+									</div>
+									<p class="text-muted small mb-0">
+										Click below to view the workspaces reserved with {{t.Name}} and initiate payment.
+									</p>
+								</div>
+
+								<div class="cube-card-footer">
+									<a href="{% url 'cartdetails' t.id %}" class="cube-btn cube-btn-primary cube-btn-sm cube-btn-block">
+										Review Items & Pay <i class="fa fa-arrow-right ml-1"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+						{% empty %}
+						<div class="col-12 text-center py-5">
+							<div class="p-5 bg-white rounded-lg shadow-sm border mx-auto" style="max-width: 500px; border-radius: var(--rc-radius-xl);">
+								<div class="mb-3 text-muted" style="font-size: 3rem; color: var(--rc-text-light);">
+									<i class="fa fa-shopping-basket"></i>
+								</div>
+								<h4 class="font-weight-bold">No Active Cart Items</h4>
+								<p class="text-muted small mb-4">
+									You don't have any unpaid workspace items in your cart. Explore available spaces and start reserving.
+								</p>
+								<a href="{% url 'showworkspace1' %}" class="cube-btn cube-btn-primary cube-btn-sm">
+									Browse Workspaces <i class="fa fa-arrow-right ml-1"></i>
+								</a>
+							</div>
+						</div>
+						{% endfor %}
+					</div>
+				</div>
+			</section>
+
+			<!-- Modern Footer -->
+			<footer class="cube-footer">
+				<div class="container text-center">
+					<p style="margin: 0; color: #FFFFFF !important; font-weight: 500; font-size: 0.875rem;">&copy; 2026 Rent-a-Cube Platform. All rights reserved. Designed for optimal workspace efficiency.</p>
+				</div>
+			</footer>
+		</div>
+	</div>
+
+	<!-- Scripts -->
+	<script src="{% static 'js/compressed.js' %}"></script>
+	<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

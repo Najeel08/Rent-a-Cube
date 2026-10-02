@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<title>Client Chats | Rent-a-Cube</title>
+	<meta charset="utf-8">
+	<meta name="description" content="Direct messaging with workspace clients">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Stylesheets -->
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/animations.css' %}">
+	<link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
+	<link rel="stylesheet" href="{% static 'css/main.css' %}" class="color-switcher-link">
+	<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
+	<script src="{% static 'js/vendor/modernizr-custom.js' %}"></script>
+</head>
+
+<body>
+	<!-- Preloader -->
+	<div class="preloader">
+		<div class="preloader_image"></div>
+	</div>
+
+	<!-- Main Canvas Wrapper -->
+	<div id="canvas">
+		<div id="box_wrapper">
+
+			<!-- Modern Navigation Header -->
+			<header class="cube-navbar d-flex justify-content-between align-items-center flex-wrap px-4 py-2">
+				<div class="d-flex align-items-center">
+					<a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'vhome' %}">
+						<img src="{% static 'images/logo.svg' %}" alt="Rent-a-Cube Logo" style="height: 42px; width: auto; object-fit: contain;">
+					</a>
+				</div>
+				<ul class="cube-nav-links d-flex align-items-center flex-wrap gap-1 m-0 p-0">
+					<li>
+						<a class="cube-nav-link" href="{% url 'vhome' %}">
+							<i class="fa fa-th-large"></i> Dashboard
+						</a>
+					</li>
+					<li class="dropdown">
+						<a class="cube-nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+							<i class="fa fa-building-o"></i> Workspaces
+						</a>
+						<div class="dropdown-menu shadow-sm border-0 mt-2">
+							<a class="dropdown-item py-2" href="{% url 'vaddwork' %}">
+								<i class="fa fa-plus-circle mr-2 text-primary"></i> Add Workspace
+							</a>
+							<a class="dropdown-item py-2" href="{% url 'oviewwork' %}">
+								<i class="fa fa-list mr-2 text-primary"></i> View Workspaces
+							</a>
+						</div>
+					</li>
+					<li class="dropdown">
+						<a class="cube-nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+							<i class="fa fa-wrench"></i> Technicians
+						</a>
+						<div class="dropdown-menu shadow-sm border-0 mt-2">
+							<a class="dropdown-item py-2" href="{% url 'addtechnician' %}">
+								<i class="fa fa-user-plus mr-2 text-primary"></i> Add Technician
+							</a>
+							<a class="dropdown-item py-2" href="{% url 'viewtechnician' %}">
+								<i class="fa fa-users mr-2 text-primary"></i> View Technicians
+							</a>
+						</div>
+					</li>
+					<li>
+						<a class="cube-nav-link" href="{% url 'requests' %}">
+							<i class="fa fa-inbox"></i> Requests
+						</a>
+					</li>
+					{% if request.session.id %}
+					<li>
+						<a class="cube-nav-link" href="{% url 'ownerorder' request.session.id %}">
+							<i class="fa fa-shopping-bag"></i> Bookings
+						</a>
+					</li>
+					<li>
+						<a class="cube-nav-link" href="{% url 'PROFILE' %}">
+							<i class="fa fa-user-circle"></i> Profile
+						</a>
+					</li>
+					{% endif %}
+					<li>
+						<a class="cube-nav-link" href="{% url 'refund' %}">
+							<i class="fa fa-undo"></i> Refunds
+						</a>
+					</li>
+					<li>
+						<a class="cube-nav-link active" href="{% url 'chat' %}">
+							<i class="fa fa-comments-o text-primary"></i> Chats
+						</a>
+					</li>
+					<li class="ml-2">
+						<form method="post" action="{% url 'logout' %}" class="cube-logout-form">
+{% csrf_token %}
+<button type="submit" class="cube-btn cube-btn-outline cube-btn-sm"><i class="fa fa-sign-out"></i> Logout</button>
+</form>
+					</li>
+				</ul>
+			</header>
+
+			<!-- Flash Messages -->
+			{% if messages %}
+			<div class="container mt-4">
+				{% for message in messages %}
+				<div class="cube-alert cube-alert-info">
+					<i class="fa fa-info-circle mr-2"></i> {{ message }}
+				</div>
+				{% endfor %}
+			</div>
+			{% endif %}
+
+			<!-- Main Chat Inbox Section -->
+			<main class="py-5" style="background-color: var(--rc-bg-main); min-height: 85vh;">
+				<div class="container">
+
+					<div class="row justify-content-center">
+						<div class="col-lg-8">
+
+							<!-- Inbox Title & Header -->
+							<div class="d-flex justify-content-between align-items-center flex-wrap mb-4 pb-2 border-bottom">
+								<div>
+									<h2 class="mb-1" style="font-weight: 800;">Messages & Inquiries</h2>
+									<p class="text-muted mb-0">Direct communication with clients exploring or booking your workspaces.</p>
+								</div>
+								<span class="cube-badge cube-badge-primary">Active Channels</span>
+							</div>
+
+							<!-- Chat Conversations Card -->
+							<div class="cube-table-container">
+								<div class="p-3 bg-light border-bottom d-flex justify-content-between align-items-center">
+									<h5 class="mb-0 font-weight-bold text-dark"><i class="fa fa-inbox text-primary mr-2"></i> Client Conversations</h5>
+									<span class="small text-muted">{{ date }}</span>
+								</div>
+
+								<div class="list-group list-group-flush">
+									{% for data in data %}
+									<a href="{% url 'achat' data.id %}" class="list-group-item list-group-item-action p-3 d-flex justify-content-between align-items-center transition-fast" style="border-bottom: 1px solid var(--rc-border-light);">
+										<div class="d-flex align-items-center gap-3">
+											<div style="position: relative;">
+												{% if data.Image %}
+												<img src="{{ data.Image.url }}" alt="{{ data.Name }}" class="rounded-circle shadow-sm" style="width: 48px; height: 48px; object-fit: cover;">
+												{% else %}
+												<div class="cube-user-avatar" style="width: 48px; height: 48px; font-size: 1.15rem;">
+													{{ data.Name|slice:":1"|upper }}
+												</div>
+												{% endif %}
+												<span class="badge badge-success position-absolute" style="bottom: 0; right: 0; border: 2px solid white; border-radius: 50%; width: 12px; height: 12px; padding: 0;"></span>
+											</div>
+											<div>
+												<h5 class="mb-0 font-weight-bold text-dark">{{ data.Name }}</h5>
+												<span class="small text-muted">{{ data.Email|default:"Workspace Client" }}</span>
+											</div>
+										</div>
+										<div class="d-flex align-items-center gap-3">
+											<span class="cube-btn cube-btn-primary cube-btn-sm">
+												<i class="fa fa-commenting-o mr-1"></i> Open Chat
+											</span>
+										</div>
+									</a>
+									{% empty %}
+									<div class="p-5 text-center">
+										<i class="fa fa-comments text-muted mb-3" style="font-size: 3rem;"></i>
+										<h5 class="font-weight-bold text-dark">No Active Conversations</h5>
+										<p class="text-muted small mb-0">When users reach out with workspace questions, their threads will appear here.</p>
+									</div>
+									{% endfor %}
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+				</div>
+			</main>
+
+			<!-- Modern Footer -->
+			<footer class="cube-footer">
+				<div class="container text-center">
+					<p style="margin: 0; color: #FFFFFF !important; font-weight: 500; font-size: 0.875rem;">&copy; 2026 Rent-a-Cube Platform. All rights reserved. Designed for optimal workspace efficiency.</p>
+				</div>
+			</footer>
+
+		</div><!-- eof #box_wrapper -->
+	</div><!-- eof #canvas -->
+
+	<!-- Footer Scripts -->
+	<script src="{% static 'js/compressed.js' %}"></script>
+	<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

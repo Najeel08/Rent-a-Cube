@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<title>Service Requests | Rent-a-Cube</title>
+	<meta charset="utf-8">
+	<meta name="description" content="Client maintenance and support requests">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Stylesheets -->
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/animations.css' %}">
+	<link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
+	<link rel="stylesheet" href="{% static 'css/main.css' %}" class="color-switcher-link">
+	<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
+	<script src="{% static 'js/vendor/modernizr-custom.js' %}"></script>
+</head>
+
+<body>
+	<!-- Preloader -->
+	<div class="preloader">
+		<div class="preloader_image"></div>
+	</div>
+
+	<!-- Main Canvas Wrapper -->
+	<div id="canvas">
+		<div id="box_wrapper">
+
+			<!-- Modern Navigation Header -->
+			<header class="cube-navbar d-flex justify-content-between align-items-center flex-wrap px-4 py-2">
+				<div class="d-flex align-items-center">
+					<a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'vhome' %}">
+						<img src="{% static 'images/logo.svg' %}" alt="Rent-a-Cube Logo" style="height: 42px; width: auto; object-fit: contain;">
+					</a>
+				</div>
+				<ul class="cube-nav-links d-flex align-items-center flex-wrap gap-1 m-0 p-0">
+					<li>
+						<a class="cube-nav-link" href="{% url 'vhome' %}">
+							<i class="fa fa-th-large"></i> Dashboard
+						</a>
+					</li>
+					<li class="dropdown">
+						<a class="cube-nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+							<i class="fa fa-building-o"></i> Workspaces
+						</a>
+						<div class="dropdown-menu shadow-sm border-0 mt-2">
+							<a class="dropdown-item py-2" href="{% url 'vaddwork' %}">
+								<i class="fa fa-plus-circle mr-2 text-primary"></i> Add Workspace
+							</a>
+							<a class="dropdown-item py-2" href="{% url 'oviewwork' %}">
+								<i class="fa fa-list mr-2 text-primary"></i> View Workspaces
+							</a>
+						</div>
+					</li>
+					<li class="dropdown">
+						<a class="cube-nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+							<i class="fa fa-wrench"></i> Technicians
+						</a>
+						<div class="dropdown-menu shadow-sm border-0 mt-2">
+							<a class="dropdown-item py-2" href="{% url 'addtechnician' %}">
+								<i class="fa fa-user-plus mr-2 text-primary"></i> Add Technician
+							</a>
+							<a class="dropdown-item py-2" href="{% url 'viewtechnician' %}">
+								<i class="fa fa-users mr-2 text-primary"></i> View Technicians
+							</a>
+						</div>
+					</li>
+					<li>
+						<a class="cube-nav-link active" href="{% url 'requests' %}">
+							<i class="fa fa-inbox text-primary"></i> Requests
+						</a>
+					</li>
+					{% if request.session.id %}
+					<li>
+						<a class="cube-nav-link" href="{% url 'ownerorder' request.session.id %}">
+							<i class="fa fa-shopping-bag"></i> Bookings
+						</a>
+					</li>
+					<li>
+						<a class="cube-nav-link" href="{% url 'PROFILE' %}">
+							<i class="fa fa-user-circle"></i> Profile
+						</a>
+					</li>
+					{% endif %}
+					<li>
+						<a class="cube-nav-link" href="{% url 'refund' %}">
+							<i class="fa fa-undo"></i> Refunds
+						</a>
+					</li>
+					<li>
+						<a class="cube-nav-link" href="{% url 'chat' %}">
+							<i class="fa fa-comments-o"></i> Chats
+						</a>
+					</li>
+					<li class="ml-2">
+						<form method="post" action="{% url 'logout' %}" class="cube-logout-form">
+{% csrf_token %}
+<button type="submit" class="cube-btn cube-btn-outline cube-btn-sm"><i class="fa fa-sign-out"></i> Logout</button>
+</form>
+					</li>
+				</ul>
+			</header>
+
+			<!-- Flash Messages -->
+			{% if messages %}
+			<div class="container mt-4">
+				{% for message in messages %}
+				<div class="cube-alert cube-alert-info">
+					<i class="fa fa-info-circle mr-2"></i> {{ message }}
+				</div>
+				{% endfor %}
+			</div>
+			{% endif %}
+
+			<!-- Main Requests Section -->
+			<main class="py-5" style="background-color: var(--rc-bg-main); min-height: 85vh;">
+				<div class="container">
+
+					<!-- Page Title -->
+					<div class="d-flex justify-content-between align-items-center flex-wrap mb-4 pb-2 border-bottom">
+						<div>
+							<h2 class="mb-1" style="font-weight: 800;">Client Service & Support Requests</h2>
+							<p class="text-muted mb-0">Incoming maintenance, equipment setup, or support requests from space users.</p>
+						</div>
+					</div>
+
+					<!-- Requests Grid -->
+					<div class="row">
+						{% for req in req %}
+						<div class="col-lg-4 col-md-6 mb-4">
+							<div class="cube-card">
+								<div class="cube-card-body">
+									<div class="d-flex justify-content-between align-items-start mb-3">
+										<div class="d-flex align-items-center gap-2">
+											<div class="cube-stat-icon warning" style="width: 42px; height: 42px; font-size: 1.15rem;">
+												<i class="fa fa-user-o"></i>
+											</div>
+											<div>
+												<h5 class="cube-card-title mb-0">{{ req.Name }}</h5>
+												<span class="small text-muted"><i class="fa fa-envelope-o mr-1"></i> {{ req.Email }}</span>
+											</div>
+										</div>
+										<span class="cube-badge cube-badge-warning">Ticket #{{ req.id }}</span>
+									</div>
+
+									<div class="p-3 bg-light rounded border mb-3">
+										<span class="small font-weight-bold text-dark d-block mb-1">
+											<i class="fa fa-phone text-primary mr-1"></i> {{ req.Phone }}
+										</span>
+										<div class="small text-dark mt-2">
+											<strong>Issue / Subject:</strong>
+											<p class="mb-0 text-muted mt-1" style="line-height: 1.45;">{{ req.Subject }}</p>
+										</div>
+									</div>
+
+									<div class="mt-auto pt-3 border-top">
+										<a class="cube-btn cube-btn-primary cube-btn-block" href="{% url 'assign' req.id %}">
+											<i class="fa fa-wrench mr-1"></i> Assign to Technician
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						{% empty %}
+						<div class="col-12 py-5 text-center">
+							<div class="cube-form-card mx-auto text-center" style="max-width: 480px;">
+								<div class="cube-stat-icon success mx-auto mb-3" style="width: 64px; height: 64px; font-size: 1.8rem;">
+									<i class="fa fa-check-circle"></i>
+								</div>
+								<h4 class="font-weight-bold mb-2">No Open Requests</h4>
+								<p class="text-muted mb-0">All service and maintenance tickets are clear. New client tickets will appear here.</p>
+							</div>
+						</div>
+						{% endfor %}
+					</div>
+
+				</div>
+			</main>
+
+			<!-- Modern Footer -->
+			<footer class="cube-footer">
+				<div class="container text-center">
+					<p style="margin: 0; color: #FFFFFF !important; font-weight: 500; font-size: 0.875rem;">&copy; 2026 Rent-a-Cube Platform. All rights reserved. Designed for optimal workspace efficiency.</p>
+				</div>
+			</footer>
+
+		</div><!-- eof #box_wrapper -->
+	</div><!-- eof #canvas -->
+
+	<!-- Footer Scripts -->
+	<script src="{% static 'js/compressed.js' %}"></script>
+	<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

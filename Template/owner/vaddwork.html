@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<title>Add Workspace | Rent-a-Cube</title>
+	<meta charset="utf-8">
+	<meta name="description" content="Add new commercial workspace">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Stylesheets -->
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/animations.css' %}">
+	<link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
+	<link rel="stylesheet" href="{% static 'css/main.css' %}" class="color-switcher-link">
+	<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
+	<script src="{% static 'js/vendor/modernizr-custom.js' %}"></script>
+</head>
+
+<body>
+	<!-- Preloader -->
+	<div class="preloader">
+		<div class="preloader_image"></div>
+	</div>
+
+	<!-- Main Canvas Wrapper -->
+	<div id="canvas">
+		<div id="box_wrapper">
+
+			<!-- Modern Navigation Header -->
+			<header class="cube-navbar d-flex justify-content-between align-items-center flex-wrap px-4 py-2">
+				<div class="d-flex align-items-center">
+					<a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'vhome' %}">
+						<img src="{% static 'images/logo.svg' %}" alt="Rent-a-Cube Logo" style="height: 42px; width: auto; object-fit: contain;">
+					</a>
+				</div>
+				<ul class="cube-nav-links d-flex align-items-center flex-wrap gap-1 m-0 p-0">
+					<li>
+						<a class="cube-nav-link" href="{% url 'vhome' %}">
+							<i class="fa fa-th-large"></i> Dashboard
+						</a>
+					</li>
+					<li class="dropdown">
+						<a class="cube-nav-link active dropdown-toggle" href="#" data-toggle="dropdown">
+							<i class="fa fa-building-o text-primary"></i> Workspaces
+						</a>
+						<div class="dropdown-menu shadow-sm border-0 mt-2">
+							<a class="dropdown-item py-2 active" href="{% url 'vaddwork' %}">
+								<i class="fa fa-plus-circle mr-2 text-primary"></i> Add Workspace
+							</a>
+							<a class="dropdown-item py-2" href="{% url 'oviewwork' %}">
+								<i class="fa fa-list mr-2 text-primary"></i> View Workspaces
+							</a>
+						</div>
+					</li>
+					<li class="dropdown">
+						<a class="cube-nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+							<i class="fa fa-wrench"></i> Technicians
+						</a>
+						<div class="dropdown-menu shadow-sm border-0 mt-2">
+							<a class="dropdown-item py-2" href="{% url 'addtechnician' %}">
+								<i class="fa fa-user-plus mr-2 text-primary"></i> Add Technician
+							</a>
+							<a class="dropdown-item py-2" href="{% url 'viewtechnician' %}">
+								<i class="fa fa-users mr-2 text-primary"></i> View Technicians
+							</a>
+						</div>
+					</li>
+					<li>
+						<a class="cube-nav-link" href="{% url 'requests' %}">
+							<i class="fa fa-inbox"></i> Requests
+						</a>
+					</li>
+					{% if request.session.id %}
+					<li>
+						<a class="cube-nav-link" href="{% url 'ownerorder' request.session.id %}">
+							<i class="fa fa-shopping-bag"></i> Bookings
+						</a>
+					</li>
+					<li>
+						<a class="cube-nav-link" href="{% url 'PROFILE' %}">
+							<i class="fa fa-user-circle"></i> Profile
+						</a>
+					</li>
+					{% endif %}
+					<li>
+						<a class="cube-nav-link" href="{% url 'refund' %}">
+							<i class="fa fa-undo"></i> Refunds
+						</a>
+					</li>
+					<li>
+						<a class="cube-nav-link" href="{% url 'chat' %}">
+							<i class="fa fa-comments-o"></i> Chats
+						</a>
+					</li>
+					<li class="ml-2">
+						<form method="post" action="{% url 'logout' %}" class="cube-logout-form">
+{% csrf_token %}
+<button type="submit" class="cube-btn cube-btn-outline cube-btn-sm"><i class="fa fa-sign-out"></i> Logout</button>
+</form>
+					</li>
+				</ul>
+			</header>
+
+			<!-- Main Form Section -->
+			<main class="py-5" style="background-color: var(--rc-bg-main); min-height: 85vh;">
+				<div class="container">
+
+					<div class="cube-form-card cube-form-card-wide mx-auto">
+						<div class="text-center mb-4">
+							<span class="cube-badge cube-badge-primary mb-2">Listing Creation</span>
+							<h3 class="cube-form-title mb-1">Add New Workspace</h3>
+							<p class="cube-form-subtitle">Fill in the specifications and amenities to list your commercial workspace for rent.</p>
+						</div>
+
+						{% if messages %}
+						<div class="mb-4">
+							{% for message in messages %}
+							<div class="cube-alert cube-alert-info">
+								<i class="fa fa-info-circle mr-2"></i> {{ message }}
+							</div>
+							{% endfor %}
+						</div>
+						{% endif %}
+
+						<form method="post" action="" enctype="multipart/form-data">
+							{% csrf_token %}
+
+							<div class="row">
+								<!-- Workspace Name -->
+								<div class="col-md-6 mb-3">
+									<div class="cube-form-group">
+										<label class="cube-label" for="name">
+											Workspace Name <span class="text-danger">*</span>
+										</label>
+										<input type="text" name="name" id="name" class="cube-input" placeholder="e.g. Apex Innovation Cube" required>
+									</div>
+								</div>
+
+								<!-- Area (Sqft) -->
+								<div class="col-md-6 mb-3">
+									<div class="cube-form-group">
+										<label class="cube-label" for="sqft">
+											Area (Sq. Ft.) <span class="text-danger">*</span>
+										</label>
+										<input type="text" name="sqft" id="sqft" class="cube-input" placeholder="e.g. 1200" required>
+									</div>
+								</div>
+
+								<!-- State -->
+								<div class="col-md-6 mb-3">
+									<div class="cube-form-group">
+										<label class="cube-label" for="state">
+											State <span class="text-danger">*</span>
+										</label>
+										<select name="state" id="state" class="cube-select" required>
+											<option value="">Select State</option>
+											<option value="Andhra Pradesh">Andhra Pradesh</option>
+											<option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+											<option value="Arunachal Pradesh">Arunachal Pradesh</option>
+											<option value="Assam">Assam</option>
+											<option value="Bihar">Bihar</option>
+											<option value="Chandigarh">Chandigarh</option>
+											<option value="Chhattisgarh">Chhattisgarh</option>
+											<option value="Dadar and Nagar Haveli">Dadar and Nagar Haveli</option>
+											<option value="Daman and Diu">Daman and Diu</option>
+											<option value="Delhi">Delhi</option>
+											<option value="Lakshadweep">Lakshadweep</option>
+											<option value="Puducherry">Puducherry</option>
+											<option value="Goa">Goa</option>
+											<option value="Gujarat">Gujarat</option>
+											<option value="Haryana">Haryana</option>
+											<option value="Himachal Pradesh">Himachal Pradesh</option>
+											<option value="Jammu and Kashmir">Jammu and Kashmir</option>
+											<option value="Jharkhand">Jharkhand</option>
+											<option value="Karnataka">Karnataka</option>
+											<option value="Kerala">Kerala</option>
+											<option value="Madhya Pradesh">Madhya Pradesh</option>
+											<option value="Maharashtra">Maharashtra</option>
+											<option value="Manipur">Manipur</option>
+											<option value="Meghalaya">Meghalaya</option>
+											<option value="Mizoram">Mizoram</option>
+											<option value="Nagaland">Nagaland</option>
+											<option value="Odisha">Odisha</option>
+											<option value="Punjab">Punjab</option>
+											<option value="Rajasthan">Rajasthan</option>
+											<option value="Sikkim">Sikkim</option>
+											<option value="Tamil Nadu">Tamil Nadu</option>
+											<option value="Telangana">Telangana</option>
+											<option value="Tripura">Tripura</option>
+											<option value="Uttar Pradesh">Uttar Pradesh</option>
+											<option value="Uttarakhand">Uttarakhand</option>
+											<option value="West Bengal">West Bengal</option>
+										</select>
+									</div>
+								</div>
+
+								<!-- City -->
+								<div class="col-md-6 mb-3">
+									<div class="cube-form-group">
+										<label class="cube-label" for="city">
+											City <span class="text-danger">*</span>
+										</label>
+										<input type="text" name="city" id="city" class="cube-input" placeholder="e.g. Bangalore" required>
+									</div>
+								</div>
+
+								<!-- Specific Location / Address -->
+								<div class="col-md-6 mb-3">
+									<div class="cube-form-group">
+										<label class="cube-label" for="location">
+											Location / Area <span class="text-danger">*</span>
+										</label>
+										<input type="text" name="location" id="location" class="cube-input" placeholder="e.g. Indiranagar 100ft Road" required>
+									</div>
+								</div>
+
+								<!-- Pincode -->
+								<div class="col-md-6 mb-3">
+									<div class="cube-form-group">
+										<label class="cube-label" for="pincode">
+											Postal Pincode <span class="text-danger">*</span>
+										</label>
+										<input type="text" name="pincode" id="pincode" class="cube-input" placeholder="e.g. 560038" required>
+									</div>
+								</div>
+
+								<!-- Price per hour -->
+								<div class="col-md-6 mb-3">
+									<div class="cube-form-group">
+										<label class="cube-label" for="price">
+											Hourly Rental Price (₹) <span class="text-danger">*</span>
+										</label>
+										<input type="text" name="price" id="price" class="cube-input" placeholder="e.g. 750" required>
+									</div>
+								</div>
+
+								<!-- Workspace Type -->
+								<div class="col-md-6 mb-3">
+									<div class="cube-form-group">
+										<label class="cube-label" for="type">
+											Workspace Category / Type <span class="text-danger">*</span>
+										</label>
+										<input type="text" name="type" id="type" class="cube-input" placeholder="e.g. Dedicated Desk, Private Cabin, Conference Room" required>
+									</div>
+								</div>
+
+								<!-- Facility / Amenities -->
+								<div class="col-md-6 mb-3">
+									<div class="cube-form-group">
+										<label class="cube-label" for="facility">
+											Facilities & Amenities <span class="text-danger">*</span>
+										</label>
+										<input type="text" name="facility" id="facility" class="cube-input" placeholder="e.g. High-speed WiFi, AC, Projector, Whiteboard, Tea/Coffee" required>
+									</div>
+								</div>
+
+								<!-- Capability / Seating Capacity -->
+								<div class="col-md-6 mb-3">
+									<div class="cube-form-group">
+										<label class="cube-label" for="capability">
+											Seating Capacity <span class="text-danger">*</span>
+										</label>
+										<input type="text" name="capability" id="capability" class="cube-input" placeholder="e.g. 12 Seats" required>
+									</div>
+								</div>
+
+								<!-- Property Image -->
+								<div class="col-12 mb-4">
+									<div class="cube-form-group">
+										<label class="cube-label" for="image">
+											Property Photo <span class="text-danger">*</span>
+										</label>
+										<input type="file" name="image" id="image" class="cube-input" accept="image/*" required>
+										<small class="text-muted mt-1 d-block">Upload a clear, well-lit photo of the interior.</small>
+									</div>
+								</div>
+							</div>
+
+							<!-- Submit Button -->
+							<div class="mt-4 pt-3 border-top d-flex gap-3">
+								<button type="submit" id="contact_form_submit" name="contact_submit" class="cube-btn cube-btn-primary cube-btn-lg flex-fill">
+									<i class="fa fa-check-circle"></i> Create Workspace Listing
+								</button>
+								<a href="{% url 'oviewwork' %}" class="cube-btn cube-btn-outline cube-btn-lg">
+									Cancel
+								</a>
+							</div>
+						</form>
+					</div>
+
+				</div>
+			</main>
+
+			<!-- Modern Footer -->
+			<footer class="cube-footer">
+				<div class="container text-center">
+					<p style="margin: 0; color: #FFFFFF !important; font-weight: 500; font-size: 0.875rem;">&copy; 2026 Rent-a-Cube Platform. All rights reserved. Designed for optimal workspace efficiency.</p>
+				</div>
+			</footer>
+
+		</div><!-- eof #box_wrapper -->
+	</div><!-- eof #canvas -->
+
+	<!-- Footer Scripts -->
+	<script src="{% static 'js/compressed.js' %}"></script>
+	<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

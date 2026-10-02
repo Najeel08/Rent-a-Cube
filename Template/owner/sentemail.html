@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<title>Send Technician Credentials | Rent-a-Cube</title>
+	<meta charset="utf-8">
+	<meta name="description" content="Dispatch login credentials to technician">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Stylesheets -->
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/animations.css' %}">
+	<link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
+	<link rel="stylesheet" href="{% static 'css/main.css' %}" class="color-switcher-link">
+	<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
+	<script src="{% static 'js/vendor/modernizr-custom.js' %}"></script>
+</head>
+
+<body>
+	<!-- Preloader -->
+	<div class="preloader">
+		<div class="preloader_image"></div>
+	</div>
+
+	<!-- Main Canvas Wrapper -->
+	<div id="canvas">
+		<div id="box_wrapper">
+
+			<!-- Modern Navigation Header -->
+			<header class="cube-navbar d-flex justify-content-between align-items-center flex-wrap px-4 py-2">
+				<div class="d-flex align-items-center">
+					<a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'vhome' %}">
+						<img src="{% static 'images/logo.svg' %}" alt="Rent-a-Cube Logo" style="height: 42px; width: auto; object-fit: contain;">
+					</a>
+				</div>
+				<ul class="cube-nav-links d-flex align-items-center flex-wrap gap-1 m-0 p-0">
+					<li>
+						<a class="cube-nav-link" href="{% url 'vhome' %}">
+							<i class="fa fa-th-large"></i> Dashboard
+						</a>
+					</li>
+					<li class="dropdown">
+						<a class="cube-nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+							<i class="fa fa-building-o"></i> Workspaces
+						</a>
+						<div class="dropdown-menu shadow-sm border-0 mt-2">
+							<a class="dropdown-item py-2" href="{% url 'vaddwork' %}">
+								<i class="fa fa-plus-circle mr-2 text-primary"></i> Add Workspace
+							</a>
+							<a class="dropdown-item py-2" href="{% url 'oviewwork' %}">
+								<i class="fa fa-list mr-2 text-primary"></i> View Workspaces
+							</a>
+						</div>
+					</li>
+					<li class="dropdown">
+						<a class="cube-nav-link active dropdown-toggle" href="#" data-toggle="dropdown">
+							<i class="fa fa-wrench text-primary"></i> Technicians
+						</a>
+						<div class="dropdown-menu shadow-sm border-0 mt-2">
+							<a class="dropdown-item py-2" href="{% url 'addtechnician' %}">
+								<i class="fa fa-user-plus mr-2 text-primary"></i> Add Technician
+							</a>
+							<a class="dropdown-item py-2" href="{% url 'viewtechnician' %}">
+								<i class="fa fa-users mr-2 text-primary"></i> View Technicians
+							</a>
+						</div>
+					</li>
+					<li>
+						<a class="cube-nav-link" href="{% url 'requests' %}">
+							<i class="fa fa-inbox"></i> Requests
+						</a>
+					</li>
+					{% if request.session.id %}
+					<li>
+						<a class="cube-nav-link" href="{% url 'ownerorder' request.session.id %}">
+							<i class="fa fa-shopping-bag"></i> Bookings
+						</a>
+					</li>
+					<li>
+						<a class="cube-nav-link" href="{% url 'PROFILE' %}">
+							<i class="fa fa-user-circle"></i> Profile
+						</a>
+					</li>
+					{% endif %}
+					<li>
+						<a class="cube-nav-link" href="{% url 'refund' %}">
+							<i class="fa fa-undo"></i> Refunds
+						</a>
+					</li>
+					<li>
+						<a class="cube-nav-link" href="{% url 'chat' %}">
+							<i class="fa fa-comments-o"></i> Chats
+						</a>
+					</li>
+					<li class="ml-2">
+						<form method="post" action="{% url 'logout' %}" class="cube-logout-form">
+{% csrf_token %}
+<button type="submit" class="cube-btn cube-btn-outline cube-btn-sm"><i class="fa fa-sign-out"></i> Logout</button>
+</form>
+					</li>
+				</ul>
+			</header>
+
+			<!-- Flash Messages -->
+			{% if messages %}
+			<div class="container mt-4">
+				{% for message in messages %}
+				<div class="cube-alert cube-alert-info">
+					<i class="fa fa-info-circle mr-2"></i> {{ message }}
+				</div>
+				{% endfor %}
+			</div>
+			{% endif %}
+
+			<!-- Main Send Email Section -->
+			<main class="py-5 d-flex align-items-center" style="background-color: var(--rc-bg-main); min-height: 80vh;">
+				<div class="container">
+
+					<div class="cube-form-card mx-auto" style="max-width: 520px;">
+						<div class="text-center mb-4">
+							<div class="cube-stat-icon primary mx-auto mb-3" style="width: 60px; height: 60px; font-size: 1.5rem;">
+								<i class="fa fa-paper-plane"></i>
+							</div>
+							<h3 class="cube-form-title mb-1">Dispatch Credentials</h3>
+							<p class="cube-form-subtitle">A secure 10-character temporary login password will be auto-generated and emailed to the technician.</p>
+						</div>
+
+						<form method="POST" action="" enctype="multipart/form-data">
+							{% csrf_token %}
+
+							<div class="cube-form-group mb-3">
+								<label class="cube-label" for="name">
+									Technician Full Name
+								</label>
+								<input type="text" id="name" value="{{ owner.Name }}" class="cube-input" name="name" required readonly style="background-color: var(--rc-bg-surface);">
+							</div>
+
+							<div class="cube-form-group mb-4">
+								<label class="cube-label" for="email">
+									Recipient Email Address
+								</label>
+								<input type="email" id="email" value="{{ owner.Email }}" class="cube-input" name="email" required readonly style="background-color: var(--rc-bg-surface);">
+								<small class="text-muted mt-1 d-block">
+									<i class="fa fa-lock text-success mr-1"></i> Credentials will be delivered to this verified mailbox.
+								</small>
+							</div>
+
+							<div class="d-flex gap-3 pt-2">
+								<a href="{% url 'viewtechnician' %}" class="cube-btn cube-btn-outline flex-fill">
+									Cancel
+								</a>
+								<button type="submit" class="cube-btn cube-btn-primary flex-fill">
+									<i class="fa fa-send mr-1"></i> Send Email
+								</button>
+							</div>
+						</form>
+					</div>
+
+				</div>
+			</main>
+
+			<!-- Modern Footer -->
+			<footer class="cube-footer">
+				<div class="container text-center">
+					<p style="margin: 0; color: #FFFFFF !important; font-weight: 500; font-size: 0.875rem;">&copy; 2026 Rent-a-Cube Platform. All rights reserved. Designed for optimal workspace efficiency.</p>
+				</div>
+			</footer>
+
+		</div><!-- eof #box_wrapper -->
+	</div><!-- eof #canvas -->
+
+	<!-- Footer Scripts -->
+	<script src="{% static 'js/compressed.js' %}"></script>
+	<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

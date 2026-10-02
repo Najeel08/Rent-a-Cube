@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<title>Refund Management | Rent-a-Cube</title>
+	<meta charset="utf-8">
+	<meta name="description" content="Manage Razorpay refunds for workspace bookings">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Stylesheets -->
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/animations.css' %}">
+	<link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
+	<link rel="stylesheet" href="{% static 'css/main.css' %}" class="color-switcher-link">
+	<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
+	<script src="{% static 'js/vendor/modernizr-custom.js' %}"></script>
+</head>
+
+<body>
+	<!-- Preloader -->
+	<div class="preloader">
+		<div class="preloader_image"></div>
+	</div>
+
+	<!-- Main Canvas Wrapper -->
+	<div id="canvas">
+		<div id="box_wrapper">
+
+			<!-- Modern Navigation Header -->
+			<header class="cube-navbar d-flex justify-content-between align-items-center flex-wrap px-4 py-2">
+				<div class="d-flex align-items-center">
+					<a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'vhome' %}">
+						<img src="{% static 'images/logo.svg' %}" alt="Rent-a-Cube Logo" style="height: 42px; width: auto; object-fit: contain;">
+					</a>
+				</div>
+				<ul class="cube-nav-links d-flex align-items-center flex-wrap gap-1 m-0 p-0">
+					<li>
+						<a class="cube-nav-link" href="{% url 'vhome' %}">
+							<i class="fa fa-th-large"></i> Dashboard
+						</a>
+					</li>
+					<li class="dropdown">
+						<a class="cube-nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+							<i class="fa fa-building-o"></i> Workspaces
+						</a>
+						<div class="dropdown-menu shadow-sm border-0 mt-2">
+							<a class="dropdown-item py-2" href="{% url 'vaddwork' %}">
+								<i class="fa fa-plus-circle mr-2 text-primary"></i> Add Workspace
+							</a>
+							<a class="dropdown-item py-2" href="{% url 'oviewwork' %}">
+								<i class="fa fa-list mr-2 text-primary"></i> View Workspaces
+							</a>
+						</div>
+					</li>
+					<li class="dropdown">
+						<a class="cube-nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+							<i class="fa fa-wrench"></i> Technicians
+						</a>
+						<div class="dropdown-menu shadow-sm border-0 mt-2">
+							<a class="dropdown-item py-2" href="{% url 'addtechnician' %}">
+								<i class="fa fa-user-plus mr-2 text-primary"></i> Add Technician
+							</a>
+							<a class="dropdown-item py-2" href="{% url 'viewtechnician' %}">
+								<i class="fa fa-users mr-2 text-primary"></i> View Technicians
+							</a>
+						</div>
+					</li>
+					<li>
+						<a class="cube-nav-link" href="{% url 'requests' %}">
+							<i class="fa fa-inbox"></i> Requests
+						</a>
+					</li>
+					{% if request.session.id %}
+					<li>
+						<a class="cube-nav-link" href="{% url 'ownerorder' request.session.id %}">
+							<i class="fa fa-shopping-bag"></i> Bookings
+						</a>
+					</li>
+					<li>
+						<a class="cube-nav-link" href="{% url 'PROFILE' %}">
+							<i class="fa fa-user-circle"></i> Profile
+						</a>
+					</li>
+					{% endif %}
+					<li>
+						<a class="cube-nav-link active" href="{% url 'refund' %}">
+							<i class="fa fa-undo text-primary"></i> Refunds
+						</a>
+					</li>
+					<li>
+						<a class="cube-nav-link" href="{% url 'chat' %}">
+							<i class="fa fa-comments-o"></i> Chats
+						</a>
+					</li>
+					<li class="ml-2">
+						<form method="post" action="{% url 'logout' %}" class="cube-logout-form">
+{% csrf_token %}
+<button type="submit" class="cube-btn cube-btn-outline cube-btn-sm"><i class="fa fa-sign-out"></i> Logout</button>
+</form>
+					</li>
+				</ul>
+			</header>
+
+			<!-- Flash Messages -->
+			{% if messages %}
+			<div class="container mt-4">
+				{% for message in messages %}
+				<div class="cube-alert cube-alert-info">
+					<i class="fa fa-info-circle mr-2"></i> {{ message }}
+				</div>
+				{% endfor %}
+			</div>
+			{% endif %}
+
+			<!-- Main Refund Section -->
+			<main class="py-5" style="background-color: var(--rc-bg-main); min-height: 85vh;">
+				<div class="container">
+
+					<!-- Page Title -->
+					<div class="d-flex justify-content-between align-items-center flex-wrap mb-4 pb-2 border-bottom">
+						<div>
+							<h2 class="mb-1" style="font-weight: 800;">Refund Management</h2>
+							<p class="text-muted mb-0">Review paid reservations and process automated Razorpay payment refunds directly.</p>
+						</div>
+					</div>
+
+					<!-- Table Container -->
+					<div class="cube-table-container">
+						<div class="table-responsive">
+							<table class="cube-table">
+								<thead>
+									<tr>
+										<th>Workspace / Booking</th>
+										<th>Paid Amount</th>
+										<th>Booking Status</th>
+										<th class="text-right">Refund Action</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for b in req %}
+									<tr>
+										<td>
+											<span class="font-weight-bold text-dark d-block">{{ b.WsName }}</span>
+											<span class="small text-muted"><i class="fa fa-map-marker text-danger mr-1"></i> {{ b.Location }}</span>
+										</td>
+										<td>
+											<span class="font-weight-bold text-primary" style="font-size: 1.05rem;">
+												₹{{ b.totalsum }}
+											</span>
+										</td>
+										<td>
+											{% if b.Refundstatus %}
+											<span class="cube-badge cube-badge-info">
+												<i class="fa fa-check-circle"></i> Refunded
+											</span>
+											{% elif b.Status %}
+											<span class="cube-badge cube-badge-success">
+												<i class="fa fa-check"></i> Confirmed & Paid
+											</span>
+											{% else %}
+											<span class="cube-badge cube-badge-warning">
+												<i class="fa fa-clock-o"></i> Paid (Pending Confirmation)
+											</span>
+											{% endif %}
+										</td>
+										<td class="text-right">
+											{% if b.Refundstatus %}
+											<span class="cube-badge cube-badge-secondary">
+												<i class="fa fa-lock"></i> Processed
+											</span>
+											{% else %}
+											<form method="post" action="{% url 'refundcheck' b.id %}" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to refund ₹{{ b.totalsum }} through Razorpay?');">
+												{% csrf_token %}
+												<button type="submit" class="cube-btn cube-btn-danger cube-btn-sm">
+													<i class="fa fa-undo mr-1"></i> Process Refund
+												</button>
+											</form>
+											{% endif %}
+										</td>
+									</tr>
+									{% empty %}
+									<tr>
+										<td colspan="4" class="text-center py-5">
+											<div class="py-4">
+												<i class="fa fa-check-circle-o text-muted mb-3" style="font-size: 3rem;"></i>
+												<h5 class="font-weight-bold text-dark">No Refundable Transactions</h5>
+												<p class="text-muted small mb-0">Eligible paid customer bookings will show up here for refund processing.</p>
+											</div>
+										</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+				</div>
+			</main>
+
+			<!-- Modern Footer -->
+			<footer class="cube-footer">
+				<div class="container text-center">
+					<p style="margin: 0; color: #FFFFFF !important; font-weight: 500; font-size: 0.875rem;">&copy; 2026 Rent-a-Cube Platform. All rights reserved. Designed for optimal workspace efficiency.</p>
+				</div>
+			</footer>
+
+		</div><!-- eof #box_wrapper -->
+	</div><!-- eof #canvas -->
+
+	<!-- Footer Scripts -->
+	<script src="{% static 'js/compressed.js' %}"></script>
+	<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

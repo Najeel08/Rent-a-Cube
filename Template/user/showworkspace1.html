@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<title>RENT A CUBE - Browse Workspaces</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Bootstrap & Font Awesome -->
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/animations.css' %}">
+	<link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
+	
+	<!-- Rent-a-Cube Core Design System -->
+	<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
+	<link rel="stylesheet" href="{% static 'css/main.css' %}" class="color-switcher-link">
+	<script src="{% static 'js/vendor/modernizr-custom.js' %}"></script>
+</head>
+
+<body>
+	<!-- Preloader -->
+	<div class="preloader">
+		<div class="preloader_image"></div>
+	</div>
+
+	<div id="canvas">
+		<div id="box_wrapper">
+			<!-- Modern Navigation Header -->
+			<header class="cube-navbar d-flex justify-content-between align-items-center">
+				<a class="navbar-brand" href="{% url 'uhome' %}">
+					<img src="{% static 'images/logo.svg' %}" alt="Rent-a-Cube Logo" style="height: 42px; width: auto; object-fit: contain;">
+				</a>
+
+				<nav class="d-none d-md-flex">
+					<ul class="cube-nav-links">
+						<li>
+							<a href="{% url 'uhome' %}" class="cube-nav-link">
+								<i class="fa fa-home"></i> Home
+							</a>
+						</li>
+						<li>
+							<a href="{% url 'showworkspace1' %}" class="cube-nav-link active">
+								<i class="fa fa-building"></i> Workspaces
+							</a>
+						</li>
+						<li class="dropdown">
+							<a href="#" class="cube-nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+								<i class="fa fa-wrench"></i> Requests <i class="fa fa-angle-down"></i>
+							</a>
+							<div class="dropdown-menu shadow-sm border-0" style="border-radius: var(--rc-radius-md);">
+								<a class="dropdown-item py-2" href="{% url 'request' %}"><i class="fa fa-plus-circle text-primary mr-2"></i> Submit Request</a>
+								<a class="dropdown-item py-2" href="{% url 'viewrequest' %}"><i class="fa fa-list-alt text-primary mr-2"></i> View Status</a>
+							</div>
+						</li>
+						<li>
+							<a href="{% url 'selectownercart' %}" class="cube-nav-link">
+								<i class="fa fa-shopping-cart"></i> Cart
+							</a>
+						</li>
+						{% if request.session.id %}
+						<li>
+							<a href="{% url 'uvieworder' request.session.id %}" class="cube-nav-link">
+								<i class="fa fa-calendar-check-o"></i> Orders
+							</a>
+						</li>
+						{% endif %}
+					</ul>
+				</nav>
+
+				<div class="d-flex align-items-center gap-3">
+					<div class="cube-user-badge">
+						<div class="cube-user-avatar">
+							{{ request.session.Name|default:"U"|slice:":1"|upper }}
+						</div>
+						<span class="d-none d-sm-inline">{{ request.session.Name|default:"Member" }}</span>
+					</div>
+					<form method="post" action="{% url 'logout' %}" class="cube-logout-form">
+{% csrf_token %}
+<button type="submit" class="cube-btn cube-btn-outline cube-btn-sm" title="Logout"><i class="fa fa-sign-out"></i> <span class="d-none d-sm-inline">Logout</span></button>
+</form>
+				</div>
+			</header>
+
+			<!-- Search & Filter Banner -->
+			<section class="py-5" style="background: linear-gradient(180deg, var(--rc-primary-light) 0%, var(--rc-bg-main) 100%);">
+				<div class="container">
+					<div class="text-center max-w-700 mx-auto mb-4">
+						<span class="cube-badge cube-badge-primary mb-2">
+							<i class="fa fa-map-marker"></i> Nationwide Spaces
+						</span>
+						<h1 class="font-weight-bold" style="font-size: 2.2rem;">Find Your Next Workspace</h1>
+						<p class="text-muted">Browse flexible desks, modern meeting suites, and private cabins across prime cities.</p>
+					</div>
+
+					<!-- Sleek Search Form -->
+					<div class="row justify-content-center">
+						<div class="col-lg-8">
+							<form method="post" class="p-2 bg-white rounded-pill shadow-sm border d-flex align-items-center">
+								{% csrf_token %}
+								<div class="pl-3 pr-2 text-muted">
+									<i class="fa fa-search" style="color: var(--rc-primary); font-size: 1.15rem;"></i>
+								</div>
+								<input type="text" name="city" class="form-control border-0 shadow-none bg-transparent" placeholder="Search by city (e.g., Bangalore, Mumbai, Kochi, Chennai)..." style="font-size: 1rem; outline: none;">
+								<button type="submit" class="cube-btn cube-btn-primary cube-btn-sm rounded-pill px-4">
+									Search Spaces
+								</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- Workspaces Grid Section -->
+			<section class="py-5">
+				<div class="container">
+					<div class="d-flex justify-content-between align-items-center mb-4">
+						<div>
+							<h3 class="font-weight-bold mb-0">Available Workspaces</h3>
+							<p class="text-muted small mb-0">Verified locations with instant hourly reservation</p>
+						</div>
+					</div>
+
+					<div class="row">
+						{% for t in Up %}
+						<div class="col-md-6 col-lg-4 mb-4 d-flex">
+							<div class="cube-card w-100">
+								<div class="cube-card-img-wrap">
+									<a href="{% url 'uviework' t.id %}">
+										<img src="{{t.Image.url}}" alt="{{t.Name}}" class="cube-card-img">
+									</a>
+									<span class="cube-card-type-badge">{{ t.Type|default:"Workspace" }}</span>
+									<span class="cube-card-price-badge">₹{{ t.Price }}<span style="font-size: 0.75rem; font-weight: normal;">/hr</span></span>
+								</div>
+
+								<div class="cube-card-body">
+									<h4 class="cube-card-title">
+										<a href="{% url 'uviework' t.id %}" style="color: var(--rc-dark);">{{ t.Name }}</a>
+									</h4>
+									<div class="cube-card-location">
+										<i class="fa fa-map-marker text-danger"></i>
+										<span>{{ t.City }}{% if t.Location %}, {{ t.Location }}{% endif %}</span>
+									</div>
+
+									<div class="cube-card-specs">
+										{% if t.Sqft %}
+										<span class="cube-spec-item">
+											<i class="fa fa-arrows-alt text-primary"></i> {{ t.Sqft }} sq ft
+										</span>
+										{% endif %}
+										{% if t.Capability %}
+										<span class="cube-spec-item">
+											<i class="fa fa-users text-info"></i> {{ t.Capability }} Seats
+										</span>
+										{% endif %}
+										{% if t.Facility %}
+										<span class="cube-spec-item">
+											<i class="fa fa-wifi text-success"></i> {{ t.Facility }}
+										</span>
+										{% endif %}
+									</div>
+								</div>
+
+								<div class="cube-card-footer">
+									<a href="{% url 'uviework' t.id %}" class="cube-btn cube-btn-primary cube-btn-sm cube-btn-block">
+										Book Workspace <i class="fa fa-arrow-right ml-1"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+						{% empty %}
+						<div class="col-12 text-center py-5">
+							<div class="p-5 bg-white rounded-lg shadow-sm border mx-auto" style="max-width: 500px; border-radius: var(--rc-radius-xl);">
+								<div class="mb-3 text-muted" style="font-size: 3rem; color: var(--rc-text-light);">
+									<i class="fa fa-building-o"></i>
+								</div>
+								<h4 class="font-weight-bold">No Workspaces Found</h4>
+								<p class="text-muted small mb-4">
+									We couldn't find workspaces matching your search query. Try searching for a different city or view all spaces.
+								</p>
+								<a href="{% url 'showworkspace1' %}" class="cube-btn cube-btn-outline-primary cube-btn-sm">
+									<i class="fa fa-refresh"></i> Reset Search
+								</a>
+							</div>
+						</div>
+						{% endfor %}
+					</div>
+				</div>
+			</section>
+
+			<!-- Modern Footer -->
+			<footer class="cube-footer">
+				<div class="container text-center">
+					<p style="margin: 0; color: #FFFFFF !important; font-weight: 500; font-size: 0.875rem;">&copy; 2026 Rent-a-Cube Platform. All rights reserved. Designed for optimal workspace efficiency.</p>
+				</div>
+			</footer>
+		</div>
+	</div>
+
+	<!-- Scripts -->
+	<script src="{% static 'js/compressed.js' %}"></script>
+	<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>
