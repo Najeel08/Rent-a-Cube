@@ -13,8 +13,8 @@ from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 
-from user.models import Messages_Tb, cart, refund_tb, request_tb, user_tb
-from workspace.auth_utils import (
+from accounts.models import Messages_Tb, cart, refund_tb, request_tb, user_tb
+from config.auth_utils import (
     hash_password,
     is_valid_email,
     login_role,
@@ -23,7 +23,7 @@ from workspace.auth_utils import (
     require_role,
     upgrade_password_if_needed,
 )
-from workspace.validation import (
+from config.validation import (
     MAX_HOURLY_PRICE,
     positive_integer,
     required_text,
@@ -69,15 +69,15 @@ def vreg(request):
             validate_image_upload(proof, 'Proof document')
         except ValidationError as exc:
             messages.info(request, exc.message)
-            return render(request, 'owner/vreg.html')
+            return render(request, 'owners/register.html')
 
         if not is_valid_email(email):
             messages.info(request, "Please enter a valid email address (e.g. vikram@cowork.in)")
-            return render(request, 'owner/vreg.html')
+            return render(request, 'owners/register.html')
 
         if password != confirm_password:
             messages.info(request, 'password not match')
-            return render(request, 'owner/vreg.html')
+            return render(request, 'owners/register.html')
 
         if owner_tb.objects.filter(Email__iexact=email).exists():
             messages.info(request, "email already exists")
@@ -98,7 +98,7 @@ def vreg(request):
             messages.info(request, "Registration submitted. Please wait for admin approval.")
             return redirect('vlog')
 
-    return render(request, 'owner/vreg.html')
+    return render(request, 'owners/register.html')
 
 
 def vlog(request):
@@ -117,7 +117,7 @@ def vlog(request):
         else:
             messages.info(request, 'Invalid owner')
 
-    return render(request, 'owner/vlog.html')
+    return render(request, 'owners/login.html')
 
 
 def vhome(request):
@@ -125,7 +125,7 @@ def vhome(request):
     guard = _owner_guard(request)
     if guard:
         return guard
-    return render(request, 'owner/vhome.html')
+    return render(request, 'owners/dashboard.html')
 
 
 def vaddwork(request):
@@ -150,7 +150,7 @@ def vaddwork(request):
             validate_image_upload(image, 'Workspace image')
         except ValidationError as exc:
             messages.info(request, exc.message)
-            return render(request, 'owner/vaddwork.html')
+            return render(request, 'owners/workspace_create.html')
         owvaddwork.objects.create(
             Name=name,
             Sqft=sqft,
@@ -168,7 +168,7 @@ def vaddwork(request):
         messages.info(request, "Workspace added")
         return redirect('oviewwork')
 
-    return render(request, 'owner/vaddwork.html')
+    return render(request, 'owners/workspace_create.html')
 
 
 def oviewwork(request):
@@ -177,7 +177,7 @@ def oviewwork(request):
     if guard:
         return guard
     spaces = owvaddwork.objects.filter(owner_id=request.session['id'])
-    return render(request, 'owner/oviewwork.html', {'Owvk': spaces})
+    return render(request, 'owners/workspace_list.html', {'Owvk': spaces})
 
 
 def Workdetail(request, pik):
@@ -186,7 +186,7 @@ def Workdetail(request, pik):
     if guard:
         return guard
     work = get_object_or_404(owvaddwork, id=pik, owner_id=request.session['id'])
-    return render(request, 'owner/Workdetail.html', {'Owvkd': work})
+    return render(request, 'owners/workspace_detail.html', {'Owvkd': work})
 
 
 def Ovupdate(request, pin):
@@ -217,7 +217,7 @@ def Ovupdate(request, pin):
                 validate_image_upload(request.FILES['image'], 'Workspace image')
         except ValidationError as exc:
             messages.info(request, exc.message)
-            return render(request, 'owner/Ovupdate.html', {'up': owner_work})
+            return render(request, 'owners/workspace_edit.html', {'up': owner_work})
         if request.FILES.get("image"):
             _remove_file(owner_work.Image)
             owner_work.Image = request.FILES["image"]
@@ -235,7 +235,7 @@ def Ovupdate(request, pin):
         messages.info(request, "Workspace updated")
         return redirect('oviewwork')
 
-    return render(request, 'owner/Ovupdate.html', {'up': owner_work})
+    return render(request, 'owners/workspace_edit.html', {'up': owner_work})
 
 
 def Ovdelete(request, pid):
@@ -251,7 +251,7 @@ def Ovdelete(request, pid):
         messages.info(request, "Workspace deleted")
         return redirect('oviewwork')
 
-    return render(request, 'owner/Ovdelete.html', {'delete': work})
+    return render(request, 'owners/workspace_delete_confirm.html', {'delete': work})
 
 
 def PROFILE(request):
@@ -260,7 +260,7 @@ def PROFILE(request):
     if guard:
         return guard
     profile = get_object_or_404(owner_tb, id=request.session['id'])
-    return render(request, 'owner/PROFILE.html', {'prof': profile})
+    return render(request, 'owners/profile.html', {'prof': profile})
 
 
 def ownerprofileupdate(request, pim=None):
@@ -295,10 +295,10 @@ def ownerprofileupdate(request, pim=None):
                 validate_image_upload(request.FILES['image'], 'Profile image')
         except ValidationError as exc:
             messages.info(request, exc.message)
-            return render(request, 'owner/ownerprofileupdate.html', {'pl': profile})
+            return render(request, 'owners/profile_edit.html', {'pl': profile})
         if owner_tb.objects.exclude(id=profile.id).filter(Email=new_email).exists():
             messages.info(request, "email already exists")
-            return render(request, 'owner/ownerprofileupdate.html', {'pl': profile})
+            return render(request, 'owners/profile_edit.html', {'pl': profile})
 
         if request.FILES.get("image"):
             _remove_file(profile.Image)
@@ -315,7 +315,7 @@ def ownerprofileupdate(request, pim=None):
         if new_password:
             if new_password != confirm_password:
                 messages.info(request, 'password not match')
-                return render(request, 'owner/ownerprofileupdate.html', {'pl': profile})
+                return render(request, 'owners/profile_edit.html', {'pl': profile})
             profile.Password = hash_password(new_password)
 
         profile.save()
@@ -323,7 +323,7 @@ def ownerprofileupdate(request, pim=None):
         messages.info(request, "Profile updated")
         return redirect('PROFILE')
 
-    return render(request, 'owner/ownerprofileupdate.html', {'pl': profile})
+    return render(request, 'owners/profile_edit.html', {'pl': profile})
 
 
 def ownerorder(request, pk=None):
@@ -332,7 +332,7 @@ def ownerorder(request, pk=None):
     if guard:
         return guard
     orders = cart.objects.filter(owner_id=request.session['id'])
-    return render(request, 'owner/ownerorder.html', {'bk': orders})
+    return render(request, 'owners/booking_list.html', {'bk': orders})
 
 
 def confirmpayment(request, pk):
@@ -364,7 +364,7 @@ def requests(request):
     if guard:
         return guard
     req = request_tb.objects.filter(owner_id=request.session['id'])
-    return render(request, 'owner/requests.html', {'req': req})
+    return render(request, 'owners/service_request_list.html', {'req': req})
 
 
 def assign(request, bid):
@@ -385,7 +385,7 @@ def assign(request, bid):
             tech_id = positive_integer(request.POST.get('tech'), 'Technician')
         except ValidationError as exc:
             messages.info(request, exc.message)
-            return render(request, 'owner/assign.html', {'reqs': reqs, 'options': options})
+            return render(request, 'owners/service_assignment.html', {'reqs': reqs, 'options': options})
         technician = get_object_or_404(addtech, id=tech_id, owner_id=request.session['id'])
         Workassign.objects.create(
             Name=reqs.Name,
@@ -399,7 +399,7 @@ def assign(request, bid):
         messages.info(request, "Request assigned")
         return redirect('requests')
 
-    return render(request, 'owner/assign.html', {'reqs': reqs, 'options': options})
+    return render(request, 'owners/service_assignment.html', {'reqs': reqs, 'options': options})
 
 
 def addtechnician(request):
@@ -420,10 +420,10 @@ def addtechnician(request):
             validate_image_upload(image, 'Technician image')
         except ValidationError as exc:
             messages.info(request, exc.message)
-            return render(request, 'owner/addtechnician.html')
+            return render(request, 'owners/technician_create.html')
         if not is_valid_email(email):
             messages.info(request, "Please enter a valid email address (e.g. rahul@example.com)")
-            return render(request, 'owner/addtechnician.html')
+            return render(request, 'owners/technician_create.html')
         if addtech.objects.filter(Email__iexact=email).exists():
             messages.info(request, "email already exists")
         else:
@@ -440,7 +440,7 @@ def addtechnician(request):
             messages.info(request, "Technician added. Send login mail to create a password.")
             return redirect('viewtechnician')
 
-    return render(request, 'owner/addtechnician.html')
+    return render(request, 'owners/technician_create.html')
 
 
 def viewtechnician(request):
@@ -449,7 +449,7 @@ def viewtechnician(request):
     if guard:
         return guard
     technicians = addtech.objects.filter(owner_id=request.session['id'])
-    return render(request, 'owner/viewtechnician.html', {'viewss': technicians})
+    return render(request, 'owners/technician_list.html', {'viewss': technicians})
 
 
 def sendemail(request, id):
@@ -477,7 +477,7 @@ def sendemail(request, id):
             messages.info(request, "Email could not be sent. Check email settings.")
         return redirect('viewtechnician')
 
-    return render(request, 'owner/sentemail.html', {"owner": technician})
+    return render(request, 'owners/technician_login_email.html', {"owner": technician})
 
 
 def owner_chat(request, uid):
@@ -528,7 +528,7 @@ def owner_chat(request, uid):
 
     return render(
         request,
-        'owner/chating.html',
+        'owners/conversation.html',
         {
             'message': messages_qs,
             'Name': owner.Name,
@@ -550,7 +550,7 @@ def chat(request):
     msg = Messages_Tb.objects.filter(Receiver_id=owner_id)
     user_ids = {int(message.Send_id) for message in msg if str(message.Send_id).isdigit()}
     users = user_tb.objects.filter(id__in=user_ids)
-    return render(request, 'owner/chat.html', {'data': users, 'date': today})
+    return render(request, 'owners/chat_inbox.html', {'data': users, 'date': today})
 
 
 def refund(request):
@@ -559,7 +559,7 @@ def refund(request):
     if guard:
         return guard
     req = cart.objects.filter(owner_id=request.session['id'], Paystatus=True)
-    return render(request, 'owner/refund.html', {'req': req})
+    return render(request, 'owners/refund_list.html', {'req': req})
 
 
 def checkout(request, uid):

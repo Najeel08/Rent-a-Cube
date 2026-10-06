@@ -1,8 +1,8 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from user.models import user_tb
-from workspace.auth_utils import hash_password
+from accounts.models import user_tb
+from config.auth_utils import hash_password
 
 from .models import owner_tb, owvaddwork
 

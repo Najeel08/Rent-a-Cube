@@ -4,7 +4,7 @@ from pathlib import Path
 from django.conf import settings
 from django.db import migrations, models
 
-import workspace.storage
+import config.storage
 
 
 def move_proofs_to_private_storage(apps, schema_editor):
@@ -34,7 +34,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='owner_tb',
             name='Proof',
-            field=models.ImageField(null=True, storage=workspace.storage.PrivateProofStorage(), upload_to='proofs'),
+            field=models.ImageField(null=True, storage=config.storage.PrivateProofStorage(), upload_to='proofs'),
         ),
         migrations.RunPython(move_proofs_to_private_storage, migrations.RunPython.noop),
     ]

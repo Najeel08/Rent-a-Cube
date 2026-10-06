@@ -1,5 +1,5 @@
 from django.db import models
-from workspace.storage import PrivateProofStorage
+from config.storage import PrivateProofStorage
 
 
 class owner_tb(models.Model):
