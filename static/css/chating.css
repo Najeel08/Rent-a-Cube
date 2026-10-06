@@ -1,20 +1,18 @@
-/* ==========================================================================
-   Chat Application Layout & Messaging UI Styles
-   ========================================================================== */
 
-/* Base Layout */
+
+
 body {
     margin-top: 20px;
 }
 
-/* Reset Lists */
+
 ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
 }
 
-/* Chat Card Wrapper */
+
 .card {
     border: 0;
     background: #f4f5fb;
@@ -25,9 +23,7 @@ ul {
     box-shadow: none;
 }
 
-/* ==========================================================================
-   Search Box
-   ========================================================================== */
+
 
 .chat-search-box {
     -webkit-border-radius: 3px 0 0 0;
@@ -66,9 +62,7 @@ ul {
     }
 }
 
-/* ==========================================================================
-   Users Sidebar & Contact List
-   ========================================================================== */
+
 
 .users-container {
     position: relative;
@@ -131,7 +125,7 @@ ul {
     border-radius: 50px;
 }
 
-/* Presence Status Indicators */
+
 .users .person .user .status {
     width: 10px;
     height: 10px;
@@ -160,7 +154,7 @@ ul {
     background: #fd7274;
 }
 
-/* User Name and Timestamp */
+
 .users .person p.name-time {
     font-weight: 600;
     font-size: .85rem;
@@ -187,11 +181,9 @@ ul {
     }
 }
 
-/* ==========================================================================
-   Chat Conversation Area (Right Panel)
-   ========================================================================== */
 
-/* Selected User Header */
+
+
 .selected-user {
     width: 100%;
     padding: 0 15px;
@@ -211,7 +203,7 @@ ul {
     font-weight: 700;
 }
 
-/* Messages Container */
+
 .chat-container {
     position: relative;
     padding: 1rem;
@@ -252,7 +244,7 @@ ul {
     text-align: center;
 }
 
-/* Chat Message Bubbles */
+
 .chat-container li .chat-text {
     padding: .4rem 1rem;
     -webkit-border-radius: 4px;
@@ -305,7 +297,7 @@ ul {
     margin: 0 15px 0 0;
 }
 
-/* Responsive Message Styling */
+
 @media (max-width: 767px) {
     .chat-container li.chat-left,
     .chat-container li.chat-right {
@@ -347,9 +339,7 @@ ul {
     }
 }
 
-/* ==========================================================================
-   Chat Input Form
-   ========================================================================== */
+
 
 .chat-form {
     padding: 15px;

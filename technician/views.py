@@ -25,7 +25,6 @@ def tlog(request):
         technician = addtech.objects.filter(Email__iexact=email).first()
 
         if technician and password_matches(password, technician.Password):
-            # Auto-upgrade plaintext password to hashed if needed
             upgrade_password_if_needed(technician, 'Password', password)
             login_role(request, 'technician', technician, technician.Name)
             return redirect('thome')

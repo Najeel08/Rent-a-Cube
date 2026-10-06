@@ -27,7 +27,6 @@ def alogin(request):
         admin = Projectadmin.objects.filter(email__iexact=email).first()
 
         if admin and password_matches(password, admin.password):
-            # Auto-upgrade plaintext password to hashed if needed
             upgrade_password_if_needed(admin, 'password', password)
             login_role(request, 'admin', admin)
             request.session['email'] = admin.email

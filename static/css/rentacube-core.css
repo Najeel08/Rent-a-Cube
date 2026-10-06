@@ -1,13 +1,10 @@
-/* 
-   RENT-A-CUBE CORE DESIGN SYSTEM & STYLESHEET
-   Unified SaaS / Workspace Booking Platform Design Tokens & Components
-    */
+
 
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
 
-/* --- Design Tokens (CSS Variables) --- */
+
 :root {
-  /* Brand Palette */
+  
   --rc-primary: #4F46E5;
   --rc-primary-hover: #4338CA;
   --rc-primary-active: #3730A3;
@@ -22,7 +19,7 @@
   --rc-accent: #8B5CF6;
   --rc-accent-light: #F5F3FF;
 
-  /* Neutral Spectrum */
+  
   --rc-dark: #0F172A;
   --rc-dark-card: #1E293B;
   --rc-text-main: #1E293B;
@@ -35,7 +32,7 @@
   --rc-border-light: #F1F5F9;
   --rc-border-focus: #A5B4FC;
 
-  /* Semantic Feedback States */
+  
   --rc-success: #10B981;
   --rc-success-hover: #059669;
   --rc-success-bg: #ECFDF5;
@@ -59,18 +56,18 @@
   --rc-info-border: #BFDBFE;
   --rc-info-text: #1E40AF;
 
-  /* Typography */
+  
   --rc-font-heading: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --rc-font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
-  /* Border Radii */
+  
   --rc-radius-sm: 6px;
   --rc-radius-md: 10px;
   --rc-radius-lg: 16px;
   --rc-radius-xl: 24px;
   --rc-radius-full: 9999px;
 
-  /* Elevation Shadows */
+  
   --rc-shadow-xs: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
   --rc-shadow-sm: 0 1px 3px 0 rgba(15, 23, 42, 0.08), 0 1px 2px -1px rgba(15, 23, 42, 0.08);
   --rc-shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.07), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
@@ -78,15 +75,13 @@
   --rc-shadow-xl: 0 20px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.03);
   --rc-shadow-card-hover: 0 20px 30px -10px rgba(79, 70, 229, 0.12), 0 10px 10px -5px rgba(15, 23, 42, 0.04);
 
-  /* Transitions */
+  
   --rc-transition-fast: 0.15s ease-in-out;
   --rc-transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   --rc-transition-slow: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* 
-   GLOBAL RESET & TYPOGRAPHY
-   */
+
 *, *::before, *::after {
   box-sizing: border-box;
 }
@@ -134,9 +129,7 @@ a:hover {
   text-decoration: none;
 }
 
-/* 
-   MODERN NAVBAR & HEADER
-   */
+
 .cube-navbar {
   background: #ffffff;
   border-bottom: 1px solid var(--rc-border);
@@ -227,7 +220,7 @@ a:hover {
   object-fit: cover;
 }
 
-/* Dropdown Menu on Desktop */
+
 .dropdown-menu {
   border: 1px solid var(--rc-border);
   box-shadow: var(--rc-shadow-lg);
@@ -254,7 +247,7 @@ a:hover {
   color: var(--rc-primary);
 }
 
-/* Responsive Mobile Navbar */
+
 .cube-navbar .navbar-toggler {
   border: 1px solid var(--rc-border);
   padding: 0.45rem 0.75rem;
@@ -303,7 +296,7 @@ a:hover {
   }
 }
 
-/* Dropdown Alignment */
+
 .dropdown-menu-right {
   right: 0 !important;
   left: auto !important;
@@ -316,9 +309,7 @@ a:hover {
   }
 }
 
-/* 
-   LANDING PAGE HERO & SHOWCASE
-   */
+
 .hero-section {
   background: linear-gradient(135deg, #0F172A 0%, #1E1B4B 50%, #312E81 100%);
   color: #FFFFFF;
@@ -422,7 +413,7 @@ a:hover {
   position: relative;
 }
 
-/* Auto-Rotating Workspace Slideshow */
+
 .hero-slideshow {
   position: relative;
   width: 100%;
@@ -477,7 +468,7 @@ a:hover {
   border-radius: 4px;
 }
 
-/* Section Headings */
+
 .section-header {
   text-align: center;
   max-width: 680px;
@@ -507,7 +498,7 @@ a:hover {
   font-size: 1.05rem;
 }
 
-/* Feature Cards */
+
 .feature-card,
 .feature-card-modern {
   background: #FFFFFF;
@@ -543,7 +534,7 @@ a:hover {
 .feature-icon-box.emerald{ background: var(--rc-success-bg); color: var(--rc-success); }
 .feature-icon-box.amber  { background: var(--rc-warning-bg); color: var(--rc-warning); }
 
-/* How It Works Steps */
+
 .step-card {
   background: #FFFFFF;
   border: 1px solid var(--rc-border);
@@ -570,9 +561,7 @@ a:hover {
   box-shadow: var(--rc-shadow-sm);
 }
 
-/* 
-   BUTTONS & ACTION CONTROLS
-    */
+
 .cube-btn {
   font-family: var(--rc-font-heading);
   font-weight: 600;
@@ -700,9 +689,7 @@ a:hover {
   width: 100%;
 }
 
-/* 
-   CARDS & CONTAINERS
-   */
+
 .cube-card {
   background: var(--rc-bg-card);
   border: 1px solid var(--rc-border);
@@ -821,9 +808,7 @@ a:hover {
   justify-content: space-between;
 }
 
-/* 
-   FORMS & INPUTS
-   */
+
 .cube-form-card {
   background: var(--rc-bg-card);
   border: 1px solid var(--rc-border);
@@ -896,9 +881,7 @@ a:hover {
   color: var(--rc-text-light);
 }
 
-/* 
-   TABLES & DATA LISTS
-   */
+
 .cube-table-container {
   background: var(--rc-bg-card);
   border: 1px solid var(--rc-border);
@@ -952,9 +935,7 @@ a:hover {
   background-color: var(--rc-primary-subtle);
 }
 
-/* 
-   BADGES & STATUS PILLS
-   */
+
 .cube-badge {
   display: inline-flex;
   align-items: center;
@@ -997,9 +978,7 @@ a:hover {
   border: 1px solid var(--rc-border-focus);
 }
 
-/* 
-   ALERT MESSAGES
-   */
+
 .cube-alert {
   padding: 0.95rem 1.25rem;
   border-radius: var(--rc-radius-md);
@@ -1030,9 +1009,7 @@ a:hover {
   border: 1px solid var(--rc-danger-border);
 }
 
-/* 
-   DASHBOARD STAT CARDS
-   */
+
 .cube-stat-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
@@ -1092,9 +1069,7 @@ a:hover {
   font-weight: 500;
 }
 
-/* 
-   CHECKOUT & RAZORPAY PAYMENT SUMMARY CARD
-   */
+
 .cube-checkout-card {
   background: #FFFFFF;
   border: 1px solid var(--rc-border);
@@ -1160,9 +1135,7 @@ a:hover {
   gap: 0.35rem;
 }
 
-/* 
-   MODERN CHAT WINDOW
-    */
+
 .cube-chat-container {
   background: #FFFFFF;
   border: 1px solid var(--rc-border);
@@ -1273,9 +1246,7 @@ a:hover {
   gap: 0.75rem;
 }
 
-/* 
-   CONTACT PAGE COMPONENTS
-    */
+
 .contact-header {
   background: linear-gradient(135deg, #0F172A 0%, #1E1B4B 100%);
   color: #FFFFFF;
@@ -1331,10 +1302,7 @@ a:hover {
   margin-bottom: 1.25rem;
 }
 
-/* ==========================================================================
-/* ==========================================================================
-   TECHNICIAN & ADMIN PORTAL COMPONENTS
-   ========================================================================== */
+
 .tech-auth-body,
 .admin-auth-body {
   background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%) !important;
@@ -1571,17 +1539,13 @@ a:hover {
   gap: 0.75rem;
 }
 
-/* ==========================================================================
-   ADMIN PORTAL COMPONENTS & DASHBOARD
-   ========================================================================== */
+
 body.dashboard,
 body.inner_page {
   background-color: var(--rc-bg-main) !important;
 }
 
-/* ==========================================================================
-   ADMIN PORTAL DESIGN SYSTEM & LAYOUT
-   ========================================================================== */
+
 .admin-body-wrapper {
   background-color: var(--rc-bg-main);
   min-height: 100vh;
@@ -1595,7 +1559,7 @@ body.inner_page {
   width: 100%;
 }
 
-/* Admin Sidebar */
+
 .admin-sidebar {
   width: 260px;
   min-width: 260px;
@@ -1745,7 +1709,7 @@ body.inner_page {
   color: #FFFFFF !important;
 }
 
-/* Admin Main Content Wrapper */
+
 .admin-content-wrapper {
   flex-grow: 1;
   background-color: var(--rc-bg-main);
@@ -1755,7 +1719,7 @@ body.inner_page {
   overflow-x: hidden;
 }
 
-/* Admin Topbar */
+
 .admin-topbar {
   background: #FFFFFF !important;
   border-bottom: 1px solid var(--rc-border);
@@ -1832,13 +1796,13 @@ body.inner_page {
   font-size: 0.875rem;
 }
 
-/* Admin Container & Sections */
+
 .admin-page-content {
   padding: 1.75rem 2rem;
   flex-grow: 1;
 }
 
-/* Quick Platform Operations Grid */
+
 .admin-operations-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -1894,7 +1858,7 @@ body.inner_page {
   margin: 0;
 }
 
-/* Admin Dashboard Card */
+
 .admin-card {
   background: #FFFFFF;
   border: 1px solid var(--rc-border);
@@ -1923,7 +1887,7 @@ body.inner_page {
   gap: 0.5rem;
 }
 
-/* Admin Table Styles */
+
 .admin-table-wrapper {
   background: #FFFFFF;
   border: 1px solid var(--rc-border);
@@ -2204,9 +2168,7 @@ body.inner_page {
   margin-bottom: 1rem;
 }
 
-/* ==========================================================================
-   FOOTER
-   ========================================================================== */
+
 .cube-footer {
   background: #0F172A;
   color: #94A3B8;
@@ -2243,7 +2205,7 @@ body.inner_page {
   color: #FFFFFF !important;
 }
 
-/* Session actions retain the surrounding portal's existing button treatment. */
+
 .cube-logout-form {
   display: inline;
   margin: 0;
@@ -2264,9 +2226,7 @@ body.inner_page {
   outline-offset: 2px;
 }
 
-/* ==========================================================================
-   RESPONSIVE UTILITIES & BREAKPOINTS
-   ========================================================================== */
+
 @media (max-width: 991px) {
   .hero-title { font-size: 2.5rem; }
   .hero-section { padding: 4rem 0; }
@@ -2293,7 +2253,7 @@ body.inner_page {
   .cube-btn-lg { padding: 0.7rem 1.25rem; font-size: 0.95rem; }
 }
 
-/* Responsive navigation and containment */
+
 html,
 body {
   max-width: 100%;

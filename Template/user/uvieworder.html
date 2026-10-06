@@ -2,30 +2,30 @@
 {% load static %}
 <html lang="en">
 <head>
-	<title>RENT A CUBE - My Orders & Bookings</title>
+	<title>My Bookings | Rent-a-Cube</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-	<!-- Bootstrap & Font Awesome -->
+	
 	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 	<link rel="stylesheet" href="{% static 'css/animations.css' %}">
 	<link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
 	
-	<!-- Rent-a-Cube Core Design System -->
+	
 	<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
 	<link rel="stylesheet" href="{% static 'css/main.css' %}" class="color-switcher-link">
 	<script src="{% static 'js/vendor/modernizr-custom.js' %}"></script>
 </head>
 
 <body>
-	<!-- Preloader -->
+	
 	<div class="preloader">
 		<div class="preloader_image"></div>
 	</div>
 
 	<div id="canvas">
 		<div id="box_wrapper">
-			<!-- Modern Navigation Header -->
+			
 			<header class="cube-navbar d-flex justify-content-between align-items-center">
 				<a class="navbar-brand" href="{% url 'uhome' %}">
 					<img src="{% static 'images/logo.svg' %}" alt="Rent-a-Cube Logo" style="height: 42px; width: auto; object-fit: contain;">
@@ -45,11 +45,11 @@
 						</li>
 						<li class="dropdown">
 							<a href="#" class="cube-nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-								<i class="fa fa-wrench"></i> Requests <i class="fa fa-angle-down"></i>
+								<i class="fa fa-wrench"></i> Service Requests <i class="fa fa-angle-down"></i>
 							</a>
 							<div class="dropdown-menu shadow-sm border-0" style="border-radius: var(--rc-radius-md);">
-								<a class="dropdown-item py-2" href="{% url 'request' %}"><i class="fa fa-plus-circle text-primary mr-2"></i> Submit Request</a>
-								<a class="dropdown-item py-2" href="{% url 'viewrequest' %}"><i class="fa fa-list-alt text-primary mr-2"></i> View Status</a>
+								<a class="dropdown-item py-2" href="{% url 'request' %}"><i class="fa fa-plus-circle text-primary mr-2"></i> New Service Request</a>
+								<a class="dropdown-item py-2" href="{% url 'viewrequest' %}"><i class="fa fa-list-alt text-primary mr-2"></i> View Service Requests</a>
 							</div>
 						</li>
 						<li>
@@ -60,7 +60,7 @@
 						{% if request.session.id %}
 						<li>
 							<a href="{% url 'uvieworder' request.session.id %}" class="cube-nav-link active">
-								<i class="fa fa-calendar-check-o"></i> Orders
+								<i class="fa fa-calendar-check-o"></i> Bookings
 							</a>
 						</li>
 						{% endif %}
@@ -76,15 +76,15 @@
 					</div>
 					<form method="post" action="{% url 'logout' %}" class="cube-logout-form">
 {% csrf_token %}
-<button type="submit" class="cube-btn cube-btn-outline cube-btn-sm" title="Logout"><i class="fa fa-sign-out"></i> <span class="d-none d-sm-inline">Logout</span></button>
+<button type="submit" class="cube-btn cube-btn-outline cube-btn-sm" title="Log Out"><i class="fa fa-sign-out"></i> <span class="d-none d-sm-inline">Log Out</span></button>
 </form>
 				</div>
 			</header>
 
-			<!-- Orders Management Table Section -->
+			
 			<section class="py-5" style="background-color: var(--rc-bg-main); min-height: 85vh;">
 				<div class="container">
-					<!-- Flash Messages -->
+					
 					{% for msg in messages %}
 					<div class="cube-alert cube-alert-info mb-4">
 						<i class="fa fa-info-circle"></i> {{ msg }}
@@ -106,14 +106,14 @@
 						</div>
 					</div>
 
-					<!-- Table Container -->
+					
 					<div class="cube-table-container">
 						<div class="table-responsive">
 							<table class="cube-table">
 								<thead>
 									<tr>
 										<th>Workspace</th>
-										<th>Provider</th>
+										<th>Owner</th>
 										<th>Location</th>
 										<th>Rate</th>
 										<th>Duration</th>
@@ -136,16 +136,16 @@
 											<small class="text-muted"><i class="fa fa-map-marker text-danger mr-1"></i>{{b.Location}}</small>
 										</td>
 										<td>
-											<span class="font-weight-bold text-primary">₹{{b.Price}}<small class="text-muted">/hr</small></span>
+											<span class="font-weight-bold text-primary">₹{{b.Price}}<small class="text-muted">/hour</small></span>
 										</td>
 										<td>
-											<span class="cube-badge cube-badge-info">{{b.nohrs}} hrs</span>
+											<span class="cube-badge cube-badge-info">{{b.nohrs}} hours</span>
 										</td>
 										<td>
 											<span class="small font-weight-bold"><i class="fa fa-calendar-o mr-1"></i>{{b.Date}}</span>
 										</td>
 										<td>
-											<small class="text-muted">{{b.Date_book}}</small>
+											<small class="text-muted">{{b.Date_book|date:"d M Y"}}</small>
 										</td>
 										<td>
 											{% if b.Status %}
@@ -182,7 +182,7 @@
 				</div>
 			</section>
 
-			<!-- Modern Footer -->
+			
 			<footer class="cube-footer">
 				<div class="container text-center">
 					<p style="margin: 0; color: #FFFFFF !important; font-weight: 500; font-size: 0.875rem;">&copy; 2026 Rent-a-Cube Platform. All rights reserved. Designed for optimal workspace efficiency.</p>
@@ -191,7 +191,7 @@
 		</div>
 	</div>
 
-	<!-- Scripts -->
+	
 	<script src="{% static 'js/compressed.js' %}"></script>
 	<script src="{% static 'js/main.js' %}"></script>
 </body>

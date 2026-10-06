@@ -4,7 +4,6 @@ import os
 from django.core.exceptions import ImproperlyConfigured
 from django.core.management.utils import get_random_secret_key
 
-# Base directory of the project
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -26,10 +25,8 @@ def load_local_env(path):
             os.environ.setdefault(key, value)
 
 
-# This file is ignored by Git and is intended only for local development.
 load_local_env(BASE_DIR / '.env')
 
-# Debug mode is opt-in. Local development should set DJANGO_DEBUG=True.
 TRUE_VALUES = ('1', 'true', 'yes', 'on')
 
 
@@ -46,7 +43,6 @@ def env_int(name, default):
 
 DEBUG = env_bool('DJANGO_DEBUG')
 
-# A production instance must always receive a secret from its environment.
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 if not SECRET_KEY:
     if DEBUG:
@@ -54,14 +50,12 @@ if not SECRET_KEY:
     else:
         raise ImproperlyConfigured('DJANGO_SECRET_KEY must be set when DJANGO_DEBUG is False.')
 
-# Allowed hostnames for the application
 ALLOWED_HOSTS = [
     host.strip()
     for host in os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,testserver').split(',')
     if host.strip()
 ]
 
-# Installed apps - Django built-in apps + project apps
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -69,14 +63,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'homeapp',       # Landing page app
-    'owners',        # Owner management app
-    'workadmin',     # Admin panel app
-    'user',          # User management app
-    'technician',    # Technician management app
+    'homeapp',
+    'owners',
+    'workadmin',
+    'user',
+    'technician',
 ]
 
-# Middleware stack
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -89,7 +82,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'workspace.urls'
 
-# Template configuration - HTML templates are in the 'Template' folder
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -108,7 +100,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'workspace.wsgi.application'
 
-# Database - using SQLite for development
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -116,7 +107,6 @@ DATABASES = {
     }
 }
 
-# Password validation rules
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -124,25 +114,21 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# Internationalization
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Static files (CSS, JS, images)
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Media files (user uploads)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 PRIVATE_MEDIA_ROOT = os.path.join(BASE_DIR, 'private_media')
 
-# HTTPS and cookie hardening can be configured per deployment.
 SECURE_SSL_REDIRECT = env_bool('DJANGO_SECURE_SSL_REDIRECT', not DEBUG)
 SECURE_PROXY_SSL_HEADER = (
     ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -166,15 +152,12 @@ CSRF_TRUSTED_ORIGINS = [
     if origin.strip()
 ]
 
-# Razorpay payment gateway credentials (set via environment variables)
 RAZORPAY_API_KEY = os.environ.get('RAZORPAY_API_KEY', '')
 RAZORPAY_API_SECRET_KEY = os.environ.get('RAZORPAY_API_SECRET_KEY', '')
 
-# Email configuration (set via environment variables)
 EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
-# Use console email backend if no credentials are set
 EMAIL_BACKEND = os.environ.get(
     'EMAIL_BACKEND',
     'django.core.mail.backends.smtp.EmailBackend'

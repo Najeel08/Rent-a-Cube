@@ -4,10 +4,10 @@
 <head>
 	<title>Service Requests | Rent-a-Cube</title>
 	<meta charset="utf-8">
-	<meta name="description" content="Client maintenance and support requests">
+	<meta name="description" content="Service Requests from Workspace Users.">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-	<!-- Stylesheets -->
+	
 	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 	<link rel="stylesheet" href="{% static 'css/animations.css' %}">
 	<link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
@@ -17,16 +17,16 @@
 </head>
 
 <body>
-	<!-- Preloader -->
+	
 	<div class="preloader">
 		<div class="preloader_image"></div>
 	</div>
 
-	<!-- Main Canvas Wrapper -->
+	
 	<div id="canvas">
 		<div id="box_wrapper">
 
-			<!-- Modern Navigation Header -->
+			
 			<header class="cube-navbar d-flex justify-content-between align-items-center flex-wrap px-4 py-2">
 				<div class="d-flex align-items-center">
 					<a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'vhome' %}">
@@ -67,7 +67,7 @@
 					</li>
 					<li>
 						<a class="cube-nav-link active" href="{% url 'requests' %}">
-							<i class="fa fa-inbox text-primary"></i> Requests
+							<i class="fa fa-inbox text-primary"></i> Service Requests
 						</a>
 					</li>
 					{% if request.session.id %}
@@ -95,13 +95,13 @@
 					<li class="ml-2">
 						<form method="post" action="{% url 'logout' %}" class="cube-logout-form">
 {% csrf_token %}
-<button type="submit" class="cube-btn cube-btn-outline cube-btn-sm"><i class="fa fa-sign-out"></i> Logout</button>
+<button type="submit" class="cube-btn cube-btn-outline cube-btn-sm"><i class="fa fa-sign-out"></i> Log Out</button>
 </form>
 					</li>
 				</ul>
 			</header>
 
-			<!-- Flash Messages -->
+			
 			{% if messages %}
 			<div class="container mt-4">
 				{% for message in messages %}
@@ -112,19 +112,19 @@
 			</div>
 			{% endif %}
 
-			<!-- Main Requests Section -->
+			
 			<main class="py-5" style="background-color: var(--rc-bg-main); min-height: 85vh;">
 				<div class="container">
 
-					<!-- Page Title -->
+					
 					<div class="d-flex justify-content-between align-items-center flex-wrap mb-4 pb-2 border-bottom">
 						<div>
-							<h2 class="mb-1" style="font-weight: 800;">Client Service & Support Requests</h2>
-							<p class="text-muted mb-0">Incoming maintenance, equipment setup, or support requests from space users.</p>
+							<h2 class="mb-1" style="font-weight: 800;">Service Requests</h2>
+							<p class="text-muted mb-0">Maintenance, equipment, and support requests from Users.</p>
 						</div>
 					</div>
 
-					<!-- Requests Grid -->
+					
 					<div class="row">
 						{% for req in req %}
 						<div class="col-lg-4 col-md-6 mb-4">
@@ -167,8 +167,8 @@
 								<div class="cube-stat-icon success mx-auto mb-3" style="width: 64px; height: 64px; font-size: 1.8rem;">
 									<i class="fa fa-check-circle"></i>
 								</div>
-								<h4 class="font-weight-bold mb-2">No Open Requests</h4>
-								<p class="text-muted mb-0">All service and maintenance tickets are clear. New client tickets will appear here.</p>
+								<h4 class="font-weight-bold mb-2">No Open Service Requests</h4>
+								<p class="text-muted mb-0">No Service Requests need attention.</p>
 							</div>
 						</div>
 						{% endfor %}
@@ -177,17 +177,17 @@
 				</div>
 			</main>
 
-			<!-- Modern Footer -->
+			
 			<footer class="cube-footer">
 				<div class="container text-center">
 					<p style="margin: 0; color: #FFFFFF !important; font-weight: 500; font-size: 0.875rem;">&copy; 2026 Rent-a-Cube Platform. All rights reserved. Designed for optimal workspace efficiency.</p>
 				</div>
 			</footer>
 
-		</div><!-- eof #box_wrapper -->
-	</div><!-- eof #canvas -->
+		</div>
+	</div>
 
-	<!-- Footer Scripts -->
+	
 	<script src="{% static 'js/compressed.js' %}"></script>
 	<script src="{% static 'js/main.js' %}"></script>
 </body>

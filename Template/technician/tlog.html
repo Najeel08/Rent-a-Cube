@@ -4,10 +4,10 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title>RENT A CUBE - Technician Login</title>
-	<meta name="description" content="Rent-a-Cube Technician Secure Login Portal">
+	<title>Technician Sign In | Rent-a-Cube</title>
+	<meta name="description" content="Sign in to the Rent-a-Cube Technician Portal.">
 
-	<!-- Bootstrap & Font Awesome -->
+	
 	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 	<link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
 	<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
@@ -16,7 +16,7 @@
 <body class="tech-auth-body">
 	<div class="tech-login-wrap">
 		
-		<!-- Brand Header -->
+		
 		<div class="tech-brand-header">
 			<div class="mb-3">
 				<a href="/">
@@ -30,16 +30,16 @@
 			<p style="color: #CBD5E1 !important; font-size: 0.95rem; margin: 0;">Field engineer & maintenance portal</p>
 		</div>
 
-		<!-- Login Card -->
+		
 		<div class="tech-login-card">
-			<!-- Flash Messages -->
+			
 			{% for msg in messages %}
 			<div class="cube-alert cube-alert-danger mb-4" role="alert">
 				<i class="fa fa-exclamation-triangle mr-2"></i> {{ msg }}
 			</div>
 			{% endfor %}
 
-			<!-- Technician Login Form -->
+			
 			<form method="post" action="">
 				{% csrf_token %}
 				
@@ -54,7 +54,7 @@
 				</div>
 
 				<button type="submit" id="contact_form_submit" name="contact_submit" class="cube-btn cube-btn-primary cube-btn-block cube-btn-lg">
-					<i class="fa fa-sign-in mr-2"></i> Log In to Duty Board
+					<i class="fa fa-sign-in mr-2"></i> Sign In
 				</button>
 			</form>
 
@@ -65,14 +65,14 @@
 			</div>
 		</div>
 
-		<!-- Footer Copyright -->
+		
 		<div class="text-center mt-4">
 			<p style="margin: 0; color: #94A3B8 !important; font-size: 0.8rem; font-weight: 500;">&copy; 2026 Rent-a-Cube Platform. All rights reserved.</p>
 		</div>
 
 	</div>
 
-	<!-- JavaScript Files -->
+	
 	<script src="{% static 'admin/js/jquery.min.js' %}"></script>
 	<script src="{% static 'admin/js/bootstrap.bundle.min.js' %}"></script>
 </body>

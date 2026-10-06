@@ -4,15 +4,15 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title>Rent-a-Cube - Find & Book Flexible Coworking Cubes</title>
-	<meta name="description" content="On-demand desks, private executive cabins, dedicated meeting rooms, and collaborative workspaces tailored for modern teams and creators.">
+	<title>Find and Book Workspaces | Rent-a-Cube</title>
+	<meta name="description" content="Book desks, offices, and meeting rooms with Rent-a-Cube.">
 
-	<!-- Google Fonts -->
+	
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-	<!-- Stylesheets -->
+	
 	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 	<link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
 	<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
@@ -21,47 +21,47 @@
 <body>
 	{% include 'includes/public_navbar.html' with active_page='home' %}
 
-	<!-- Hero Section -->
+	
 	<section class="hero-section">
 		<div class="container">
 			<div class="row align-items-center">
 				<div class="col-lg-6 mb-5 mb-lg-0">
 					<h1 class="hero-title">
-						Find & Book <span>Flexible Coworking</span> Cubes
+						Find and Book <span>Flexible Workspaces</span>
 					</h1>
 					<p class="hero-subtitle">
-						On-demand desks, private executive cabins, dedicated meeting rooms, and collaborative workspaces tailored for modern teams, freelancers, and growing creators.
+						Book desks, private offices, and meeting rooms when you need them.
 					</p>
 
 					<div class="hero-cta-group">
 						<a href="/user/ureg" class="cube-btn cube-btn-primary cube-btn-lg">
-							<i class="fa fa-search mr-2"></i> Explore Cubes Now
+							<i class="fa fa-user-plus mr-2"></i> Register as User
 						</a>
 						<a href="/owners/vreg" class="cube-btn cube-btn-outline-light cube-btn-lg">
-							<i class="fa fa-building-o mr-2"></i> List Your Space
+							<i class="fa fa-building-o mr-2"></i> Register as Owner
 						</a>
 					</div>
 
-					<!-- Hero Stats (Removed 50+ stat, kept 100%, 24/7, ₹0 clean and organized) -->
+					
 					<div class="hero-stats-row">
 						<div class="hero-stat-item">
 							<span class="hero-stat-number">100%</span>
-							<span class="hero-stat-label">Instant Confirmation</span>
+							<span class="hero-stat-label">Flexible Bookings</span>
 						</div>
 						<div class="hero-stat-item">
 							<span class="hero-stat-number">24/7</span>
-							<span class="hero-stat-label">Tech Support Active</span>
+							<span class="hero-stat-label">Support</span>
 						</div>
 						<div class="hero-stat-item">
 							<span class="hero-stat-number">₹0</span>
-							<span class="hero-stat-label">Hidden Booking Fees</span>
+							<span class="hero-stat-label">Booking Fees</span>
 						</div>
 					</div>
 				</div>
 
 				<div class="col-lg-6">
 					<div class="hero-visual-card">
-						<!-- Pure CSS/JS Auto-Rotating Workspace Slideshow -->
+						
 						<div class="hero-slideshow" id="heroSlideshow">
 							<img src="{% static 'images/1u.jpg' %}" alt="Modern Coworking Lounge" class="hero-slide active">
 							<img src="{% static 'images/2u.jpg' %}" alt="Executive Team Workspace" class="hero-slide">
@@ -83,64 +83,64 @@
 		</div>
 	</section>
 
-	<!-- Value Proposition / Features Section -->
+	
 	<section class="py-5 my-5" id="features">
 		<div class="container">
 			<div class="section-header">
 				<span class="section-tag">Why Choose Rent-a-Cube</span>
-				<h2 class="section-title">Built for Modern Productivity & Scale</h2>
-				<p class="section-desc">Experience seamless workspace booking equipped with enterprise-grade amenities and proactive maintenance management.</p>
+				<h2 class="section-title">Workspaces That Fit Your Day</h2>
+				<p class="section-desc">Book verified Workspaces with the amenities you need.</p>
 			</div>
 
 			<div class="row">
-				<!-- Feature 1 -->
+				
 				<div class="col-md-6 col-lg-3 mb-4">
 					<div class="feature-card">
 						<div class="feature-icon-box indigo">
 							<i class="fa fa-calendar-check-o"></i>
 						</div>
-						<h4 style="font-size: 1.15rem; font-weight: 700; color: var(--rc-dark); margin-bottom: 0.5rem;">Smart Cube Booking</h4>
+						<h4 style="font-size: 1.15rem; font-weight: 700; color: var(--rc-dark); margin-bottom: 0.5rem;">Flexible Bookings</h4>
 						<p style="font-size: 0.9rem; color: var(--rc-text-muted); line-height: 1.5; margin: 0;">
-							Reserve hot desks, private pods, or executive suites with flexible hourly, daily, and monthly passes.
+							Book desks, offices, and meeting rooms by the hour, day, or month.
 						</p>
 					</div>
 				</div>
 
-				<!-- Feature 2 -->
+				
 				<div class="col-md-6 col-lg-3 mb-4">
 					<div class="feature-card">
 						<div class="feature-icon-box sky">
 							<i class="fa fa-wifi"></i>
 						</div>
-						<h4 style="font-size: 1.15rem; font-weight: 700; color: var(--rc-dark); margin-bottom: 0.5rem;">High-Speed & Ready</h4>
+						<h4 style="font-size: 1.15rem; font-weight: 700; color: var(--rc-dark); margin-bottom: 0.5rem;">Ready to Work</h4>
 						<p style="font-size: 0.9rem; color: var(--rc-text-muted); line-height: 1.5; margin: 0;">
-							Equipped with redundant gigabit fiber WiFi, power backup, ergonomic seating, and interactive meeting screens.
+							Compare amenities, including Wi-Fi, power backup, and meeting equipment.
 						</p>
 					</div>
 				</div>
 
-				<!-- Feature 3 -->
+				
 				<div class="col-md-6 col-lg-3 mb-4">
 					<div class="feature-card">
 						<div class="feature-icon-box emerald">
 							<i class="fa fa-shield"></i>
 						</div>
-						<h4 style="font-size: 1.15rem; font-weight: 700; color: var(--rc-dark); margin-bottom: 0.5rem;">Fintech Safe Checkout</h4>
+						<h4 style="font-size: 1.15rem; font-weight: 700; color: var(--rc-dark); margin-bottom: 0.5rem;">Secure Payments</h4>
 						<p style="font-size: 0.9rem; color: var(--rc-text-muted); line-height: 1.5; margin: 0;">
-							End-to-end encrypted payments powered by Razorpay with instant order confirmation, receipts, and refund protections.
+							Pay securely through Razorpay and receive a Booking confirmation.
 						</p>
 					</div>
 				</div>
 
-				<!-- Feature 4 -->
+				
 				<div class="col-md-6 col-lg-3 mb-4">
 					<div class="feature-card">
 						<div class="feature-icon-box amber">
 							<i class="fa fa-comments-o"></i>
 						</div>
-						<h4 style="font-size: 1.15rem; font-weight: 700; color: var(--rc-dark); margin-bottom: 0.5rem;">Direct Chat & Tech Care</h4>
+						<h4 style="font-size: 1.15rem; font-weight: 700; color: var(--rc-dark); margin-bottom: 0.5rem;">Owner Chat and Support</h4>
 						<p style="font-size: 0.9rem; color: var(--rc-text-muted); line-height: 1.5; margin: 0;">
-							Instant real-time messaging between coworkers and cube owners with on-demand certified technician support.
+							Message the Owner and submit a Service Request when you need help.
 						</p>
 					</div>
 				</div>
@@ -148,45 +148,45 @@
 		</div>
 	</section>
 
-	<!-- How It Works Section -->
+	
 	<section class="py-5 my-5" id="how-it-works">
 		<div class="container">
 			<div class="section-header">
 				<span class="section-tag">Simple Process</span>
 				<h2 class="section-title">How Rent-a-Cube Works</h2>
-				<p class="section-desc">Get your productive workspace set up in three straightforward steps.</p>
+				<p class="section-desc">Book a Workspace in three steps.</p>
 			</div>
 
 			<div class="row">
-				<!-- Step 1 -->
+				
 				<div class="col-md-4 mb-4">
 					<div class="step-card">
 						<div class="step-number">1</div>
 						<h4 style="font-size: 1.25rem; font-weight: 700; color: var(--rc-dark); margin: 0.75rem 0 0.5rem 0;">Browse & Select</h4>
 						<p style="font-size: 0.925rem; color: var(--rc-text-muted); line-height: 1.5; margin: 0;">
-							Explore available coworking spaces, filter by location, amenities, and verify real photos approved by Admin.
+							Browse Workspaces by location, amenities, and price.
 						</p>
 					</div>
 				</div>
 
-				<!-- Step 2 -->
+				
 				<div class="col-md-4 mb-4">
 					<div class="step-card">
 						<div class="step-number">2</div>
 						<h4 style="font-size: 1.25rem; font-weight: 700; color: var(--rc-dark); margin: 0.75rem 0 0.5rem 0;">Book & Pay Online</h4>
 						<p style="font-size: 0.925rem; color: var(--rc-text-muted); line-height: 1.5; margin: 0;">
-							Choose your preferred time slot and complete payment instantly through our secure, encrypted Razorpay checkout.
+							Choose a date, time, and duration, then pay securely through Razorpay.
 						</p>
 					</div>
 				</div>
 
-				<!-- Step 3 -->
+				
 				<div class="col-md-4 mb-4">
 					<div class="step-card">
 						<div class="step-number">3</div>
 						<h4 style="font-size: 1.25rem; font-weight: 700; color: var(--rc-dark); margin: 0.75rem 0 0.5rem 0;">Check In & Work</h4>
 						<p style="font-size: 0.925rem; color: var(--rc-text-muted); line-height: 1.5; margin: 0;">
-							Receive digital confirmation, access your cube, chat with the owner, and request on-site tech assistance whenever needed.
+							Receive your Booking confirmation, chat with the Owner, and submit Service Requests as needed.
 						</p>
 					</div>
 				</div>
@@ -194,39 +194,39 @@
 		</div>
 	</section>
 
-	<!-- Call to Action Banner -->
+	
 	<section class="py-5" style="background: linear-gradient(135deg, var(--rc-primary), #6366F1); color: #FFFFFF;">
 		<div class="container text-center py-4">
-			<h2 style="color: #FFFFFF; font-size: 2.25rem; font-weight: 800; margin-bottom: 1rem;">Ready to Upgrade Your Workday?</h2>
+			<h2 style="color: #FFFFFF; font-size: 2.25rem; font-weight: 800; margin-bottom: 1rem;">Book Your Next Workspace</h2>
 			<p style="font-size: 1.15rem; color: rgba(255,255,255,0.9); max-width: 620px; margin: 0 auto 2rem auto;">
-				Join thousands of professionals booking verified coworking pods, cabins, and collaborative cubes today.
+				Find a verified Workspace for your next workday.
 			</p>
 			<div class="d-flex justify-content-center gap-3 flex-wrap">
 				<a href="/user/ureg" class="cube-btn cube-btn-secondary cube-btn-lg">
-					<i class="fa fa-user-plus mr-2"></i> Join as Member
+					<i class="fa fa-user-plus mr-2"></i> Register as User
 				</a>
 				<a href="/owners/vreg" class="cube-btn cube-btn-outline-light cube-btn-lg">
-					<i class="fa fa-building-o mr-2"></i> List Your Workspace
+					<i class="fa fa-building-o mr-2"></i> Register as Owner
 				</a>
 			</div>
 		</div>
 	</section>
 
-	<!-- Modern SaaS Footer -->
+	
 	<footer class="cube-footer">
 		<div class="container">
 			<div class="row">
-				<!-- Col 1: Brand Info -->
+				
 				<div class="col-lg-4 col-md-6 mb-4">
 					<div class="d-flex align-items-center gap-2 mb-3">
 						<img src="{% static 'images/logo-footer.svg' %}" alt="Rent-a-Cube Logo" style="height: 48px; width: auto; object-fit: contain;">
 					</div>
 					<p style="font-size: 0.9rem; line-height: 1.6; color: #CBD5E1;">
-						Rent-a-Cube is an all-in-one workspace booking and management platform empowering remote teams, creators, and workspace owners with flexible cube rentals and proactive maintenance.
+						Rent-a-Cube connects Users with flexible Workspaces and their Owners.
 					</p>
 				</div>
 
-				<!-- Col 2: Quick Links -->
+				
 				<div class="col-lg-2 col-md-6 mb-4">
 					<h5 style="color: #FFFFFF; font-size: 1.1rem; margin-bottom: 1.25rem;">Platform</h5>
 					<ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.9rem;">
@@ -237,18 +237,18 @@
 					</ul>
 				</div>
 
-				<!-- Col 3: Portals -->
+				
 				<div class="col-lg-3 col-md-6 mb-4">
 					<h5 style="color: #FFFFFF; font-size: 1.1rem; margin-bottom: 1.25rem;">Access Portals</h5>
 					<ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.9rem;">
-						<li><a href="/user/ulog" style="color: #CBD5E1;"><i class="fa fa-user text-primary mr-1"></i> User Portal</a></li>
-						<li><a href="/owners/vlog" style="color: #CBD5E1;"><i class="fa fa-briefcase text-success mr-1"></i> Owner Portal</a></li>
-						<li><a href="/technician/tlog" style="color: #CBD5E1;"><i class="fa fa-wrench text-warning mr-1"></i> Technician Portal</a></li>
-						<li><a href="/workadmin/alogin" style="color: #CBD5E1;"><i class="fa fa-shield text-danger mr-1"></i> Admin Portal</a></li>
+						<li><a href="/user/ulog" style="color: #CBD5E1;"><i class="fa fa-user text-primary mr-1"></i> Sign In as User</a></li>
+						<li><a href="/owners/vlog" style="color: #CBD5E1;"><i class="fa fa-briefcase text-success mr-1"></i> Sign In as Owner</a></li>
+						<li><a href="/technician/tlog" style="color: #CBD5E1;"><i class="fa fa-wrench text-warning mr-1"></i> Sign In as Technician</a></li>
+						<li><a href="/workadmin/alogin" style="color: #CBD5E1;"><i class="fa fa-shield text-danger mr-1"></i> Sign In as Admin</a></li>
 					</ul>
 				</div>
 
-				<!-- Col 4: Contact Details -->
+				
 				<div class="col-lg-3 col-md-6 mb-4">
 					<h5 style="color: #FFFFFF; font-size: 1.1rem; margin-bottom: 1.25rem;">Get in Touch</h5>
 					<p style="font-size: 0.9rem; color: #CBD5E1; margin-bottom: 0.5rem;">
@@ -263,18 +263,18 @@
 				</div>
 			</div>
 
-			<!-- Footer Bottom -->
+			
 			<div class="cube-footer-bottom" style="border-top: 1px solid #1E293B; padding-top: 1.5rem; margin-top: 2.5rem; text-align: center;">
-				<p style="margin: 0; color: #FFFFFF !important; font-weight: 500; font-size: 0.875rem;">&copy; 2026 Rent-a-Cube Platform. All rights reserved. Designed for optimal workspace efficiency.</p>
+				<p style="margin: 0; color: #FFFFFF !important; font-weight: 500; font-size: 0.875rem;">&copy; 2026 Rent-a-Cube. All rights reserved.</p>
 			</div>
 		</div>
 	</footer>
 
-	<!-- Scripts -->
+	
 	<script src="{% static 'admin/js/jquery.min.js' %}"></script>
 	<script src="{% static 'admin/js/bootstrap.bundle.min.js' %}"></script>
 
-	<!-- Lightweight Auto-Rotating Slideshow Script -->
+	
 	<script>
 		(function() {
 			var slides = document.querySelectorAll('#heroSlideshow .hero-slide');

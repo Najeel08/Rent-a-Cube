@@ -1,24 +1,20 @@
-/* ==========================================================================
-   Chat Component Styles
-   ========================================================================== */
 
-/* Font Import */
+
+
 @import url("https://fonts.googleapis.com/css?family=Roboto");
 
-/* Base & Typography */
+
 body {
   margin: 0;
   font-family: 'Roboto';
 }
 
-/* Visibility Utilities */
+
 .visible {
   opacity: 1;
 }
 
-/* ==========================================================================
-   Color Palette Picker
-   ========================================================================== */
+
 
 .colorPanel {
   position: absolute;
@@ -58,9 +54,7 @@ body {
   opacity: 0.7;
 }
 
-/* ==========================================================================
-   Chatbox Main Container
-   ========================================================================== */
+
 
 .chatbox {
   display: block;
@@ -74,7 +68,7 @@ body {
   font-size: 17px;
 }
 
-/* Chatbox Header & Online Status Dot */
+
 .chatbox__header {
   display: flex;
   justify-content: space-between;
@@ -108,7 +102,7 @@ body {
   animation-iteration-count: infinite;
 }
 
-/* Tooltip Badges */
+
 .chatbox__tooltip {
   opacity: 0;
   z-index: 2;
@@ -138,9 +132,7 @@ body {
   top: 5px;
 }
 
-/* ==========================================================================
-   Chat Messages & Bubbles
-   ========================================================================== */
+
 
 .chatbox__messages {
   width: 100%;
@@ -180,9 +172,7 @@ body {
   color: #fff;
 }
 
-/* ==========================================================================
-   Chat Input Panel & Actions
-   ========================================================================== */
+
 
 .chatbox__inputPanel {
   width: 100%;
@@ -221,9 +211,7 @@ body {
   opacity: 0.7;
 }
 
-/* ==========================================================================
-   Keyframe Animations
-   ========================================================================== */
+
 
 @-moz-keyframes blinking {
   0% {
@@ -273,9 +261,7 @@ body {
   }
 }
 
-/* ==========================================================================
-   Responsive Breakpoints
-   ========================================================================== */
+
 
 @media screen and (max-width: 450px) {
   .chatbox {

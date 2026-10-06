@@ -2,12 +2,12 @@
 {% load static %}
 <html lang="en">
 <head>
-	<title>Client Chats | Rent-a-Cube</title>
+	<title>User Chats | Rent-a-Cube</title>
 	<meta charset="utf-8">
 	<meta name="description" content="Direct messaging with workspace clients">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-	<!-- Stylesheets -->
+	
 	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 	<link rel="stylesheet" href="{% static 'css/animations.css' %}">
 	<link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
@@ -17,16 +17,16 @@
 </head>
 
 <body>
-	<!-- Preloader -->
+	
 	<div class="preloader">
 		<div class="preloader_image"></div>
 	</div>
 
-	<!-- Main Canvas Wrapper -->
+	
 	<div id="canvas">
 		<div id="box_wrapper">
 
-			<!-- Modern Navigation Header -->
+			
 			<header class="cube-navbar d-flex justify-content-between align-items-center flex-wrap px-4 py-2">
 				<div class="d-flex align-items-center">
 					<a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'vhome' %}">
@@ -67,7 +67,7 @@
 					</li>
 					<li>
 						<a class="cube-nav-link" href="{% url 'requests' %}">
-							<i class="fa fa-inbox"></i> Requests
+							<i class="fa fa-inbox"></i> Service Requests
 						</a>
 					</li>
 					{% if request.session.id %}
@@ -95,13 +95,13 @@
 					<li class="ml-2">
 						<form method="post" action="{% url 'logout' %}" class="cube-logout-form">
 {% csrf_token %}
-<button type="submit" class="cube-btn cube-btn-outline cube-btn-sm"><i class="fa fa-sign-out"></i> Logout</button>
+<button type="submit" class="cube-btn cube-btn-outline cube-btn-sm"><i class="fa fa-sign-out"></i> Log Out</button>
 </form>
 					</li>
 				</ul>
 			</header>
 
-			<!-- Flash Messages -->
+			
 			{% if messages %}
 			<div class="container mt-4">
 				{% for message in messages %}
@@ -112,14 +112,14 @@
 			</div>
 			{% endif %}
 
-			<!-- Main Chat Inbox Section -->
+			
 			<main class="py-5" style="background-color: var(--rc-bg-main); min-height: 85vh;">
 				<div class="container">
 
 					<div class="row justify-content-center">
 						<div class="col-lg-8">
 
-							<!-- Inbox Title & Header -->
+							
 							<div class="d-flex justify-content-between align-items-center flex-wrap mb-4 pb-2 border-bottom">
 								<div>
 									<h2 class="mb-1" style="font-weight: 800;">Messages & Inquiries</h2>
@@ -128,10 +128,10 @@
 								<span class="cube-badge cube-badge-primary">Active Channels</span>
 							</div>
 
-							<!-- Chat Conversations Card -->
+							
 							<div class="cube-table-container">
 								<div class="p-3 bg-light border-bottom d-flex justify-content-between align-items-center">
-									<h5 class="mb-0 font-weight-bold text-dark"><i class="fa fa-inbox text-primary mr-2"></i> Client Conversations</h5>
+									<h5 class="mb-0 font-weight-bold text-dark"><i class="fa fa-inbox text-primary mr-2"></i> User Conversations</h5>
 									<span class="small text-muted">{{ date }}</span>
 								</div>
 
@@ -151,7 +151,7 @@
 											</div>
 											<div>
 												<h5 class="mb-0 font-weight-bold text-dark">{{ data.Name }}</h5>
-												<span class="small text-muted">{{ data.Email|default:"Workspace Client" }}</span>
+												<span class="small text-muted">{{ data.Email|default:"Workspace User" }}</span>
 											</div>
 										</div>
 										<div class="d-flex align-items-center gap-3">
@@ -176,17 +176,17 @@
 				</div>
 			</main>
 
-			<!-- Modern Footer -->
+			
 			<footer class="cube-footer">
 				<div class="container text-center">
 					<p style="margin: 0; color: #FFFFFF !important; font-weight: 500; font-size: 0.875rem;">&copy; 2026 Rent-a-Cube Platform. All rights reserved. Designed for optimal workspace efficiency.</p>
 				</div>
 			</footer>
 
-		</div><!-- eof #box_wrapper -->
-	</div><!-- eof #canvas -->
+		</div>
+	</div>
 
-	<!-- Footer Scripts -->
+	
 	<script src="{% static 'js/compressed.js' %}"></script>
 	<script src="{% static 'js/main.js' %}"></script>
 </body>

@@ -1,7 +1,6 @@
 from django.contrib import admin
-from .models import *
+from .models import Messages_Tb, cart, refund_tb, request_tb, user_tb
 
-# Register user-related models in Django admin panel
 admin.site.register(user_tb)
 admin.site.register(cart)
 admin.site.register(request_tb)

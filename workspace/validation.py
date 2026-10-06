@@ -28,9 +28,9 @@ def validate_image_upload(upload, field_label):
         upload.seek(0)
 
 
-def required_text(data, field_name, label, max_length=None):
+def required_text(form_data, field_name, label, max_length=None):
     """Return a required trimmed field or a user-facing validation error."""
-    value = str(data.get(field_name, '')).strip()
+    value = str(form_data.get(field_name, '')).strip()
     if not value:
         raise ValidationError(f'{label} is required.')
     if max_length and len(value) > max_length:

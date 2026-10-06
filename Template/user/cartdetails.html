@@ -2,30 +2,30 @@
 {% load static %}
 <html lang="en">
 <head>
-	<title>RENT A CUBE - Cart Details</title>
+	<title>Cart Details | Rent-a-Cube</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-	<!-- Bootstrap & Font Awesome -->
+	
 	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 	<link rel="stylesheet" href="{% static 'css/animations.css' %}">
 	<link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
 	
-	<!-- Rent-a-Cube Core Design System -->
+	
 	<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
 	<link rel="stylesheet" href="{% static 'css/main.css' %}" class="color-switcher-link">
 	<script src="{% static 'js/vendor/modernizr-custom.js' %}"></script>
 </head>
 
 <body>
-	<!-- Preloader -->
+	
 	<div class="preloader">
 		<div class="preloader_image"></div>
 	</div>
 
 	<div id="canvas">
 		<div id="box_wrapper">
-			<!-- Modern Navigation Header -->
+			
 			<header class="cube-navbar d-flex justify-content-between align-items-center">
 				<a class="navbar-brand" href="{% url 'uhome' %}">
 					<img src="{% static 'images/logo.svg' %}" alt="Rent-a-Cube Logo" style="height: 42px; width: auto; object-fit: contain;">
@@ -43,17 +43,17 @@
 					</div>
 					<form method="post" action="{% url 'logout' %}" class="cube-logout-form">
 						{% csrf_token %}
-						<button type="submit" class="cube-btn cube-btn-outline cube-btn-sm" title="Logout" aria-label="Logout">
+						<button type="submit" class="cube-btn cube-btn-outline cube-btn-sm" title="Log Out" aria-label="Log Out">
 							<i class="fa fa-sign-out"></i>
 						</button>
 					</form>
 				</div>
 			</header>
 
-			<!-- Cart Items Section -->
+			
 			<section class="py-5" style="background-color: var(--rc-bg-main); min-height: 85vh;">
 				<div class="container">
-					<!-- Flash Messages -->
+					
 					{% for msg in messages %}
 					<div class="cube-alert cube-alert-info mb-4">
 						<i class="fa fa-info-circle"></i> {{ msg }}
@@ -63,7 +63,7 @@
 					<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
 						<div>
 							<span class="cube-badge cube-badge-primary mb-2">Cart Review</span>
-							<h2 class="font-weight-bold mb-1">Items from <span class="text-primary">{{ owner|default:"Provider" }}</span></h2>
+							<h2 class="font-weight-bold mb-1">Items from <span class="text-primary">{{ owner|default:"Owner" }}</span></h2>
 							<p class="text-muted small mb-0">Review your selected workspace slots before making payment.</p>
 						</div>
 						<div class="mt-3 mt-md-0">
@@ -78,7 +78,7 @@
 						<input type="text" name="sum" value="{{sum}}" hidden>
 
 						<div class="row">
-							<!-- Cart Item Cards (Left) -->
+							
 							<div class="col-lg-8 mb-4">
 								{% for i in book_obj %}
 								<div class="cube-card mb-4 shadow-sm p-3 p-md-4">
@@ -99,7 +99,7 @@
 													<i class="fa fa-calendar mr-1"></i> {{i.Date}}
 												</span>
 												<span class="cube-badge cube-badge-primary">
-													<i class="fa fa-clock-o mr-1"></i> {{i.nohrs}} hrs
+											<i class="fa fa-clock-o mr-1"></i> {{i.nohrs}} hours
 												</span>
 												{% if i.StartTime %}
 												<span class="cube-badge cube-badge-secondary">
@@ -110,7 +110,7 @@
 										</div>
 
 										<div class="col-md-4 text-md-right">
-											<div class="text-muted small">Rate: ₹{{i.Price}}/hr</div>
+											<div class="text-muted small">Rate: ₹{{i.Price}}/hour</div>
 											<div class="font-weight-bold text-primary my-1" style="font-size: 1.35rem;">
 												Total: ₹{{ i.line_total }}
 											</div>
@@ -131,7 +131,7 @@
 										<i class="fa fa-shopping-cart"></i>
 									</div>
 									<h4 class="font-weight-bold">Your Cart is Empty</h4>
-									<p class="text-muted small mb-4">No workspace items found in your cart for this provider.</p>
+											<p class="text-muted small mb-4">No Workspace items found in your cart for this Owner.</p>
 									<a href="{% url 'showworkspace1' %}" class="cube-btn cube-btn-primary">
 										Browse Available Workspaces <i class="fa fa-arrow-right ml-1"></i>
 									</a>
@@ -139,14 +139,14 @@
 								{% endfor %}
 							</div>
 
-							<!-- Checkout Summary Card (Right) -->
+							
 							{% if book_obj %}
 							<div class="col-lg-4 mb-4">
 								<div class="cube-card p-4 shadow-sm" style="position: sticky; top: 90px;">
 									<h4 class="font-weight-bold mb-3">Order Summary</h4>
 									
 									<div class="d-flex justify-content-between mb-2 small text-muted">
-										<span>Host Provider:</span>
+										<span>Owner:</span>
 										<span class="font-weight-bold text-dark">{{ owner }}</span>
 									</div>
 									<div class="d-flex justify-content-between mb-2 small text-muted">
@@ -156,7 +156,7 @@
 									<hr class="my-3" style="border-color: var(--rc-border-light);">
 
 									<div class="d-flex justify-content-between align-items-center mb-3">
-										<span class="font-weight-bold" style="font-size: 1.1rem;">Provider Cart Total:</span>
+										<span class="font-weight-bold" style="font-size: 1.1rem;">Owner Cart Total:</span>
 										<span class="font-weight-bold text-primary" style="font-size: 1.65rem;">₹{{ sum }}</span>
 									</div>
 
@@ -181,7 +181,7 @@
 				</div>
 			</section>
 
-			<!-- Modern Footer -->
+			
 			<footer class="cube-footer">
 				<div class="container text-center">
 					<p style="margin: 0; color: #FFFFFF !important; font-weight: 500; font-size: 0.875rem;">&copy; 2026 Rent-a-Cube Platform. All rights reserved. Designed for optimal workspace efficiency.</p>
@@ -190,7 +190,7 @@
 		</div>
 	</div>
 
-	<!-- Scripts -->
+	
 	<script src="{% static 'js/compressed.js' %}"></script>
 	<script src="{% static 'js/main.js' %}"></script>
 </body>

@@ -59,23 +59,19 @@ def ureg(request):
             messages.info(request, exc.message)
             return render(request, 'user/ureg.html')
 
-        # Validate standard email format
         if not is_valid_email(email):
             messages.info(request, "Please enter a valid email address (e.g. alex@company.com)")
             return render(request, 'user/ureg.html')
 
-        # Check if passwords match
         if password != confirm_password:
             messages.info(request, 'password not match')
             return render(request, 'user/ureg.html')
 
-        # Check for duplicate email or username
         if user_tb.objects.filter(Email__iexact=email).exists():
             messages.info(request, "email already exists")
         elif user_tb.objects.filter(Name=name).exists():
             messages.info(request, "user already exists")
         else:
-            # Create new user with hashed password
             user_tb.objects.create(
                 Name=name,
                 Email=email,
@@ -98,7 +94,6 @@ def ulog(request):
         user = user_tb.objects.filter(Email__iexact=email).first()
 
         if user and password_matches(password, user.Password):
-            # Auto-upgrade plaintext password to hashed if needed
             upgrade_password_if_needed(user, 'Password', password)
             login_role(request, 'user', user, user.Name)
             return redirect('uhome')
@@ -147,7 +142,6 @@ def uviewcart(request):
     if guard:
         return guard
     items = cart.objects.filter(user_id=request.session['id'], Paystatus=False)
-    # Calculate line total for each item and overall total
     total = 0
     for item in items:
         item.line_total = item.Price * item.nohrs
@@ -168,7 +162,6 @@ def selectownercart(request):
     guard = _user_guard(request)
     if guard:
         return guard
-    # Get distinct owners who have unpaid items in user's cart
     owners = owner_tb.objects.filter(
         cart__user_id=request.session['id'],
         cart__Paystatus=False,
@@ -213,17 +206,14 @@ def checkout(request, aid):
         messages.info(request, 'This booking has already been paid.')
         return redirect('uvieworder', pk=request.session['id'])
 
-    # Initialize Razorpay client
     client = _razorpay_client()
     if client is None:
         messages.info(request, "Razorpay keys are not configured")
         return redirect('cartdetails', pk=booking_item.owner_id)
 
-    # Calculate total amount in paise (1 INR = 100 paise)
     total = booking_item.Price * booking_item.nohrs
     amount_paise = int(total) * 100
 
-    # Create Razorpay order
     try:
         payment_order = client.order.create(
             dict(amount=amount_paise, currency="INR", payment_capture=1)
@@ -232,7 +222,6 @@ def checkout(request, aid):
         messages.info(request, "Unable to create Razorpay order")
         return redirect('cartdetails', pk=booking_item.owner_id)
 
-    # Store order details in session to verify the payment callback later
     request.session[f'booking_payment_{booking_item.id}'] = {
         'order_id': payment_order['id'],
         'amount_paise': amount_paise,
@@ -266,7 +255,6 @@ def payment_success(request, aid):
         messages.info(request, 'This booking has already been paid.')
         return redirect('uvieworder', pk=request.session['id'])
 
-    # Verify the posted order ID matches the one we stored during checkout
     session_key = f'booking_payment_{booking_item.id}'
     pending_payment = request.session.get(session_key)
     posted_order_id = request.POST.get('razorpay_order_id')
@@ -280,14 +268,12 @@ def payment_success(request, aid):
         messages.info(request, "Razorpay keys are not configured")
         return redirect('cartdetails', pk=booking_item.owner_id)
 
-    # Collect payment data from Razorpay callback
     payment_data = {
         'razorpay_order_id': posted_order_id,
         'razorpay_payment_id': request.POST.get('razorpay_payment_id'),
         'razorpay_signature': request.POST.get('razorpay_signature'),
     }
 
-    # Verify Razorpay signature to confirm payment is genuine
     try:
         client.utility.verify_payment_signature(payment_data)
     except Exception:
@@ -315,7 +301,6 @@ def payment_success(request, aid):
             ]
         )
 
-    # Clear payment session data after successful payment
     request.session.pop(session_key, None)
     messages.info(request, "Payment completed")
     return redirect('uvieworder', pk=request.session['id'])
@@ -341,7 +326,6 @@ def showworkspace1(request):
     if guard:
         return guard
     workspaces = owvaddwork.objects.filter(owner__accept=True)
-    # Filter by city if user submitted search form
     if request.method == "POST":
         city = request.POST.get('city', '').strip()
         workspaces = workspaces.filter(City__icontains=city)
@@ -407,7 +391,6 @@ def uviewownerwork(request, pi):
                 messages.info(request, 'This workspace is already reserved for the selected time.')
                 return render(request, "user/uviewownerwork.html", {'owr': [workspace]})
 
-        # Add workspace to cart
         cart.objects.create(
             WsName=workspace.Name,
             Price=price,
@@ -503,7 +486,6 @@ def User_chat(request, aid):
     user = get_object_or_404(user_tb, id=user_id)
     owner = get_object_or_404(owner_tb, id=aid, accept=True)
 
-    # Save new message if user submitted the chat form
     if request.method == "POST":
         message = request.POST.get("message", "").strip()
         if message and len(message) <= 500:
@@ -520,7 +502,6 @@ def User_chat(request, aid):
         elif len(message) > 500:
             messages.info(request, 'Messages must be 500 characters or fewer.')
 
-    # Fetch all messages between this user and owner (both directions)
     messages_qs = Messages_Tb.objects.filter(
         Q(Send_id=str(user_id), Receiver_id=str(owner.id))
         | Q(Send_id=str(owner.id), Receiver_id=str(user_id))

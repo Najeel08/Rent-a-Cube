@@ -53,7 +53,7 @@ def password_is_hashed(value):
     try:
         identify_hasher(value)
         return True
-    except Exception:
+    except ValueError:
         return False
 
 
@@ -68,7 +68,6 @@ def password_matches(raw_password, stored_password):
         return False
     if password_is_hashed(stored_password):
         return check_password(raw_password, stored_password)
-    # Fallback: compare plaintext passwords using constant-time to prevent timing attacks
     return constant_time_compare(str(raw_password), str(stored_password))
 
 

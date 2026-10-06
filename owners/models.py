@@ -2,7 +2,6 @@ from django.db import models
 from workspace.storage import PrivateProofStorage
 
 
-# Owner model - stores owner registration details
 class owner_tb(models.Model):
     Name = models.CharField(max_length=20)
     Email = models.EmailField(max_length=50, unique=True)
@@ -13,14 +12,13 @@ class owner_tb(models.Model):
     Image = models.ImageField(upload_to="id")
     Workex = models.CharField(max_length=25)
     Proof = models.ImageField(upload_to="proofs", storage=PrivateProofStorage(), null=True)
-    accept = models.BooleanField(default=False)  # Admin approval status
-    reject = models.BooleanField(default=False)  # Admin rejection status
+    accept = models.BooleanField(default=False)
+    reject = models.BooleanField(default=False)
 
     def __str__(self):
         return self.Name
 
 
-# Workspace model - stores workspace listing details added by owners
 class owvaddwork(models.Model):
     Name = models.CharField(max_length=20)
     Sqft = models.CharField(max_length=50)
@@ -39,7 +37,6 @@ class owvaddwork(models.Model):
         return self.Name
 
 
-# Technician model - stores technicians added by owners
 class addtech(models.Model):
     Name = models.CharField(max_length=20)
     Email = models.EmailField(max_length=50, unique=True)
@@ -55,7 +52,6 @@ class addtech(models.Model):
         return self.Name
 
 
-# Work assignment model - links a service request to a technician
 class Workassign(models.Model):
     Name = models.CharField(max_length=20)
     Email = models.EmailField(max_length=50)

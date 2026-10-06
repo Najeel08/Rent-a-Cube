@@ -4,15 +4,15 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title>Rent-a-Cube - Contact & Support</title>
-	<meta name="description" content="Get in touch with the Rent-a-Cube support, reservations, and workspace operations team.">
+	<title>Contact | Rent-a-Cube</title>
+	<meta name="description" content="Contact Rent-a-Cube support for bookings, workspaces, and service requests.">
 
-	<!-- Google Fonts -->
+	
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-	<!-- Stylesheets -->
+	
 	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 	<link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
 	<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
@@ -21,24 +21,24 @@
 <body>
 	{% include 'includes/public_navbar.html' with active_page='contact' %}
 
-	<!-- Contact Header -->
+	
 	<section class="contact-header">
 		<div class="container">
 			<span class="cube-badge cube-badge-primary mb-3" style="background: rgba(255,255,255,0.15); color: #A5B4FC; border-color: rgba(255,255,255,0.25); font-size: 0.85rem; padding: 0.4rem 1rem;">
-				<i class="fa fa-headset mr-1"></i> Operations & Member Helpdesk
+				<i class="fa fa-headset mr-1"></i> Support
 			</span>
-			<h1 style="color: #FFFFFF; font-size: 2.5rem; font-weight: 800; margin-bottom: 0.5rem;">We're Here to Help</h1>
+			<h1 style="color: #FFFFFF; font-size: 2.5rem; font-weight: 800; margin-bottom: 0.5rem;">Contact Rent-a-Cube</h1>
 			<p style="color: #CBD5E1; font-size: 1.05rem; max-width: 580px; margin: 0 auto;">
-				Have questions regarding cube reservations, onboarding your workspace, technician assistance, or enterprise bookings? Connect with our dedicated support specialists.
+				Get help with Bookings, Workspaces, or Service Requests.
 			</p>
 		</div>
 	</section>
 
-	<!-- Contact Content Split -->
+	
 	<section class="contact-wrapper">
 		<div class="container">
 			<div class="row">
-				<!-- Left Column: Contact Form Card -->
+				
 				<div class="col-lg-6 mb-4 mb-lg-0">
 					<div class="contact-card">
 						<div class="d-flex align-items-center gap-2 mb-2">
@@ -46,13 +46,13 @@
 								<i class="fa fa-paper-plane"></i>
 							</div>
 							<div>
-								<h3 style="font-size: 1.35rem; font-weight: 800; color: var(--rc-dark); margin: 0;">Send Us a Message</h3>
-								<span style="font-size: 0.825rem; color: var(--rc-text-muted);">We reply within 2 to 4 business hours</span>
+								<h3 style="font-size: 1.35rem; font-weight: 800; color: var(--rc-dark); margin: 0;">Send a Message</h3>
+								<span style="font-size: 0.825rem; color: var(--rc-text-muted);">We reply within two to four business hours.</span>
 							</div>
 						</div>
 
 						<p style="font-size: 0.9rem; color: var(--rc-text-muted); margin-bottom: 1.5rem; line-height: 1.5;">
-							Please complete the details below and an operations engineer will reach out directly to your email or phone.
+						We will reply by email or phone.
 						</p>
 
 						{% for msg in messages %}
@@ -74,23 +74,23 @@
 							</div>
 
 							<div class="cube-form-group">
-								<label class="cube-label" for="contact-message">Message or Inquiries</label>
-								<textarea id="contact-message" name="message" class="cube-textarea" rows="4" placeholder="Tell us how we can help you with cube booking, tech support, or listing..." required></textarea>
+								<label class="cube-label" for="contact-message">Message</label>
+								<textarea id="contact-message" name="message" class="cube-textarea" rows="4" placeholder="Describe how we can help." required></textarea>
 							</div>
 
 							<div class="d-flex align-items-center justify-content-between flex-wrap gap-3 mt-4 pt-2">
 								<button type="submit" class="cube-btn cube-btn-primary cube-btn-lg">
-									<i class="fa fa-paper-plane mr-2"></i> Submit Inquiry
+									<i class="fa fa-paper-plane mr-2"></i> Send Message
 								</button>
 								<span style="font-size: 0.85rem; color: var(--rc-text-muted);">
-									<i class="fa fa-shield text-success mr-1"></i> Data Kept Confidential
+									<i class="fa fa-shield text-success mr-1"></i> Your details stay private.
 								</span>
 							</div>
 						</form>
 					</div>
 				</div>
 
-				<!-- Right Column: Support Details & Operations Card -->
+				
 				<div class="col-lg-6">
 					<div class="contact-card">
 						<div class="d-flex align-items-center gap-2 mb-2">
@@ -98,13 +98,13 @@
 								<i class="fa fa-building-o"></i>
 							</div>
 							<div>
-								<h3 style="font-size: 1.35rem; font-weight: 800; color: var(--rc-dark); margin: 0;">Support & Hub Operations</h3>
-								<span style="font-size: 0.825rem; color: var(--rc-text-muted);">Direct Contact & Business Hours</span>
+								<h3 style="font-size: 1.35rem; font-weight: 800; color: var(--rc-dark); margin: 0;">Support Details</h3>
+								<span style="font-size: 0.825rem; color: var(--rc-text-muted);">Contact information and hours</span>
 							</div>
 						</div>
 
 						<p style="font-size: 0.9rem; color: var(--rc-text-muted); margin-bottom: 1.5rem; line-height: 1.5;">
-							Our centralized workspace coordination hub is accessible for all member queries, technician dispatch, and space partnerships.
+							Contact us for support, Technician assistance, or Owner partnerships.
 						</p>
 
 						<div class="contact-info-pill">
@@ -112,7 +112,7 @@
 								<i class="fa fa-envelope-o"></i>
 							</div>
 							<div>
-								<div style="font-weight: 700; font-size: 0.875rem; color: var(--rc-dark);">Official Support Email</div>
+								<div style="font-weight: 700; font-size: 0.875rem; color: var(--rc-dark);">Support Email</div>
 								<a href="mailto:contact@rentacube.com" style="font-size: 0.95rem; font-weight: 600; color: var(--rc-primary);">contact@rentacube.com</a>
 							</div>
 						</div>
@@ -122,7 +122,7 @@
 								<i class="fa fa-phone"></i>
 							</div>
 							<div>
-								<div style="font-weight: 700; font-size: 0.875rem; color: var(--rc-dark);">Helpdesk Hotline</div>
+								<div style="font-weight: 700; font-size: 0.875rem; color: var(--rc-dark);">Support Phone</div>
 								<a href="tel:+919876543210" style="font-size: 0.95rem; font-weight: 600; color: var(--rc-dark);">+91 98765 43210</a>
 							</div>
 						</div>
@@ -132,8 +132,8 @@
 								<i class="fa fa-clock-o"></i>
 							</div>
 							<div>
-								<div style="font-weight: 700; font-size: 0.875rem; color: var(--rc-dark);">Operating Support Hours</div>
-								<div style="font-size: 0.9rem; color: var(--rc-text-main); font-weight: 500;">Mon - Sat, 9:00 AM - 7:00 PM IST</div>
+								<div style="font-weight: 700; font-size: 0.875rem; color: var(--rc-dark);">Support Hours</div>
+								<div style="font-size: 0.9rem; color: var(--rc-text-main); font-weight: 500;">Mon-Sat, 9:00 AM-7:00 PM IST</div>
 							</div>
 						</div>
 
@@ -142,15 +142,15 @@
 								<i class="fa fa-map-marker"></i>
 							</div>
 							<div>
-								<div style="font-weight: 700; font-size: 0.875rem; color: var(--rc-dark);">HQ Campus Hub</div>
-								<div style="font-size: 0.875rem; color: var(--rc-text-main);">Rent-a-Cube Operations Hub, Cyber City</div>
+								<div style="font-weight: 700; font-size: 0.875rem; color: var(--rc-dark);">Office</div>
+								<div style="font-size: 0.875rem; color: var(--rc-text-main);">Rent-a-Cube, Cyber City</div>
 							</div>
 						</div>
 
 						<div class="cube-alert cube-alert-info mt-4 mb-0">
 							<i class="fa fa-info-circle mr-2"></i>
 							<div>
-								<strong>Proactive SLA:</strong> Typical support ticket resolution and field engineer dispatch within 2 business hours.
+								<strong>Response Time:</strong> We aim to respond within two business hours.
 							</div>
 						</div>
 					</div>
@@ -159,16 +159,16 @@
 		</div>
 	</section>
 
-	<!-- Footer -->
+	
 	<footer class="cube-footer" style="margin-top: 2rem;">
 		<div class="container">
 			<div class="cube-footer-bottom" style="margin-top: 0; padding-top: 0; border-top: none;">
-				<p style="margin: 0; color: #FFFFFF !important; font-weight: 500;">&copy; 2026 Rent-a-Cube Platform. All rights reserved. Designed for optimal workspace efficiency.</p>
+				<p style="margin: 0; color: #FFFFFF !important; font-weight: 500;">&copy; 2026 Rent-a-Cube. All rights reserved.</p>
 			</div>
 		</div>
 	</footer>
 
-	<!-- Scripts -->
+	
 	<script src="{% static 'admin/js/jquery.min.js' %}"></script>
 	<script src="{% static 'admin/js/bootstrap.bundle.min.js' %}"></script>
 	<script src="{% static 'js/compressed.js' %}"></script>

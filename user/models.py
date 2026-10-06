@@ -1,9 +1,8 @@
 from django.db import models
-from owners.models import *
 from django.utils import timezone
+from owners.models import owner_tb, owvaddwork
 
 
-# User model - stores registered user details
 class user_tb(models.Model):
     Name = models.CharField(max_length=20)
     Email = models.EmailField(max_length=50, unique=True)
@@ -16,7 +15,6 @@ class user_tb(models.Model):
         return self.Name
 
 
-# Cart/Booking model - stores workspace bookings and payment details
 class cart(models.Model):
     WsName = models.CharField(max_length=100)
     Price = models.IntegerField()
@@ -32,9 +30,9 @@ class cart(models.Model):
         related_name='bookings',
     )
     Image = models.ImageField(upload_to="cart", null=True)
-    Status = models.BooleanField(default=False)           # Owner payment confirmation
-    Paystatus = models.BooleanField(default=False)         # Razorpay payment completed
-    Refundstatus = models.BooleanField(default=False)      # Refund processed
+    Status = models.BooleanField(default=False)
+    Paystatus = models.BooleanField(default=False)
+    Refundstatus = models.BooleanField(default=False)
     RazorpayOrderId = models.CharField(max_length=100, blank=True)
     RazorpayPaymentId = models.CharField(max_length=100, blank=True)
     RazorpaySignature = models.CharField(max_length=200, blank=True)
@@ -48,7 +46,6 @@ class cart(models.Model):
         return self.WsName
 
 
-# Service request model - user sends maintenance/support request to owner
 class request_tb(models.Model):
     Name = models.CharField(max_length=50)
     Email = models.EmailField(max_length=50)
@@ -63,7 +60,6 @@ class request_tb(models.Model):
         return self.Name
 
 
-# Chat message model - stores messages between users and owners
 class Messages_Tb(models.Model):
     Messages = models.CharField(max_length=500)
     Date = models.DateField(max_length=10)
@@ -77,7 +73,6 @@ class Messages_Tb(models.Model):
         return self.Send_name
 
 
-# Refund model - tracks refund records for bookings
 class refund_tb(models.Model):
     Price = models.IntegerField()
     user = models.ForeignKey(user_tb, on_delete=models.CASCADE)

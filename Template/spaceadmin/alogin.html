@@ -4,10 +4,10 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title>RENT A CUBE - Admin Login</title>
-	<meta name="description" content="Rent-a-Cube Admin Secure Login Portal">
+	<title>Admin Sign In | Rent-a-Cube</title>
+	<meta name="description" content="Sign in to the Rent-a-Cube Admin Portal.">
 
-	<!-- Bootstrap & Font Awesome -->
+	
 	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 	<link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
 	<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
@@ -16,7 +16,7 @@
 <body class="admin-auth-body">
 	<div class="admin-login-wrap">
 		
-		<!-- Brand Header -->
+		
 		<div class="admin-brand-header">
 			<div class="mb-3">
 				<a href="/">
@@ -30,16 +30,16 @@
 			<p style="color: #CBD5E1 !important; font-size: 0.95rem; margin: 0;">Authorized administrator access only</p>
 		</div>
 
-		<!-- Login Card -->
+		
 		<div class="admin-login-card">
-			<!-- Alert Messages -->
+			
 			{% for msg in messages %}
 			<div class="cube-alert cube-alert-danger mb-4" role="alert">
 				<i class="fa fa-exclamation-triangle mr-2"></i> {{ msg }}
 			</div>
 			{% endfor %}
 
-			<!-- Admin Login Form -->
+			
 			<form action="" method="POST">
 				{% csrf_token %}
 				
@@ -65,14 +65,14 @@
 			</div>
 		</div>
 
-		<!-- Footer Copyright -->
+		
 		<div class="text-center mt-4">
 			<p style="margin: 0; color: #94A3B8 !important; font-size: 0.8rem; font-weight: 500;">&copy; 2026 Rent-a-Cube Platform. All rights reserved.</p>
 		</div>
 
 	</div>
 
-	<!-- JavaScript Files -->
+	
 	<script src="{% static 'admin/js/jquery.min.js' %}"></script>
 	<script src="{% static 'admin/js/bootstrap.bundle.min.js' %}"></script>
 </body>

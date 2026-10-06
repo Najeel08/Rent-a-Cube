@@ -71,23 +71,19 @@ def vreg(request):
             messages.info(request, exc.message)
             return render(request, 'owner/vreg.html')
 
-        # Validate standard email format
         if not is_valid_email(email):
             messages.info(request, "Please enter a valid email address (e.g. vikram@cowork.in)")
             return render(request, 'owner/vreg.html')
 
-        # Check if passwords match
         if password != confirm_password:
             messages.info(request, 'password not match')
             return render(request, 'owner/vreg.html')
 
-        # Check for duplicate email or username
         if owner_tb.objects.filter(Email__iexact=email).exists():
             messages.info(request, "email already exists")
         elif owner_tb.objects.filter(Name=name).exists():
             messages.info(request, "user already exists")
         else:
-            # Create new owner with hashed password
             owner_tb.objects.create(
                 Name=name,
                 Email=email,
@@ -113,7 +109,6 @@ def vlog(request):
         owner = owner_tb.objects.filter(Email__iexact=email).first()
 
         if owner and password_matches(password, owner.Password):
-            # Only allow login if admin has approved the owner
             if owner.accept:
                 upgrade_password_if_needed(owner, 'Password', password)
                 login_role(request, 'owner', owner, owner.Name)
@@ -226,7 +221,6 @@ def Ovupdate(request, pin):
         if request.FILES.get("image"):
             _remove_file(owner_work.Image)
             owner_work.Image = request.FILES["image"]
-        # Update all workspace fields
         owner_work.Name = name
         owner_work.Sqft = sqft
         owner_work.State = state
@@ -276,7 +270,6 @@ def ownerprofileupdate(request, pim=None):
         return guard
     profile = get_object_or_404(owner_tb, id=request.session['id'])
 
-    # Prevent updating another owner's profile
     if pim:
         try:
             profile_id = positive_integer(pim, 'Profile')
@@ -307,19 +300,16 @@ def ownerprofileupdate(request, pim=None):
             messages.info(request, "email already exists")
             return render(request, 'owner/ownerprofileupdate.html', {'pl': profile})
 
-        # Replace image if new one is uploaded
         if request.FILES.get("image"):
             _remove_file(profile.Image)
             profile.Image = request.FILES["image"]
 
-        # Update profile fields
         profile.Name = name
         profile.Email = new_email
         profile.Phonenumber = phone
         profile.Workex = workex
         profile.Place = place
 
-        # Update password only if provided and confirmed
         new_password = request.POST.get("password")
         confirm_password = request.POST.get("cpassword")
         if new_password:
@@ -397,7 +387,6 @@ def assign(request, bid):
             messages.info(request, exc.message)
             return render(request, 'owner/assign.html', {'reqs': reqs, 'options': options})
         technician = get_object_or_404(addtech, id=tech_id, owner_id=request.session['id'])
-        # Create work assignment linking the request to the selected technician
         Workassign.objects.create(
             Name=reqs.Name,
             Email=reqs.Email,
@@ -474,11 +463,9 @@ def sendemail(request, id):
         recipient = technician.Email
         name = technician.Name
 
-        # Generate a random 10-character password as the technician's initial login
         characters = string.ascii_letters + string.digits
         password = ''.join(secrets.choice(characters) for _ in range(12))
 
-        # Send the password via email
         subject = 'Hi, ' + name
         message = 'Welcome to Rent-a-Cube.\nYou can login with this password: ' + password
         try:
@@ -518,7 +505,6 @@ def owner_chat(request, uid):
     if not has_relationship:
         raise Http404('User is not available in this owner workspace.')
 
-    # Save new message if owner submitted the chat form
     if request.method == "POST":
         message = request.POST.get("message", "").strip()
         if message and len(message) <= 500:
@@ -535,7 +521,6 @@ def owner_chat(request, uid):
         elif len(message) > 500:
             messages.info(request, 'Messages must be 500 characters or fewer.')
 
-    # Fetch all messages between this owner and user (both directions)
     messages_qs = Messages_Tb.objects.filter(
         Q(Send_id=str(owner_id), Receiver_id=str(user.id))
         | Q(Send_id=str(user.id), Receiver_id=str(owner_id))
@@ -561,7 +546,6 @@ def chat(request):
     if guard:
         return guard
     today = date.today()
-    # Find all unique users who have sent messages to this owner
     owner_id = str(request.session['id'])
     msg = Messages_Tb.objects.filter(Receiver_id=owner_id)
     user_ids = {int(message.Send_id) for message in msg if str(message.Send_id).isdigit()}
