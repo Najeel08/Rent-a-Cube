@@ -29,8 +29,6 @@ technicians/               Technician portal
 admin_portal/              Platform administrator portal
 templates/                 HTML pages grouped by portal
 static/                    CSS, JavaScript, fonts and images
-tools/preflight_db.py      Checks existing data before migration
-docs/maintenance.md        Database and deployment notes
 ```
 
 ## Run locally on Windows
@@ -93,10 +91,32 @@ only, `ALLOW_DEMO_PAYMENTS=True` works when `DJANGO_DEBUG=True`; it does not cha
 money. Without keys or explicit demo mode, checkout remains disabled. Demo mode
 is always disabled in production.
 
-Before publishing the repository, review `git status` for private files. Before
-hosting the application, turn off debug mode, configure the actual allowed hosts,
-enable HTTPS and secure cookies, and run `manage.py check --deploy` using the
-project environment. The example settings are for local development only.
+Before publishing the repository, review `git status` for private files.
+
+## Production settings
+
+The example `.env` is for local development. On your hosting service, set these
+environment variables instead of copying local HTTP settings:
+
+| Variable | Production value |
+|---|---|
+| `DJANGO_LOAD_ENV` | `0` (prevents loading the local development `.env`) |
+| `DJANGO_DEBUG` | `False` |
+| `DJANGO_SECRET_KEY` | Your strong, stable secret from the hosting service's secret settings |
+| `DJANGO_ALLOWED_HOSTS` | Your actual hostname(s), separated by commas; no wildcard |
+| `DJANGO_SECURE_SSL_REDIRECT` | `True` |
+| `DJANGO_SECURE_HSTS_SECONDS` | `31536000`, after HTTPS is working |
+| `DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS` | `False` until all subdomains use HTTPS |
+| `DJANGO_SECURE_HSTS_PRELOAD` | `False` until you deliberately enable preload |
+| `DJANGO_SESSION_COOKIE_SECURE` | `True` |
+| `DJANGO_CSRF_COOKIE_SECURE` | `True` |
+| `ALLOW_DEMO_PAYMENTS` | `False` |
+
+Use a production server and HTTPS. If HTTPS ends at a trusted reverse proxy,
+configure it to strip untrusted forwarded headers before enabling
+`DJANGO_USE_X_FORWARDED_PROTO`. Verify all subdomains use HTTPS before enabling
+HSTS for subdomains or preload. Run `manage.py check --deploy` with the actual
+hosting environment. Local HTTP development intentionally uses different settings.
 
 ## Tests
 
@@ -117,5 +137,19 @@ Commit application code, migrations, tests, static assets and `.env.example`.
 Local databases, uploads, private proofs, environments and `.env` are ignored.
 Run Git commands from this directory. No demo account passwords are bundled.
 
-See [maintenance notes](docs/maintenance.md) for business rules, existing-data
-upgrades and limitations before using this project with real payments or public users.
+Before upgrading existing data, stop writes and back up `db.sqlite3`, `media/`
+and `private_media/` together. Use SQLite's backup API for an open database.
+Test migrations on a restored copy before applying them to the intended database;
+keep all historical migrations. To roll back, restore matching code, database and
+uploads, and reconcile payment activity since the backup before reopening.
+
+Keep `DJANGO_TIME_ZONE` stable: existing bookings use `Asia/Kolkata`. Older paid
+bookings with missing workspace/time information need verified records before
+repair; never guess their slot or refund status. Ambiguous old chat messages are
+preserved until their participants can be verified.
+
+Test Razorpay capture/refund and email delivery before public use. For uncertain
+payments, `manage.py reconcile_payments BOOKING_ID` reads the provider status and
+updates verified captures or completed refunds; it does not charge or issue a
+refund. Keep private proofs outside the public web root and schedule expired-session
+cleanup with `manage.py clearsessions`.

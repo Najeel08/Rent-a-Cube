@@ -2371,6 +2371,10 @@ body {
   margin-left: auto;
 }
 
+@media (min-width: 992px) {
+  .cube-responsive-navbar .cube-nav-panel { margin-right: clamp(1rem, 3vw, 3rem); }
+}
+
 .cube-nav-actions {
   display: flex;
   align-items: center;
@@ -2391,14 +2395,20 @@ body {
 
 .cube-nav-submenu {
   position: absolute;
+  top: calc(100% + .5rem);
+  right: 0;
+  left: auto;
   z-index: 1040;
   min-width: 210px;
+  max-width: calc(100vw - 2rem);
   padding: 0.5rem;
   border: 1px solid var(--rc-border);
   border-radius: var(--rc-radius-md);
   background: #fff;
   box-shadow: var(--rc-shadow-lg);
 }
+
+.cube-nav-submenu .dropdown-item { white-space: normal; overflow-wrap: anywhere; }
 
 .cube-nav-dropdown {
   position: relative;
@@ -2500,6 +2510,7 @@ body {
     float: none;
     width: 100%;
     min-width: 0;
+    max-width: 100%;
     margin: 0.15rem 0 0.35rem;
     padding: 0.25rem;
     border: 0;
