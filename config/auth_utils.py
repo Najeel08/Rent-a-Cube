@@ -2,16 +2,18 @@
 import re
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password, identify_hasher, make_password
+from django.apps import apps
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email as django_validate_email
 from django.shortcuts import redirect
-from django.utils.crypto import constant_time_compare
+from django.utils.crypto import constant_time_compare, salted_hmac
+from django.middleware.csrf import rotate_token
 
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
 
 
 def is_valid_email(email_str):
-    """Standard, RFC-compliant email validator checking regex format and domain structure."""
+    """Validate the email format accepted by the registration forms."""
     if not email_str or not isinstance(email_str, str):
         return False
     clean_email = email_str.strip()
@@ -36,6 +38,8 @@ def login_role(request, role, obj, name=None):
     request.session.flush()
     request.session['role'] = role
     request.session['id'] = obj.id
+    request.session['auth_hash'] = session_auth_hash(obj)
+    rotate_token(request)
     if name is not None:
         request.session['Name'] = name
 
@@ -45,7 +49,26 @@ def require_role(request, role, login_url):
     if request.session.get('role') != role or not request.session.get('id'):
         messages.info(request, 'Please login first')
         return redirect(login_url)
+    model_names = {'user': ('user', 'Customer'), 'owner': ('owners', 'Owner'),
+                   'technician': ('owners', 'Technician'), 'admin': ('workadmin', 'PlatformAdmin')}
+    accounts = apps.get_model(*model_names[role]).objects.all()
+    if role == 'technician':
+        accounts = accounts.select_related('owner')
+    obj = accounts.filter(pk=request.session['id']).first()
+    approved = obj is not None
+    if approved and role == 'owner':
+        approved = obj.accept and not obj.reject
+    if approved and role == 'technician':
+        approved = obj.owner.accept and not obj.owner.reject
+    if not approved or not constant_time_compare(request.session.get('auth_hash', ''), session_auth_hash(obj)):
+        request.session.flush()
+        messages.info(request, 'Please sign in again. Your account access may have changed.')
+        return redirect(login_url)
     return None
+
+
+def session_auth_hash(obj):
+    return salted_hmac('rentacube.session', obj.password).hexdigest() if obj else ''
 
 
 def password_is_hashed(value):
@@ -63,17 +86,18 @@ def hash_password(raw_password):
 
 
 def password_matches(raw_password, stored_password):
-    """Check password against stored value. Supports both hashed and legacy plaintext passwords."""
+    """Only accept hashes; historical password migrations handle legacy values."""
     if not raw_password or not stored_password:
         return False
     if password_is_hashed(stored_password):
         return check_password(raw_password, stored_password)
-    return constant_time_compare(str(raw_password), str(stored_password))
+    return False
 
 
 def upgrade_password_if_needed(obj, field_name, raw_password):
-    """If stored password is plaintext, re-hash it so future logins use secure hashing."""
-    current = getattr(obj, field_name)
-    if raw_password and not password_is_hashed(current):
-        setattr(obj, field_name, hash_password(raw_password))
+    """Upgrade supported older hashes after a successful password check."""
+    def setter(password):
+        setattr(obj, field_name, hash_password(password))
         obj.save(update_fields=[field_name])
+
+    check_password(raw_password, getattr(obj, field_name), setter=setter)

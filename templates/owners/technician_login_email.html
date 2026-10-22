@@ -7,35 +7,34 @@
 	<meta name="description" content="Dispatch login credentials to technician">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-	
+
 	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 	<link rel="stylesheet" href="{% static 'css/animations.css' %}">
 	<link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
 	<link rel="stylesheet" href="{% static 'css/main.css' %}" class="color-switcher-link">
-	<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
-	<script src="{% static 'js/vendor/modernizr-custom.js' %}"></script>
+
+
+<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
 </head>
 
 <body>
-	
-	<div class="preloader">
-		<div class="preloader_image"></div>
-	</div>
 
-	
+
+
+
 	<div id="canvas">
 		<div id="box_wrapper">
 
-			
+
 			<header class="cube-navbar d-flex justify-content-between align-items-center flex-wrap px-4 py-2">
 				<div class="d-flex align-items-center">
-					<a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'vhome' %}">
-						<img src="{% static 'images/logo.svg' %}" alt="Rent-a-Cube Logo" style="height: 42px; width: auto; object-fit: contain;">
+					<a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'owner_dashboard' %}">
+						<img class="brand-logo" width="940" height="580" src="{% static 'images/rent-a-cube-logo.svg' %}" alt="Rent-a-Cube Logo">
 					</a>
 				</div>
 				<ul class="cube-nav-links d-flex align-items-center flex-wrap gap-1 m-0 p-0">
 					<li>
-						<a class="cube-nav-link" href="{% url 'vhome' %}">
+						<a class="cube-nav-link" href="{% url 'owner_dashboard' %}">
 							<i class="fa fa-th-large"></i> Dashboard
 						</a>
 					</li>
@@ -44,10 +43,10 @@
 							<i class="fa fa-building-o"></i> Workspaces
 						</a>
 						<div class="dropdown-menu shadow-sm border-0 mt-2">
-							<a class="dropdown-item py-2" href="{% url 'vaddwork' %}">
+							<a class="dropdown-item py-2" href="{% url 'workspace_create' %}">
 								<i class="fa fa-plus-circle mr-2 text-primary"></i> Add Workspace
 							</a>
-							<a class="dropdown-item py-2" href="{% url 'oviewwork' %}">
+							<a class="dropdown-item py-2" href="{% url 'owner_workspace_list' %}">
 								<i class="fa fa-list mr-2 text-primary"></i> View Workspaces
 							</a>
 						</div>
@@ -57,38 +56,38 @@
 							<i class="fa fa-wrench text-primary"></i> Technicians
 						</a>
 						<div class="dropdown-menu shadow-sm border-0 mt-2">
-							<a class="dropdown-item py-2" href="{% url 'addtechnician' %}">
+							<a class="dropdown-item py-2" href="{% url 'technician_create' %}">
 								<i class="fa fa-user-plus mr-2 text-primary"></i> Add Technician
 							</a>
-							<a class="dropdown-item py-2" href="{% url 'viewtechnician' %}">
+							<a class="dropdown-item py-2" href="{% url 'owner_technician_list' %}">
 								<i class="fa fa-users mr-2 text-primary"></i> View Technicians
 							</a>
 						</div>
 					</li>
 					<li>
-						<a class="cube-nav-link" href="{% url 'requests' %}">
+						<a class="cube-nav-link" href="{% url 'owner_service_request_list' %}">
 							<i class="fa fa-inbox"></i> Service Requests
 						</a>
 					</li>
 					{% if request.session.id %}
 					<li>
-						<a class="cube-nav-link" href="{% url 'ownerorder' request.session.id %}">
+						<a class="cube-nav-link" href="{% url 'owner_booking_list' request.session.id %}">
 							<i class="fa fa-shopping-bag"></i> Bookings
 						</a>
 					</li>
 					<li>
-						<a class="cube-nav-link" href="{% url 'PROFILE' %}">
+						<a class="cube-nav-link" href="{% url 'owner_profile' %}">
 							<i class="fa fa-user-circle"></i> Profile
 						</a>
 					</li>
 					{% endif %}
 					<li>
-						<a class="cube-nav-link" href="{% url 'refund' %}">
+						<a class="cube-nav-link" href="{% url 'owner_refund_list' %}">
 							<i class="fa fa-undo"></i> Refunds
 						</a>
 					</li>
 					<li>
-						<a class="cube-nav-link" href="{% url 'chat' %}">
+						<a class="cube-nav-link" href="{% url 'owner_chat_inbox' %}">
 							<i class="fa fa-comments-o"></i> Chats
 						</a>
 					</li>
@@ -101,18 +100,18 @@
 				</ul>
 			</header>
 
-			
+
 			{% if messages %}
 			<div class="container mt-4">
 				{% for message in messages %}
-				<div class="cube-alert cube-alert-info">
+				<div role="status" class="cube-alert cube-alert-info">
 					<i class="fa fa-info-circle mr-2"></i> {{ message }}
 				</div>
 				{% endfor %}
 			</div>
 			{% endif %}
 
-			
+
 			<main class="py-5 d-flex align-items-center" style="background-color: var(--rc-bg-main); min-height: 80vh;">
 				<div class="container">
 
@@ -122,7 +121,7 @@
 								<i class="fa fa-paper-plane"></i>
 							</div>
 							<h3 class="cube-form-title mb-1">Dispatch Credentials</h3>
-							<p class="cube-form-subtitle">A secure 10-character temporary login password will be auto-generated and emailed to the technician.</p>
+							<p class="cube-form-subtitle">Send a password setup link that expires in one hour. The technician chooses their own password.</p>
 						</div>
 
 						<form method="POST" action="" enctype="multipart/form-data">
@@ -132,21 +131,21 @@
 								<label class="cube-label" for="name">
 									Technician Full Name
 								</label>
-								<input type="text" id="name" value="{{ owner.Name }}" class="cube-input" name="name" required readonly style="background-color: var(--rc-bg-surface);">
+								<input type="text" id="name" value="{{ owner.name }}" class="cube-input" name="name" required readonly style="background-color: var(--rc-bg-surface);">
 							</div>
 
 							<div class="cube-form-group mb-4">
 								<label class="cube-label" for="email">
 									Recipient Email Address
 								</label>
-								<input type="email" id="email" value="{{ owner.Email }}" class="cube-input" name="email" required readonly style="background-color: var(--rc-bg-surface);">
+								<input type="email" id="email" value="{{ owner.email }}" class="cube-input" name="email" required readonly style="background-color: var(--rc-bg-surface);">
 								<small class="text-muted mt-1 d-block">
-									<i class="fa fa-lock text-success mr-1"></i> Credentials will be delivered to this verified mailbox.
+									<i class="fa fa-envelope mr-1"></i> The link will be delivered to this registered email address.
 								</small>
 							</div>
 
 							<div class="d-flex gap-3 pt-2">
-								<a href="{% url 'viewtechnician' %}" class="cube-btn cube-btn-outline flex-fill">
+								<a href="{% url 'owner_technician_list' %}" class="cube-btn cube-btn-outline flex-fill">
 									Cancel
 								</a>
 								<button type="submit" class="cube-btn cube-btn-primary flex-fill">
@@ -159,8 +158,9 @@
 				</div>
 			</main>
 
-			
-			<footer class="cube-footer">
+
+			{% include 'includes/pagination.html' %}
+<footer class="cube-footer">
 				<div class="container text-center">
 					<p style="margin: 0; color: #FFFFFF !important; font-weight: 500; font-size: 0.875rem;">&copy; 2026 Rent-a-Cube Platform. All rights reserved. Designed for optimal workspace efficiency.</p>
 				</div>
@@ -169,8 +169,10 @@
 		</div>
 	</div>
 
-	
-	<script src="{% static 'js/compressed.js' %}"></script>
-	<script src="{% static 'js/main.js' %}"></script>
+
+
+
+<script src="{% static 'js/responsive_navbar.js' %}"></script>
+<script src="{% static 'js/portal.js' %}"></script>
 </body>
 </html>

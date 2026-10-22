@@ -7,93 +7,85 @@
 	<title>Find and Book Workspaces | Rent-a-Cube</title>
 	<meta name="description" content="Book desks, offices, and meeting rooms with Rent-a-Cube.">
 
-	
+
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-	
+
 	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 	<link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
-	<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
+
+<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
 </head>
 
 <body>
 	{% include 'includes/public_navbar.html' with active_page='home' %}
 
-	
+
 	<section class="hero-section">
-		<div class="container">
+		<div class="container hero-container">
 			<div class="row align-items-center">
 				<div class="col-lg-6 mb-5 mb-lg-0">
 					<h1 class="hero-title">
 						Find and Book <span>Flexible Workspaces</span>
 					</h1>
 					<p class="hero-subtitle">
-						Book desks, private offices, and meeting rooms when you need them.
+						Discover desks, private offices, and meeting rooms on your schedule &mdash; for focused work, productive meetings, and growing teams.
 					</p>
 
 					<div class="hero-cta-group">
-						<a href="/user/ureg" class="cube-btn cube-btn-primary cube-btn-lg">
-							<i class="fa fa-user-plus mr-2"></i> Register as User
+						<a href="{% url 'register' %}" class="cube-btn cube-btn-primary cube-btn-lg">
+							<i class="fa fa-user-plus mr-2"></i> Find a workspace
 						</a>
-						<a href="/owners/vreg" class="cube-btn cube-btn-outline-light cube-btn-lg">
-							<i class="fa fa-building-o mr-2"></i> Register as Owner
+						<a href="{% url 'owner_register' %}" class="cube-btn cube-btn-outline-light cube-btn-lg">
+							<i class="fa fa-building-o mr-2"></i> List your space
 						</a>
 					</div>
 
-					
-					<div class="hero-stats-row">
-						<div class="hero-stat-item">
-							<span class="hero-stat-number">100%</span>
-							<span class="hero-stat-label">Flexible Bookings</span>
-						</div>
-						<div class="hero-stat-item">
-							<span class="hero-stat-number">24/7</span>
-							<span class="hero-stat-label">Support</span>
-						</div>
-						<div class="hero-stat-item">
-							<span class="hero-stat-number">₹0</span>
-							<span class="hero-stat-label">Booking Fees</span>
-						</div>
-					</div>
+
+					<ul class="hero-benefits" aria-label="Booking benefits">
+                        <li><i class="fa fa-calendar" aria-hidden="true"></i><div><strong>Flexible booking</strong><span>Choose your hours</span></div></li>
+                        <li><i class="fa fa-shield" aria-hidden="true"></i><div><strong>Secure payments</strong><span>Pay through Razorpay</span></div></li>
+                        <li><i class="fa fa-headphones" aria-hidden="true"></i><div><strong>Reliable support</strong><span>We're here to help</span></div></li>
+                    </ul>
+
 				</div>
 
-				<div class="col-lg-6">
+				<div class="col-lg-6 hero-media">
 					<div class="hero-visual-card">
-						
-						<div class="hero-slideshow" id="heroSlideshow">
-							<img src="{% static 'images/1u.jpg' %}" alt="Modern Coworking Lounge" class="hero-slide active">
-							<img src="{% static 'images/2u.jpg' %}" alt="Executive Team Workspace" class="hero-slide">
-							<img src="{% static 'images/4u.jpg' %}" alt="Dedicated Focus Pods" class="hero-slide">
-							<img src="{% static 'images/5u.jpg' %}" alt="Collaborative Conference Hub" class="hero-slide">
-							<img src="{% static 'images/10.jpg' %}" alt="Private Office Cube" class="hero-slide">
 
-							<div class="hero-slideshow-indicators" id="heroIndicators">
-								<span class="hero-indicator-dot active" data-slide="0"></span>
-								<span class="hero-indicator-dot" data-slide="1"></span>
-								<span class="hero-indicator-dot" data-slide="2"></span>
-								<span class="hero-indicator-dot" data-slide="3"></span>
-								<span class="hero-indicator-dot" data-slide="4"></span>
-							</div>
-						</div>
+                        <div class="hero-slideshow" id="heroSlideshow" role="group" aria-label="Workspace photos">
+                            <img src="{% static 'images/1u.jpg' %}" alt="Bright coworking lounge with desks and seating" class="hero-slide active" width="1920" height="1280" fetchpriority="high">
+                            <img src="{% static 'images/2u.jpg' %}" alt="Shared workspace with city views and relaxed seating" class="hero-slide" width="1920" height="1280" aria-hidden="true">
+                            <img src="{% static 'images/4u.jpg' %}" alt="Open workspace lounge with natural light and plants" class="hero-slide" width="1920" height="1280" aria-hidden="true">
+                            <img src="{% static 'images/3u.jpg' %}" alt="Shared office lounge beside glass-fronted private workspaces" class="hero-slide" width="1920" height="1280" aria-hidden="true">
+                            <img src="{% static 'images/5u.jpg' %}" alt="Coworking space with shared desks, lounge seating and indoor plants" class="hero-slide" width="1920" height="1280" aria-hidden="true">
+                            <div class="hero-pagination" role="group" aria-label="Choose a workspace photo" hidden>
+                                <button type="button" class="hero-dot" aria-label="Show workspace photo 1 of 5" aria-current="true" aria-controls="heroSlideshow"></button>
+                                <button type="button" class="hero-dot" aria-label="Show workspace photo 2 of 5" aria-controls="heroSlideshow"></button>
+                                <button type="button" class="hero-dot" aria-label="Show workspace photo 3 of 5" aria-controls="heroSlideshow"></button>
+                                <button type="button" class="hero-dot" aria-label="Show workspace photo 4 of 5" aria-controls="heroSlideshow"></button>
+                                <button type="button" class="hero-dot" aria-label="Show workspace photo 5 of 5" aria-controls="heroSlideshow"></button>
+                            </div>
+                        </div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
 
-	
+
 	<section class="py-5 my-5" id="features">
 		<div class="container">
 			<div class="section-header">
 				<span class="section-tag">Why Choose Rent-a-Cube</span>
 				<h2 class="section-title">Workspaces That Fit Your Day</h2>
-				<p class="section-desc">Book verified Workspaces with the amenities you need.</p>
+				<p class="section-desc">Browse workspaces from approved owners with the amenities you need.</p>
 			</div>
 
 			<div class="row">
-				
+
 				<div class="col-md-6 col-lg-3 mb-4">
 					<div class="feature-card">
 						<div class="feature-icon-box indigo">
@@ -101,12 +93,12 @@
 						</div>
 						<h4 style="font-size: 1.15rem; font-weight: 700; color: var(--rc-dark); margin-bottom: 0.5rem;">Flexible Bookings</h4>
 						<p style="font-size: 0.9rem; color: var(--rc-text-muted); line-height: 1.5; margin: 0;">
-							Book desks, offices, and meeting rooms by the hour, day, or month.
+							Book desks, offices, and meeting rooms by the hour, for up to 72 hours.
 						</p>
 					</div>
 				</div>
 
-				
+
 				<div class="col-md-6 col-lg-3 mb-4">
 					<div class="feature-card">
 						<div class="feature-icon-box sky">
@@ -119,7 +111,7 @@
 					</div>
 				</div>
 
-				
+
 				<div class="col-md-6 col-lg-3 mb-4">
 					<div class="feature-card">
 						<div class="feature-icon-box emerald">
@@ -132,7 +124,7 @@
 					</div>
 				</div>
 
-				
+
 				<div class="col-md-6 col-lg-3 mb-4">
 					<div class="feature-card">
 						<div class="feature-icon-box amber">
@@ -148,7 +140,7 @@
 		</div>
 	</section>
 
-	
+
 	<section class="py-5 my-5" id="how-it-works">
 		<div class="container">
 			<div class="section-header">
@@ -158,7 +150,7 @@
 			</div>
 
 			<div class="row">
-				
+
 				<div class="col-md-4 mb-4">
 					<div class="step-card">
 						<div class="step-number">1</div>
@@ -169,7 +161,7 @@
 					</div>
 				</div>
 
-				
+
 				<div class="col-md-4 mb-4">
 					<div class="step-card">
 						<div class="step-number">2</div>
@@ -180,7 +172,7 @@
 					</div>
 				</div>
 
-				
+
 				<div class="col-md-4 mb-4">
 					<div class="step-card">
 						<div class="step-number">3</div>
@@ -194,127 +186,95 @@
 		</div>
 	</section>
 
-	
+
 	<section class="py-5" style="background: linear-gradient(135deg, var(--rc-primary), #6366F1); color: #FFFFFF;">
 		<div class="container text-center py-4">
 			<h2 style="color: #FFFFFF; font-size: 2.25rem; font-weight: 800; margin-bottom: 1rem;">Book Your Next Workspace</h2>
 			<p style="font-size: 1.15rem; color: rgba(255,255,255,0.9); max-width: 620px; margin: 0 auto 2rem auto;">
-				Find a verified Workspace for your next workday.
+				Find a workspace for your next workday.
 			</p>
 			<div class="d-flex justify-content-center gap-3 flex-wrap">
-				<a href="/user/ureg" class="cube-btn cube-btn-secondary cube-btn-lg">
-					<i class="fa fa-user-plus mr-2"></i> Register as User
+				<a href="{% url 'register' %}" class="cube-btn cube-btn-secondary cube-btn-lg">
+					<i class="fa fa-user-plus mr-2"></i> Find a workspace
 				</a>
-				<a href="/owners/vreg" class="cube-btn cube-btn-outline-light cube-btn-lg">
-					<i class="fa fa-building-o mr-2"></i> Register as Owner
+				<a href="{% url 'owner_register' %}" class="cube-btn cube-btn-outline-light cube-btn-lg">
+					<i class="fa fa-building-o mr-2"></i> List your space
 				</a>
 			</div>
 		</div>
 	</section>
 
-	
-	<footer class="cube-footer">
+
+	{% include 'includes/pagination.html' %}
+<footer class="cube-footer">
 		<div class="container">
 			<div class="row">
-				
+
 				<div class="col-lg-4 col-md-6 mb-4">
 					<div class="d-flex align-items-center gap-2 mb-3">
-						<img src="{% static 'images/logo-footer.svg' %}" alt="Rent-a-Cube Logo" style="height: 48px; width: auto; object-fit: contain;">
+						<img class="brand-logo" width="940" height="580" src="{% static 'images/rent-a-cube-logo.svg' %}" alt="Rent-a-Cube Logo">
 					</div>
 					<p style="font-size: 0.9rem; line-height: 1.6; color: #CBD5E1;">
 						Rent-a-Cube connects Users with flexible Workspaces and their Owners.
 					</p>
 				</div>
 
-				
+
 				<div class="col-lg-2 col-md-6 mb-4">
 					<h5 style="color: #FFFFFF; font-size: 1.1rem; margin-bottom: 1.25rem;">Platform</h5>
 					<ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.9rem;">
 						<li><a href="/" style="color: #CBD5E1;">Home</a></li>
 						<li><a href="#features" style="color: #CBD5E1;">Features</a></li>
 						<li><a href="#how-it-works" style="color: #CBD5E1;">How It Works</a></li>
-						<li><a href="/contact4" style="color: #CBD5E1;">Contact Support</a></li>
+						<li><a href="{% url 'contact' %}" style="color: #CBD5E1;">Contact Support</a></li>
 					</ul>
 				</div>
 
-				
+
 				<div class="col-lg-3 col-md-6 mb-4">
 					<h5 style="color: #FFFFFF; font-size: 1.1rem; margin-bottom: 1.25rem;">Access Portals</h5>
 					<ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.9rem;">
-						<li><a href="/user/ulog" style="color: #CBD5E1;"><i class="fa fa-user text-primary mr-1"></i> Sign In as User</a></li>
-						<li><a href="/owners/vlog" style="color: #CBD5E1;"><i class="fa fa-briefcase text-success mr-1"></i> Sign In as Owner</a></li>
-						<li><a href="/technician/tlog" style="color: #CBD5E1;"><i class="fa fa-wrench text-warning mr-1"></i> Sign In as Technician</a></li>
-						<li><a href="/workadmin/alogin" style="color: #CBD5E1;"><i class="fa fa-shield text-danger mr-1"></i> Sign In as Admin</a></li>
+						<li><a href="{% url 'login' %}" style="color: #CBD5E1;"><i class="fa fa-user text-primary mr-1"></i> Sign In as User</a></li>
+						<li><a href="{% url 'owner_login' %}" style="color: #CBD5E1;"><i class="fa fa-briefcase text-success mr-1"></i> Sign In as Owner</a></li>
+						<li><a href="{% url 'technician_login' %}" style="color: #CBD5E1;"><i class="fa fa-wrench text-warning mr-1"></i> Sign In as Technician</a></li>
+						<li><a href="{% url 'admin_login' %}" style="color: #CBD5E1;"><i class="fa fa-shield text-danger mr-1"></i> Sign In as Admin</a></li>
 					</ul>
 				</div>
 
-				
+
 				<div class="col-lg-3 col-md-6 mb-4">
-					<h5 style="color: #FFFFFF; font-size: 1.1rem; margin-bottom: 1.25rem;">Get in Touch</h5>
-					<p style="font-size: 0.9rem; color: #CBD5E1; margin-bottom: 0.5rem;">
-						<i class="fa fa-map-marker text-primary mr-2"></i> Rent-a-Cube Operations Hub, Cyber City
-					</p>
-					<p style="font-size: 0.9rem; color: #CBD5E1; margin-bottom: 0.5rem;">
-						<i class="fa fa-phone text-primary mr-2"></i> +91 98765 43210
-					</p>
-					<p style="font-size: 0.9rem; color: #CBD5E1; margin-bottom: 0.5rem;">
-						<i class="fa fa-envelope text-primary mr-2"></i> support@rentacube.com
-					</p>
+					<h5>Get in Touch for</h5>
+                    <ul class="footer-contact-links">
+                        <li><a href="{% url 'contact' %}">
+                            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M8 3v4m8-4v4M4 10h16m-12 5 3 3 5-5"/></svg>
+                            <span>Booking Assistance</span>
+                        </a></li>
+                        <li><a href="{% url 'contact' %}">
+                            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M21 11.5a8.5 8.5 0 0 1-12.3 7.6L3 21l1.9-5.7A8.5 8.5 0 1 1 21 11.5Z"/></svg>
+                            <span>General Enquiries</span>
+                        </a></li>
+                        <li><a href="{% url 'contact' %}">
+                            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 14v-3a8 8 0 0 1 16 0v3m0 4v1a2 2 0 0 1-2 2h-4"/><rect x="3" y="11" width="4" height="7" rx="1.5"/><rect x="17" y="11" width="4" height="7" rx="1.5"/></svg>
+                            <span>Technical Support</span>
+                        </a></li>
+                    </ul>
 				</div>
 			</div>
 
-			
+
 			<div class="cube-footer-bottom" style="border-top: 1px solid #1E293B; padding-top: 1.5rem; margin-top: 2.5rem; text-align: center;">
 				<p style="margin: 0; color: #FFFFFF !important; font-weight: 500; font-size: 0.875rem;">&copy; 2026 Rent-a-Cube. All rights reserved.</p>
 			</div>
 		</div>
 	</footer>
 
-	
-	<script src="{% static 'admin/js/jquery.min.js' %}"></script>
-	<script src="{% static 'admin/js/bootstrap.bundle.min.js' %}"></script>
 
-	
-	<script>
-		(function() {
-			var slides = document.querySelectorAll('#heroSlideshow .hero-slide');
-			var dots = document.querySelectorAll('#heroIndicators .hero-indicator-dot');
-			if (!slides.length) return;
-			var currentIndex = 0;
-			var interval = 4500;
-			var timer = null;
 
-			function showSlide(index) {
-				for (var i = 0; i < slides.length; i++) {
-					slides[i].classList.toggle('active', i === index);
-				}
-				for (var j = 0; j < dots.length; j++) {
-					dots[j].classList.toggle('active', j === index);
-				}
-				currentIndex = index;
-			}
 
-			function nextSlide() {
-				var next = (currentIndex + 1) % slides.length;
-				showSlide(next);
-			}
 
-			function startTimer() {
-				if (timer) clearInterval(timer);
-				timer = setInterval(nextSlide, interval);
-			}
 
-			for (var k = 0; k < dots.length; k++) {
-				(function(idx) {
-					dots[idx].addEventListener('click', function() {
-						showSlide(idx);
-						startTimer();
-					});
-				})(k);
-			}
 
-			startTimer();
-		})();
-	</script>
+<script src="{% static 'js/responsive_navbar.js' %}"></script>
+<script src="{% static 'js/portal.js' %}"></script>
 </body>
 </html>

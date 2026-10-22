@@ -1,0 +1,13 @@
+<h1>Support inquiries</h1>
+<p>Messages submitted through the public contact form.</p>
+{% for inquiry in inquiries %}
+<article class="admin-card mb-3">
+  <h2 class="h5">{{ inquiry.name }}</h2>
+  <p class="small">{{ inquiry.email }} · {{ inquiry.created_at|date:"d M Y, H:i" }}</p>
+  <p style="white-space: pre-wrap; overflow-wrap: anywhere">{{ inquiry.message }}</p>
+  {% if inquiry.resolved %}<span class="cube-badge cube-badge-success">Resolved</span>{% else %}
+  <form method="post">{% csrf_token %}<input type="hidden" name="inquiry_id" value="{{ inquiry.id }}"><button class="cube-btn cube-btn-outline cube-btn-sm" type="submit">Mark resolved</button></form>
+  {% endif %}
+</article>
+{% empty %}<p role="status" class="cube-alert cube-alert-info">No support inquiries have been submitted.</p>{% endfor %}
+{% include 'includes/pagination.html' %}

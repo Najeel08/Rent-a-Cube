@@ -4,16 +4,40 @@ __pycache__/
 .pytest_cache/
 .coverage
 htmlcov/
+.ruff_cache/
+.mypy_cache/
+.tox/
+.nox/
+.coverage.*
+coverage.xml
 
 # Virtual environments
 venv/
 .venv/
+env/
+ENV/
 
 # Local Django data and generated files
 db.sqlite3
+*.sqlite3
+*.sqlite
+*.sqlite3-journal
+*.sqlite3-wal
+*.sqlite3-shm
 media/
 private_media/
 staticfiles/
+*.log
+logs/
+*.tmp
+*.temp
+*~
+
+# Build output
+build/
+dist/
+*.egg-info/
+node_modules/
 
 # Editor and OS files
 .vscode/
@@ -26,3 +50,7 @@ Thumbs.db
 .env
 .env.*
 !.env.example
+secrets/
+*.key
+*.p12
+*.pfx

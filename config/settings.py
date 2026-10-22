@@ -25,7 +25,8 @@ def load_local_env(path):
             os.environ.setdefault(key, value)
 
 
-load_local_env(BASE_DIR / '.env')
+if os.environ.get('DJANGO_LOAD_ENV', '1') != '0':
+    load_local_env(BASE_DIR / '.env')
 
 TRUE_VALUES = ('1', 'true', 'yes', 'on')
 
@@ -52,7 +53,7 @@ if not SECRET_KEY:
 
 ALLOWED_HOSTS = [
     host.strip()
-    for host in os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,testserver').split(',')
+    for host in os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
     if host.strip()
 ]
 
@@ -77,6 +78,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'config.middleware.PortalSecurityMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -103,7 +105,10 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': os.environ.get('DJANGO_DB_PATH', BASE_DIR / 'db.sqlite3'),
+        # SQLite has no row locks. Acquire the writer lock before reading state
+        # in atomic booking/refund transactions, including across worker processes.
+        'OPTIONS': {'transaction_mode': 'IMMEDIATE', 'timeout': 20},
     }
 }
 
@@ -115,7 +120,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+TIME_ZONE = os.environ.get('DJANGO_TIME_ZONE', 'Asia/Kolkata')
 USE_I18N = True
 USE_TZ = True
 
@@ -126,8 +131,8 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-PRIVATE_MEDIA_ROOT = os.path.join(BASE_DIR, 'private_media')
+MEDIA_ROOT = os.environ.get('DJANGO_MEDIA_ROOT', os.path.join(BASE_DIR, 'media'))
+PRIVATE_MEDIA_ROOT = os.environ.get('DJANGO_PRIVATE_MEDIA_ROOT', os.path.join(BASE_DIR, 'private_media'))
 
 SECURE_SSL_REDIRECT = env_bool('DJANGO_SECURE_SSL_REDIRECT', not DEBUG)
 SECURE_PROXY_SSL_HEADER = (
@@ -154,6 +159,15 @@ CSRF_TRUSTED_ORIGINS = [
 
 RAZORPAY_API_KEY = os.environ.get('RAZORPAY_API_KEY', '')
 RAZORPAY_API_SECRET_KEY = os.environ.get('RAZORPAY_API_SECRET_KEY', '')
+ALLOW_DEMO_PAYMENTS = DEBUG and env_bool('ALLOW_DEMO_PAYMENTS')
+BOOKING_HOLD_MINUTES = 15
+SESSION_COOKIE_AGE = 60 * 60 * 12
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_REFERRER_POLICY = 'same-origin'
+DATA_UPLOAD_MAX_MEMORY_SIZE = 12 * 1024 * 1024
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 100
+DATA_UPLOAD_MAX_NUMBER_FILES = 4
+EMAIL_TIMEOUT = 10
 
 EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')

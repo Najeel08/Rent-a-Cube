@@ -1,0 +1,28 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Review booking · Rent-a-Cube</title>
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+
+<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
+</head>
+<body>
+  <main class="container py-5" style="max-width: 680px">
+    <a href="{% url 'cart_detail' booking.owner_id %}">← Back to cart</a>
+    <h1 class="mt-4">Review your booking</h1>
+    <p>Check the time and duration before starting payment.</p>
+    <dl class="cube-card p-4">
+      <dt>Workspace</dt><dd>{{ booking.workspace_name }}</dd>
+      <dt>Date and start time</dt><dd>{{ booking.date }} at {{ booking.start_time|time:"H:i" }} (India time)</dd>
+      <dt>Duration</dt><dd>{{ booking.duration_hours }} hour{{ booking.duration_hours|pluralize }}</dd>
+      <dt>Hourly rate</dt><dd>₹{{ booking.hourly_rate }}</dd>
+    </dl>
+    <p>Starting payment holds this time for 15 minutes. Your reservation is complete once payment is verified.</p>
+    <form method="post">{% csrf_token %}<button class="cube-btn cube-btn-primary" type="submit">Continue to payment</button></form>
+  </main>
+<script src="{% static 'js/responsive_navbar.js' %}"></script>
+<script src="{% static 'js/portal.js' %}"></script>
+</body>
+</html>

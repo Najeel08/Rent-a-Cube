@@ -1,8 +1,9 @@
-from datetime import date, datetime
+from datetime import datetime
 from pathlib import Path
 
 from django.core.exceptions import ValidationError
 from PIL import Image, UnidentifiedImageError
+from django.utils import timezone
 
 
 MAX_IMAGE_UPLOAD_BYTES = 5 * 1024 * 1024
@@ -20,9 +21,9 @@ def validate_image_upload(upload, field_label):
     if Path(upload.name).suffix.lower() not in ALLOWED_IMAGE_EXTENSIONS:
         raise ValidationError(f'{field_label} must be a JPG, PNG, or WebP image.')
     try:
-        image = Image.open(upload)
+        image = Image.open(upload, formats=['JPEG', 'PNG', 'WEBP'])
         image.verify()
-    except (UnidentifiedImageError, OSError, ValueError) as exc:
+    except (UnidentifiedImageError, OSError, ValueError, Image.DecompressionBombError) as exc:
         raise ValidationError(f'{field_label} is not a valid image file.') from exc
     finally:
         upload.seek(0)
@@ -57,7 +58,7 @@ def validate_booking_date(value):
         booking_date = datetime.strptime(str(value or ''), '%Y-%m-%d').date()
     except ValueError as exc:
         raise ValidationError('Enter a valid booking date.') from exc
-    if booking_date < date.today():
+    if booking_date < timezone.localdate():
         raise ValidationError('Booking date cannot be in the past.')
     return booking_date.isoformat()
 

@@ -6,69 +6,68 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-	
+
 	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 	<link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
-	<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
+
+<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
 </head>
 
 <body style="background-color: var(--rc-bg-main);">
-	
-	<div class="preloader">
-		<div class="preloader_image"></div>
-	</div>
 
-	
+
+
+
 	<div id="canvas">
 		<div id="box_wrapper">
 
-			
+
 			<header class="cube-navbar d-flex justify-content-between align-items-center flex-wrap px-4 py-3">
 				<div class="d-flex align-items-center">
-					<a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'vhome' %}">
-						<img src="{% static 'images/logo.svg' %}" alt="Rent-a-Cube Logo" style="height: 48px; width: auto; object-fit: contain;">
+					<a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'owner_dashboard' %}">
+						<img class="brand-logo" width="940" height="580" src="{% static 'images/rent-a-cube-logo.svg' %}" alt="Rent-a-Cube Logo">
 					</a>
 				</div>
 				<ul class="cube-nav-links d-flex align-items-center flex-wrap gap-2 m-0 p-0">
 					<li>
-						<a class="cube-nav-link" href="{% url 'vhome' %}">
+						<a class="cube-nav-link" href="{% url 'owner_dashboard' %}">
 							<i class="fa fa-home"></i> Home
 						</a>
 					</li>
 					<li>
-						<a class="cube-nav-link" href="{% url 'oviewwork' %}">
+						<a class="cube-nav-link" href="{% url 'owner_workspace_list' %}">
 							<i class="fa fa-cubes"></i> Spaces
 						</a>
 					</li>
 					<li>
-						<a class="cube-nav-link" href="{% url 'viewtechnician' %}">
+						<a class="cube-nav-link" href="{% url 'owner_technician_list' %}">
 							<i class="fa fa-wrench"></i> Technicians
 						</a>
 					</li>
 					<li>
-						<a class="cube-nav-link" href="{% url 'requests' %}">
+						<a class="cube-nav-link" href="{% url 'owner_service_request_list' %}">
 							<i class="fa fa-inbox"></i> Service Requests
 						</a>
 					</li>
 					{% if request.session.id %}
 					<li>
-						<a class="cube-nav-link" href="{% url 'ownerorder' request.session.id %}">
+						<a class="cube-nav-link" href="{% url 'owner_booking_list' request.session.id %}">
 							<i class="fa fa-shopping-bag"></i> Bookings
 						</a>
 					</li>
 					<li>
-						<a class="cube-nav-link active" href="{% url 'PROFILE' %}">
+						<a class="cube-nav-link active" href="{% url 'owner_profile' %}">
 							<i class="fa fa-user-circle"></i> Profile
 						</a>
 					</li>
 					{% endif %}
 					<li>
-						<a class="cube-nav-link" href="{% url 'refund' %}">
+						<a class="cube-nav-link" href="{% url 'owner_refund_list' %}">
 							<i class="fa fa-undo"></i> Refunds
 						</a>
 					</li>
 					<li>
-						<a class="cube-nav-link" href="{% url 'chat' %}">
+						<a class="cube-nav-link" href="{% url 'owner_chat_inbox' %}">
 							<i class="fa fa-comments-o"></i> Chats
 						</a>
 					</li>
@@ -81,18 +80,18 @@
 				</ul>
 			</header>
 
-			
+
 			{% if messages %}
 			<div class="container mt-4">
 				{% for message in messages %}
-				<div class="cube-alert cube-alert-info">
+				<div role="status" class="cube-alert cube-alert-info">
 					<i class="fa fa-info-circle mr-2"></i> {{ message }}
 				</div>
 				{% endfor %}
 			</div>
 			{% endif %}
 
-			
+
 			<main class="py-5" style="background-color: var(--rc-bg-main); min-height: 85vh;">
 				<div class="container">
 
@@ -107,65 +106,65 @@
 							{% csrf_token %}
 
 							<div class="row">
-								
+
 								<div class="col-md-6 mb-3">
 									<div class="cube-form-group">
 										<label class="cube-label" for="name">
 											Full Name <span class="text-danger">*</span>
 										</label>
-										<input type="text" name="name" id="name" value="{{ pl.Name }}" class="cube-input" placeholder="Name" minlength="2" maxlength="50" pattern="^[a-zA-Z\s\.]+$" title="Please enter a valid name" required>
+										<input type="text" name="name" id="name" value="{{ pl.name }}" class="cube-input" placeholder="Name" minlength="2" maxlength="50" pattern="^[a-zA-Z\s\.]+$" title="Please enter a valid name" required>
 									</div>
 								</div>
 
-								
+
 								<div class="col-md-6 mb-3">
 									<div class="cube-form-group">
 										<label class="cube-label" for="phonenumber">
 											Phone Number <span class="text-danger">*</span>
 										</label>
-										<input type="tel" minlength="10" maxlength="10" name="phonenumber" id="phonenumber" value="{{ pl.Phonenumber }}" class="cube-input" placeholder="10-digit mobile number" pattern="^[6-9][0-9]{9}$" title="Please enter a valid 10-digit mobile number starting with 6, 7, 8, or 9" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);" required>
+										<input type="tel" minlength="10" maxlength="10" name="phonenumber" id="phonenumber" value="{{ pl.phone_number }}" class="cube-input" placeholder="10-digit mobile number" pattern="^[6-9][0-9]{9}$" title="Please enter a valid 10-digit mobile number starting with 6, 7, 8, or 9" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);" required>
 									</div>
 								</div>
 
-								
+
 								<div class="col-md-6 mb-3">
 									<div class="cube-form-group">
 										<label class="cube-label" for="email">
 											Email Address <span class="text-danger">*</span>
 										</label>
-										<input type="email" name="email" id="email" value="{{ pl.Email }}" class="cube-input" placeholder="Email" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Please enter a valid email address (e.g. name@domain.com)" required>
+										<input type="email" name="email" id="email" value="{{ pl.email }}" class="cube-input" placeholder="Email" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Please enter a valid email address (e.g. name@domain.com)" required>
 									</div>
 								</div>
 
-								
+
 								<div class="col-md-6 mb-3">
 									<div class="cube-form-group">
 										<label class="cube-label" for="place">
 											City / Region <span class="text-danger">*</span>
 										</label>
-										<input type="text" name="place" id="place" value="{{ pl.Place }}" class="cube-input" placeholder="City / Place" minlength="2" maxlength="60" required>
+										<input type="text" name="place" id="place" value="{{ pl.place }}" class="cube-input" placeholder="City / Place" minlength="2" maxlength="60" required>
 									</div>
 								</div>
 
-								
+
 								<div class="col-md-6 mb-3">
 									<div class="cube-form-group">
 										<label class="cube-label" for="workex">
 											Industry Experience <span class="text-danger">*</span>
 										</label>
-										<input type="text" name="workex" id="workex" value="{{ pl.Workex }}" class="cube-input" placeholder="Experience" minlength="2" maxlength="60" required>
+										<input type="text" name="workex" id="workex" value="{{ pl.work_experience }}" class="cube-input" placeholder="Experience" minlength="2" maxlength="60" required>
 									</div>
 								</div>
 
-								
+
 								<div class="col-md-6 mb-3">
 									<div class="cube-form-group">
 										<label class="cube-label" for="image">
 											Profile Photo
 										</label>
-										{% if pl.Image %}
+										{% if pl.image %}
 										<div class="d-flex align-items-center gap-2 mb-2">
-											<img src="{{ pl.Image.url }}" alt="Profile" class="rounded-circle shadow-sm" style="width: 40px; height: 40px; object-fit: cover;">
+											<img src="{% if pl.image %}{{ pl.image.url }}{% else %}{% static 'images/photo-unavailable.svg' %}{% endif %}" alt="Profile" class="rounded-circle shadow-sm" style="width: 40px; height: 40px; object-fit: cover;">
 											<span class="small text-muted">Current photo active</span>
 										</div>
 										{% endif %}
@@ -173,7 +172,7 @@
 									</div>
 								</div>
 
-								
+
 								<div class="col-12 mt-3 pt-3 border-top">
 									<h5 class="font-weight-bold text-dark mb-3">Security & Password (Optional)</h5>
 									<p class="small text-muted mb-3">Leave blank if you do not wish to modify your current password.</p>
@@ -182,24 +181,25 @@
 								<div class="col-md-6 mb-3">
 									<div class="cube-form-group">
 										<label class="cube-label" for="password">New Password</label>
-										<input type="password" name="password" id="password" class="cube-input" placeholder="New Password" minlength="8" maxlength="20">
+										<input type="password" name="password" id="password" class="cube-input" placeholder="New Password" minlength="8" maxlength="128">
 									</div>
 								</div>
 
 								<div class="col-md-6 mb-3">
 									<div class="cube-form-group">
 										<label class="cube-label" for="cpassword">Confirm New Password</label>
-										<input type="password" name="cpassword" id="cpassword" class="cube-input" placeholder="Confirm Password" minlength="8" maxlength="20">
+										<input type="password" name="cpassword" id="cpassword" class="cube-input" placeholder="Confirm Password" minlength="8" maxlength="128">
 									</div>
 								</div>
 							</div>
 
-							
-							<div class="mt-4 pt-3 border-top d-flex gap-3">
+
+							<div class="form-group"><label for="current-password">Current password (required to change email or password)</label><input class="cube-input" id="current-password" name="current_password" type="password" autocomplete="current-password"></div>
+<div class="mt-4 pt-3 border-top d-flex gap-3">
 								<button type="submit" id="contact_form_submit" name="contact_submit" class="cube-btn cube-btn-primary cube-btn-lg flex-fill">
 									<i class="fa fa-save mr-1"></i> Save Profile Changes
 								</button>
-								<a href="{% url 'PROFILE' %}" class="cube-btn cube-btn-outline cube-btn-lg">
+								<a href="{% url 'owner_profile' %}" class="cube-btn cube-btn-outline cube-btn-lg">
 									Cancel
 								</a>
 							</div>
@@ -209,8 +209,9 @@
 				</div>
 			</main>
 
-			
-			<footer class="cube-footer">
+
+			{% include 'includes/pagination.html' %}
+<footer class="cube-footer">
 				<div class="container text-center">
 					<p style="margin: 0; color: #FFFFFF !important; font-weight: 500; font-size: 0.875rem;">&copy; 2026 Rent-a-Cube Platform. All rights reserved. Designed for optimal workspace efficiency.</p>
 				</div>
@@ -219,9 +220,10 @@
 		</div>
 	</div>
 
-	
-	<script src="{% static 'admin/js/jquery.min.js' %}"></script>
-	<script src="{% static 'admin/js/bootstrap.bundle.min.js' %}"></script>
-	<script src="{% static 'js/responsive-navbar.js' %}"></script>
+
+
+
+	<script src="{% static 'js/responsive_navbar.js' %}"></script>
+<script src="{% static 'js/portal.js' %}"></script>
 </body>
 </html>

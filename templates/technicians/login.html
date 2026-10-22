@@ -7,20 +7,21 @@
 	<title>Technician Sign In | Rent-a-Cube</title>
 	<meta name="description" content="Sign in to the Rent-a-Cube Technician Portal.">
 
-	
+
 	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 	<link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
-	<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
+
+<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
 </head>
 
 <body class="tech-auth-body">
 	<div class="tech-login-wrap">
-		
-		
+
+
 		<div class="tech-brand-header">
-			<div class="mb-3">
+			<div class="mb-3 auth-logo">
 				<a href="/">
-					<img src="{% static 'images/logo-footer.svg' %}" alt="Rent-a-Cube Logo" style="height: 48px; width: auto; object-fit: contain;">
+					<img class="brand-logo" width="940" height="580" src="{% static 'images/rent-a-cube-logo.svg' %}" alt="Rent-a-Cube Logo">
 				</a>
 			</div>
 			<div class="mb-3" style="width: 52px; height: 52px; border-radius: 14px; background: rgba(245, 158, 11, 0.2); color: #F59E0B; display: inline-flex; align-items: center; justify-content: center; font-size: 1.4rem; border: 1px solid rgba(245, 158, 11, 0.4);">
@@ -30,19 +31,19 @@
 			<p style="color: #CBD5E1 !important; font-size: 0.95rem; margin: 0;">Field engineer & maintenance portal</p>
 		</div>
 
-		
+
 		<div class="tech-login-card">
-			
+
 			{% for msg in messages %}
 			<div class="cube-alert cube-alert-danger mb-4" role="alert">
 				<i class="fa fa-exclamation-triangle mr-2"></i> {{ msg }}
 			</div>
 			{% endfor %}
 
-			
+
 			<form method="post" action="">
 				{% csrf_token %}
-				
+
 				<div class="cube-form-group mb-3">
 					<label class="cube-label" for="tech-email" style="color: #1E293B !important; font-weight: 600;">Technician Email <span class="text-danger">*</span></label>
 					<input type="email" id="tech-email" name="email" class="cube-input" placeholder="technician@rentacube.com" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Please enter a valid email address (e.g. technician@rentacube.com)" required autofocus />
@@ -65,15 +66,17 @@
 			</div>
 		</div>
 
-		
+
 		<div class="text-center mt-4">
 			<p style="margin: 0; color: #94A3B8 !important; font-size: 0.8rem; font-weight: 500;">&copy; 2026 Rent-a-Cube Platform. All rights reserved.</p>
 		</div>
 
 	</div>
 
-	
-	<script src="{% static 'admin/js/jquery.min.js' %}"></script>
-	<script src="{% static 'admin/js/bootstrap.bundle.min.js' %}"></script>
+
+
+
+<script src="{% static 'js/responsive_navbar.js' %}"></script>
+<script src="{% static 'js/portal.js' %}"></script>
 </body>
 </html>

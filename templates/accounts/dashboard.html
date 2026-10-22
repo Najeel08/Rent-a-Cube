@@ -6,40 +6,39 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-	
+
 	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 	<link rel="stylesheet" href="{% static 'css/animations.css' %}">
 	<link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
-	
-	
-	<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
+
+
+
 	<link rel="stylesheet" href="{% static 'css/main.css' %}" class="color-switcher-link">
-	<script src="{% static 'js/vendor/modernizr-custom.js' %}"></script>
+
+<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
 </head>
 
 <body>
-	
-	<div class="preloader">
-		<div class="preloader_image"></div>
-	</div>
+
+
 
 	<div id="canvas">
 		<div id="box_wrapper">
-			
+
 			<header class="cube-navbar d-flex justify-content-between align-items-center">
-				<a class="navbar-brand" href="{% url 'uhome' %}">
-					<img src="{% static 'images/logo.svg' %}" alt="Rent-a-Cube Logo" style="height: 42px; width: auto; object-fit: contain;">
+				<a class="navbar-brand" href="{% url 'dashboard' %}">
+					<img class="brand-logo" width="940" height="580" src="{% static 'images/rent-a-cube-logo.svg' %}" alt="Rent-a-Cube Logo">
 				</a>
 
 				<nav class="d-none d-md-flex">
 					<ul class="cube-nav-links">
 						<li>
-							<a href="{% url 'uhome' %}" class="cube-nav-link active">
+							<a href="{% url 'dashboard' %}" class="cube-nav-link active">
 								<i class="fa fa-home"></i> Home
 							</a>
 						</li>
 						<li>
-							<a href="{% url 'showworkspace1' %}" class="cube-nav-link">
+							<a href="{% url 'workspace_search' %}" class="cube-nav-link">
 								<i class="fa fa-building"></i> Workspaces
 							</a>
 						</li>
@@ -48,18 +47,18 @@
 								<i class="fa fa-wrench"></i> Service Requests <i class="fa fa-angle-down"></i>
 							</a>
 							<div class="dropdown-menu shadow-sm border-0" style="border-radius: var(--rc-radius-md);">
-								<a class="dropdown-item py-2" href="{% url 'request' %}"><i class="fa fa-plus-circle text-primary mr-2"></i> New Service Request</a>
-								<a class="dropdown-item py-2" href="{% url 'viewrequest' %}"><i class="fa fa-list-alt text-primary mr-2"></i> View Service Requests</a>
+								<a class="dropdown-item py-2" href="{% url 'service_request_create' %}"><i class="fa fa-plus-circle text-primary mr-2"></i> New Service Request</a>
+								<a class="dropdown-item py-2" href="{% url 'service_request_list' %}"><i class="fa fa-list-alt text-primary mr-2"></i> View Service Requests</a>
 							</div>
 						</li>
 						<li>
-							<a href="{% url 'selectownercart' %}" class="cube-nav-link">
+							<a href="{% url 'cart_owner_list' %}" class="cube-nav-link">
 								<i class="fa fa-shopping-cart"></i> Cart
 							</a>
 						</li>
 						{% if request.session.id %}
 						<li>
-							<a href="{% url 'uvieworder' request.session.id %}" class="cube-nav-link">
+							<a href="{% url 'booking_list' request.session.id %}" class="cube-nav-link">
 								<i class="fa fa-calendar-check-o"></i> Bookings
 							</a>
 						</li>
@@ -81,7 +80,7 @@
 				</div>
 			</header>
 
-			
+
 			<section class="py-5" style="background: linear-gradient(180deg, var(--rc-primary-light) 0%, var(--rc-bg-main) 100%);">
 				<div class="container">
 					<div class="row align-items-center mb-5">
@@ -97,20 +96,20 @@
 							</p>
 						</div>
 						<div class="col-lg-4 text-lg-right mt-3 mt-lg-0">
-							<a href="{% url 'showworkspace1' %}" class="cube-btn cube-btn-primary cube-btn-lg">
+							<a href="{% url 'workspace_search' %}" class="cube-btn cube-btn-primary cube-btn-lg">
 								<i class="fa fa-search"></i> Browse Spaces
 							</a>
 						</div>
 					</div>
 
-					
+
 					<div class="cube-stat-grid mb-5">
 						<div class="cube-stat-box">
 							<div class="cube-stat-icon primary">
 								<i class="fa fa-building-o"></i>
 							</div>
 							<div class="cube-stat-info">
-								<span class="cube-stat-val">50+</span>
+								<span class="cube-stat-val">Browse</span>
 								<span class="cube-stat-label">Verified Workspaces</span>
 							</div>
 						</div>
@@ -119,7 +118,7 @@
 								<i class="fa fa-bolt"></i>
 							</div>
 							<div class="cube-stat-info">
-								<span class="cube-stat-val">Instant</span>
+								<span class="cube-stat-val">Hourly</span>
 								<span class="cube-stat-label">Hourly Booking</span>
 							</div>
 						</div>
@@ -128,7 +127,7 @@
 								<i class="fa fa-shield"></i>
 							</div>
 							<div class="cube-stat-info">
-								<span class="cube-stat-val">100%</span>
+								<span class="cube-stat-val">Razorpay</span>
 								<span class="cube-stat-label">Secure Payments</span>
 							</div>
 						</div>
@@ -137,16 +136,16 @@
 								<i class="fa fa-comments-o"></i>
 							</div>
 							<div class="cube-stat-info">
-								<span class="cube-stat-val">24/7</span>
+								<span class="cube-stat-val">Direct</span>
 								<span class="cube-stat-label">Direct Owner Chat</span>
 							</div>
 						</div>
 					</div>
 
-					
+
 					<h3 class="mb-4 font-weight-bold" style="letter-spacing: -0.02em;">Quick Portal Actions</h3>
 					<div class="row g-4">
-						
+
 						<div class="col-md-6 col-lg-3 mb-4">
 							<div class="cube-card p-4">
 								<div class="mb-3" style="width: 48px; height: 48px; border-radius: 12px; background: var(--rc-primary-light); color: var(--rc-primary); display: flex; align-items: center; justify-content: center; font-size: 1.35rem;">
@@ -156,13 +155,13 @@
 								<p class="text-muted small mb-4">
 									Discover hot desks, dedicated cabins, and conference rooms by city and amenities.
 								</p>
-								<a href="{% url 'showworkspace1' %}" class="cube-btn cube-btn-outline-primary cube-btn-sm mt-auto">
+								<a href="{% url 'workspace_search' %}" class="cube-btn cube-btn-outline-primary cube-btn-sm mt-auto">
 									Explore Now <i class="fa fa-arrow-right ml-1"></i>
 								</a>
 							</div>
 						</div>
 
-						
+
 						<div class="col-md-6 col-lg-3 mb-4">
 							<div class="cube-card p-4">
 								<div class="mb-3" style="width: 48px; height: 48px; border-radius: 12px; background: var(--rc-secondary-light); color: var(--rc-secondary); display: flex; align-items: center; justify-content: center; font-size: 1.35rem;">
@@ -172,13 +171,13 @@
 								<p class="text-muted small mb-4">
 									Review your cart and complete checkout by Owner.
 								</p>
-								<a href="{% url 'selectownercart' %}" class="cube-btn cube-btn-outline-primary cube-btn-sm mt-auto">
+								<a href="{% url 'cart_owner_list' %}" class="cube-btn cube-btn-outline-primary cube-btn-sm mt-auto">
 									View Cart <i class="fa fa-arrow-right ml-1"></i>
 								</a>
 							</div>
 						</div>
 
-						
+
 						<div class="col-md-6 col-lg-3 mb-4">
 							<div class="cube-card p-4">
 								<div class="mb-3" style="width: 48px; height: 48px; border-radius: 12px; background: var(--rc-success-bg); color: var(--rc-success); display: flex; align-items: center; justify-content: center; font-size: 1.35rem;">
@@ -189,14 +188,14 @@
 									Track confirmed bookings, dates, hours, payment verification, and receipts.
 								</p>
 								{% if request.session.id %}
-								<a href="{% url 'uvieworder' request.session.id %}" class="cube-btn cube-btn-outline-primary cube-btn-sm mt-auto">
+								<a href="{% url 'booking_list' request.session.id %}" class="cube-btn cube-btn-outline-primary cube-btn-sm mt-auto">
 									View Bookings <i class="fa fa-arrow-right ml-1"></i>
 								</a>
 								{% endif %}
 							</div>
 						</div>
 
-						
+
 						<div class="col-md-6 col-lg-3 mb-4">
 							<div class="cube-card p-4">
 								<div class="mb-3" style="width: 48px; height: 48px; border-radius: 12px; background: var(--rc-warning-bg); color: var(--rc-warning); display: flex; align-items: center; justify-content: center; font-size: 1.35rem;">
@@ -206,7 +205,7 @@
 								<p class="text-muted small mb-4">
 									Need tech assistance, power, or maintenance? Open a direct request to workspace staff.
 								</p>
-								<a href="{% url 'request' %}" class="cube-btn cube-btn-outline-primary cube-btn-sm mt-auto">
+								<a href="{% url 'service_request_create' %}" class="cube-btn cube-btn-outline-primary cube-btn-sm mt-auto">
 									Submit Ticket <i class="fa fa-arrow-right ml-1"></i>
 								</a>
 							</div>
@@ -215,13 +214,13 @@
 				</div>
 			</section>
 
-			
+
 			<section class="py-5 bg-white">
 				<div class="container">
 					<div class="text-center mb-5">
 						<span class="cube-badge cube-badge-info mb-2">Workspace Gallery</span>
 						<h2 class="font-weight-bold">Designed for Every Working Style</h2>
-						<p class="text-muted">High-speed WiFi, ergonomic seating, pristine conference halls, and 24/7 security.</p>
+						<p class="text-muted">Compare the amenities each owner lists before choosing your workspace.</p>
 					</div>
 
 					<div class="row">
@@ -265,8 +264,9 @@
 				</div>
 			</section>
 
-			
-			<footer class="cube-footer">
+
+			{% include 'includes/pagination.html' %}
+<footer class="cube-footer">
 				<div class="container text-center">
 					<p style="margin: 0; color: #FFFFFF !important; font-weight: 500; font-size: 0.875rem;">&copy; 2026 Rent-a-Cube Platform. All rights reserved. Designed for optimal workspace efficiency.</p>
 				</div>
@@ -274,8 +274,10 @@
 		</div>
 	</div>
 
-	
-	<script src="{% static 'js/compressed.js' %}"></script>
-	<script src="{% static 'js/main.js' %}"></script>
+
+
+
+<script src="{% static 'js/responsive_navbar.js' %}"></script>
+<script src="{% static 'js/portal.js' %}"></script>
 </body>
 </html>

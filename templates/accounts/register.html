@@ -6,44 +6,43 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-	
+
 	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 	<link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
-	
-	
-	<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
+
+
+
+<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
 </head>
 
 <body style="background-color: var(--rc-bg-main);">
-	
-	<div class="preloader">
-		<div class="preloader_image"></div>
-	</div>
+
+
 
 	<div id="canvas">
 		<div id="box_wrapper">
-			
+
 			<header class="cube-navbar d-flex justify-content-between align-items-center">
 				<a class="navbar-brand" href="/">
-					<img src="{% static 'images/logo.svg' %}" alt="Rent-a-Cube Logo" style="height: 48px; width: auto; object-fit: contain;">
+					<img class="brand-logo" width="940" height="580" src="{% static 'images/rent-a-cube-logo.svg' %}" alt="Rent-a-Cube Logo">
 				</a>
 
 				<div class="d-flex align-items-center gap-3">
 					<a href="/" class="cube-btn cube-btn-outline cube-btn-sm">
 						<i class="fa fa-home"></i> Home
 					</a>
-					<a href="{% url 'ulog' %}" class="cube-btn cube-btn-primary cube-btn-sm">
+					<a href="{% url 'login' %}" class="cube-btn cube-btn-primary cube-btn-sm">
 						<i class="fa fa-sign-in"></i> Sign In
 					</a>
 				</div>
 			</header>
 
-			
+
 			<section class="py-5" style="min-height: 85vh;">
 				<div class="container">
-					
+
 					{% for msg in messages %}
-					<div class="cube-alert cube-alert-info mb-4" style="max-width: 760px; margin: 0 auto 1.5rem auto;">
+					<div role="status" class="cube-alert cube-alert-info mb-4" style="max-width: 760px; margin: 0 auto 1.5rem auto;">
 						<i class="fa fa-info-circle mr-2"></i> {{msg}}
 					</div>
 					{% endfor %}
@@ -61,7 +60,7 @@
 							{% csrf_token %}
 
 							<div class="row">
-								
+
 								<div class="col-md-6">
 									<div class="cube-form-group">
 										<label for="name" class="cube-label">Full Name <span class="text-danger">*</span></label>
@@ -70,7 +69,7 @@
 									</div>
 								</div>
 
-								
+
 								<div class="col-md-6">
 									<div class="cube-form-group">
 										<label for="phone" class="cube-label">Phone Number <span class="text-danger">*</span></label>
@@ -81,7 +80,7 @@
 							</div>
 
 							<div class="row">
-								
+
 								<div class="col-md-6">
 									<div class="cube-form-group">
 										<label for="email" class="cube-label">Email Address <span class="text-danger">*</span></label>
@@ -90,7 +89,7 @@
 									</div>
 								</div>
 
-								
+
 								<div class="col-md-6">
 									<div class="cube-form-group">
 										<label for="place" class="cube-label">City / Location <span class="text-danger">*</span></label>
@@ -100,7 +99,7 @@
 								</div>
 							</div>
 
-							
+
 							<div class="cube-form-group">
 								<label for="image" class="cube-label">Profile Photo <span class="text-danger">*</span></label>
 								<input type="file" name="image" id="image" class="cube-input" accept="image/*" required>
@@ -108,13 +107,13 @@
 							</div>
 
 							<div class="row">
-								
+
 								<div class="col-md-6">
 									<div class="cube-form-group">
 										<label for="password" class="cube-label">Password <span class="text-danger">*</span></label>
 										<input type="password" name="password" id="password" class="cube-input" placeholder="Min 8 chars (letters, number, symbol)" minlength="8" maxlength="20" required oninput="checkPasswordStrength()">
-										
-										
+
+
 										<div class="p-2 mt-2 rounded bg-light border" style="font-size: 0.78rem;">
 											<span class="font-weight-bold text-dark d-block mb-1"><i class="fa fa-shield text-primary mr-1"></i> Recommended Strong Password:</span>
 											<ul class="pl-3 mb-0 text-muted" id="pwdCriteria" style="line-height: 1.4;">
@@ -129,7 +128,7 @@
 									</div>
 								</div>
 
-								
+
 								<div class="col-md-6">
 									<div class="cube-form-group">
 										<label for="cpassword" class="cube-label">Confirm Password <span class="text-danger">*</span></label>
@@ -148,14 +147,15 @@
 
 						<div class="text-center mt-4 pt-3 border-top">
 							<span class="text-muted small">Already registered? </span>
-							<a href="{% url 'ulog' %}" class="small font-weight-bold text-primary">Sign In</a>
+							<a href="{% url 'login' %}" class="small font-weight-bold text-primary">Sign In</a>
 						</div>
 					</div>
 				</div>
 			</section>
 
-			
-			<footer class="cube-footer">
+
+			{% include 'includes/pagination.html' %}
+<footer class="cube-footer">
 				<div class="container text-center">
 					<p style="margin: 0; color: #FFFFFF !important; font-weight: 500; font-size: 0.875rem;">&copy; 2026 Rent-a-Cube Platform. All rights reserved. Designed for optimal workspace efficiency.</p>
 				</div>
@@ -163,11 +163,11 @@
 		</div>
 	</div>
 
-	
-	<script src="{% static 'admin/js/jquery.min.js' %}"></script>
-	<script src="{% static 'admin/js/bootstrap.bundle.min.js' %}"></script>
 
-	
+
+
+
+
 	<script>
 		function validateEmailField(input, errorId) {
 			const email = input.value.trim();
@@ -191,7 +191,7 @@
 
 		function checkPasswordStrength() {
 			const pwd = document.getElementById("password").value;
-			
+
 			const hasLength = pwd.length >= 8;
 			const hasUpper = /[A-Z]/.test(pwd);
 			const hasLower = /[a-z]/.test(pwd);
@@ -277,5 +277,7 @@
 			return true;
 		}
 	</script>
+<script src="{% static 'js/responsive_navbar.js' %}"></script>
+<script src="{% static 'js/portal.js' %}"></script>
 </body>
 </html>

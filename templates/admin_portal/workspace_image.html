@@ -5,31 +5,32 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	
+
 	<title>Workspace Photo Preview | Rent-a-Cube</title>
 	<meta name="description" content="Rent-a-Cube Admin Workspace Photo Viewer">
-	
-	
+
+
 	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 	<link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
-	<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
+
+<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
 </head>
 
 <body class="admin-body-wrapper">
 	<div class="admin-layout">
-		
-		
+
+
 		<aside id="sidebar" class="admin-sidebar">
 			<div class="admin-sidebar-header">
-				<a href="{% url 'aindex' %}">
-					<img src="{% static 'images/logo-footer.svg' %}" alt="Rent-a-Cube Logo" style="height: 40px; width: auto; object-fit: contain;">
+				<a href="{% url 'admin_dashboard' %}">
+					<img class="brand-logo" width="940" height="580" src="{% static 'images/rent-a-cube-logo.svg' %}" alt="Rent-a-Cube Logo">
 				</a>
 			</div>
 
 			<div class="admin-sidebar-user">
 				<img class="admin-sidebar-user-avatar" src="{% static 'admin/images/layout_img/user_img.jpg' %}" alt="Admin Avatar" style="width: 44px; height: 44px; min-width: 44px; border-radius: 50%; object-fit: cover; border: 2px solid #4F46E5;">
 				<div>
-					<h6 class="admin-sidebar-user-name">John David</h6>
+					<h6 class="admin-sidebar-user-name">{{ request.session.email|default:"Administrator" }}</h6>
 					<p class="admin-sidebar-user-role"><span class="online-dot"></span> Administrator</p>
 				</div>
 			</div>
@@ -38,35 +39,35 @@
 				<div class="admin-sidebar-nav-title">Management</div>
 				<ul class="admin-sidebar-links">
 					<li>
-						<a href="{% url 'aindex' %}" class="admin-sidebar-link">
+						<a href="{% url 'admin_dashboard' %}" class="admin-sidebar-link">
 							<i class="fa fa-th-large"></i> <span>Dashboard</span>
 						</a>
 					</li>
 					<li>
-						<a href="#ownerMenu" data-toggle="collapse" aria-expanded="true" class="admin-sidebar-link dropdown-toggle active">
+						<a href="#ownerMenu"  aria-expanded="true" class="admin-sidebar-link dropdown-toggle active">
 							<i class="fa fa-building-o text-primary"></i> <span>Owner Hub</span> <i class="fa fa-angle-down submenu-arrow"></i></a>
 						<ul class="collapse show admin-sidebar-submenu" id="ownerMenu">
-							<li><a href="{% url 'ownerlists' %}" class="admin-sidebar-sublink"><i class="fa fa-id-card-o mr-1"></i> Owners</a></li>
-							<li><a href="{% url 'spaceview' %}" class="admin-sidebar-sublink active"><i class="fa fa-cubes mr-1"></i> Workspaces</a></li>
-							<li><a href="{% url 'worder' %}" class="admin-sidebar-sublink"><i class="fa fa-shopping-bag mr-1"></i> Bookings</a></li>
+							<li><a href="{% url 'admin_owner_list' %}" class="admin-sidebar-sublink"><i class="fa fa-id-card-o mr-1"></i> Owners</a></li>
+							<li><a href="{% url 'admin_workspace_list' %}" class="admin-sidebar-sublink active"><i class="fa fa-cubes mr-1"></i> Workspaces</a></li>
+							<li><a href="{% url 'admin_order_list' %}" class="admin-sidebar-sublink"><i class="fa fa-shopping-bag mr-1"></i> Bookings</a></li>
 						</ul>
 					</li>
 					<li>
-						<a href="#userMenu" data-toggle="collapse" aria-expanded="false" class="admin-sidebar-link dropdown-toggle">
+						<a href="#userMenu"  aria-expanded="false" class="admin-sidebar-link dropdown-toggle">
 							<i class="fa fa-users"></i> <span>User Hub</span> <i class="fa fa-angle-down submenu-arrow"></i></a>
 						<ul class="collapse admin-sidebar-submenu" id="userMenu">
-							<li><a href="{% url 'userlist' %}" class="admin-sidebar-sublink"><i class="fa fa-user-circle-o mr-1"></i> Users</a></li>
-							<li><a href="{% url 'bookingdetail' %}" class="admin-sidebar-sublink"><i class="fa fa-calendar-check-o mr-1"></i> Booking Details</a></li>
-							<li><a href="{% url 'viewsuggestion' %}" class="admin-sidebar-sublink"><i class="fa fa-commenting-o mr-1"></i> Feedback</a></li>
+							<li><a href="{% url 'admin_customer_list' %}" class="admin-sidebar-sublink"><i class="fa fa-user-circle-o mr-1"></i> Users</a></li>
+							<li><a href="{% url 'admin_booking_list' %}" class="admin-sidebar-sublink"><i class="fa fa-calendar-check-o mr-1"></i> Booking Details</a></li>
+							<li><a href="{% url 'admin_support_inquiry_detail' %}" class="admin-sidebar-sublink"><i class="fa fa-commenting-o mr-1"></i> Feedback</a></li>
 						</ul>
 					</li>
 					<li>
-						<a href="{% url 'spaceimage' %}" class="admin-sidebar-link">
+						<a href="{% url 'admin_workspace_images' %}" class="admin-sidebar-link">
 							<i class="fa fa-file-image-o"></i> <span>Workspace Photos</span>
 						</a>
 					</li>
 					<li>
-						<a href="{% url 'profile' %}" class="admin-sidebar-link">
+						<a href="{% url 'admin_profile' %}" class="admin-sidebar-link">
 							<i class="fa fa-user"></i> <span>Admin Profile</span>
 						</a>
 					</li>
@@ -77,13 +78,13 @@
 </form>
 					</li>
 				</ul>
-			</div> 
+			</div>
 		</aside>
 
-		
+
 		<div class="admin-content-wrapper">
-			
-			
+
+
 			<header class="admin-topbar">
 				<div class="d-flex align-items-center gap-3">
 					<button type="button" id="sidebarCollapse" class="admin-toggle-btn mr-3" title="Toggle navigation">
@@ -96,35 +97,35 @@
 				</div>
 
 				<div class="d-flex align-items-center gap-3">
-					<a href="{% url 'profile' %}" class="admin-user-chip">
+					<a href="{% url 'admin_profile' %}" class="admin-user-chip">
 						<img class="admin-user-chip-avatar" src="{% static 'admin/images/layout_img/user_img.jpg' %}" alt="Admin Avatar" style="width: 32px; height: 32px; min-width: 32px; border-radius: 50%; object-fit: cover;">
-						<span class="admin-user-chip-name">John David</span>
+						<span class="admin-user-chip-name">{{ request.session.email|default:"Administrator" }}</span>
 						<i class="fa fa-angle-down text-muted ml-1" style="font-size: 0.8rem;"></i>
 					</a>
 				</div>
 			</header>
-			
-			
+
+
 			<main class="admin-page-content">
-				
+
 				<div class="admin-card mx-auto" style="max-width: 800px;">
 					<div class="admin-card-header">
 						<div>
 							<h3 class="admin-card-title"><i class="fa fa-picture-o text-primary"></i> Workspace Preview</h3>
 							{% if Uii.id %}
-							<p class="text-muted small m-0 mt-1">Property: <strong class="text-dark">{{ Uii.Name }}</strong></p>
+							<p class="text-muted small m-0 mt-1">Property: <strong class="text-dark">{{ Uii.name }}</strong></p>
 							{% endif %}
 						</div>
-						<a href="{% url 'spaceview' %}" class="cube-btn cube-btn-sm cube-btn-outline">
+						<a href="{% url 'admin_workspace_list' %}" class="cube-btn cube-btn-sm cube-btn-outline">
 							<i class="fa fa-arrow-left mr-1"></i> Back to Catalog
 						</a>
 					</div>
 
 					<div class="text-center p-3">
-						{% if Uii.id and Uii.Image %}
+						{% if Uii.id and Uii.image %}
 						<div class="mb-3 rounded overflow-hidden shadow-sm" style="max-height: 480px; background: #F1F5F9; border: 1px solid #CBD5E1; display: inline-block;">
-							<a href="{{ Uii.Image.url }}" target="_blank" title="Click to view full size">
-								<img src="{{ Uii.Image.url }}" alt="Workspace Image" style="max-width: 100%; max-height: 480px; object-fit: contain;">
+							<a href="{% if Uii.image %}{{ Uii.image.url }}{% else %}{% static 'images/photo-unavailable.svg' %}{% endif %}" target="_blank" title="Click to view full size">
+								<img src="{% if Uii.image %}{{ Uii.image.url }}{% else %}{% static 'images/photo-unavailable.svg' %}{% endif %}" alt="Workspace Image" style="max-width: 100%; max-height: 480px; object-fit: contain;">
 							</a>
 						</div>
 						<p class="text-muted small">
@@ -142,7 +143,7 @@
 						<span class="cube-badge cube-badge-info">
 							<i class="fa fa-check mr-1"></i> Verified Property Image
 						</span>
-						<a href="{% url 'spaceview' %}" class="cube-btn cube-btn-sm cube-btn-primary ml-auto">
+						<a href="{% url 'admin_workspace_list' %}" class="cube-btn cube-btn-sm cube-btn-primary ml-auto">
 							<i class="fa fa-arrow-left mr-1"></i> Return to Workspace List
 						</a>
 					</div>
@@ -150,50 +151,23 @@
 
 			</main>
 
-			
-			<footer class="py-3 px-4 text-center mt-auto" style="background: #FFFFFF; border-top: 1px solid #E2E8F0;">
+
+			{% include 'includes/pagination.html' %}
+<footer class="py-3 px-4 text-center mt-auto" style="background: #FFFFFF; border-top: 1px solid #E2E8F0;">
 				<p class="m-0 text-muted small">&copy; 2026 Rent-a-Cube Platform. All rights reserved. Designed for optimal workspace management.</p>
 			</footer>
 
 		</div>
 	</div>
 
-	
-	<script src="{% static 'admin/js/jquery.min.js' %}"></script>
-	<script src="{% static 'admin/js/bootstrap.bundle.min.js' %}"></script>
+
+
+
 	<script>
-		document.addEventListener('DOMContentLoaded', function() {
-			var toggleBtn = document.getElementById('sidebarCollapse');
-			if (toggleBtn) {
-				toggleBtn.addEventListener('click', function() {
-					var sidebar = document.getElementById('sidebar');
-					if (sidebar) {
-						sidebar.classList.toggle('d-none');
-					}
-				});
-			}
-			document.querySelectorAll('.admin-sidebar-link.dropdown-toggle').forEach(function(toggle) {
-				toggle.addEventListener('click', function(e) {
-					e.preventDefault();
-					var targetSelector = this.getAttribute('href') || this.getAttribute('data-target');
-					if (targetSelector && targetSelector.startsWith('#')) {
-						var menu = document.querySelector(targetSelector);
-						if (menu) {
-							var isShown = menu.classList.contains('show');
-							if (isShown) {
-								menu.classList.remove('show');
-								this.setAttribute('aria-expanded', 'false');
-								this.classList.remove('dropdown-open');
-							} else {
-								menu.classList.add('show');
-								this.setAttribute('aria-expanded', 'true');
-								this.classList.add('dropdown-open');
-							}
-						}
-					}
-				});
-			});
-		});
+
 	</script>
+<script src="{% static 'js/admin_navigation.js' %}"></script>
+<script src="{% static 'js/responsive_navbar.js' %}"></script>
+<script src="{% static 'js/portal.js' %}"></script>
 </body>
 </html>

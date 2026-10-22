@@ -1,7 +1,8 @@
+from config.admin import CredentialAdmin
 from django.contrib import admin
-from .models import Workassign, addtech, owner_tb, owvaddwork
+from .models import ServiceAssignment, Technician, Owner, Workspace
 
-admin.site.register(owner_tb)
-admin.site.register(owvaddwork)
-admin.site.register(addtech)
-admin.site.register(Workassign)
+admin.site.register(Owner, CredentialAdmin)
+admin.site.register(Workspace)
+admin.site.register(Technician, CredentialAdmin)
+admin.site.register(ServiceAssignment)

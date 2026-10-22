@@ -1,0 +1,6 @@
+{% load static %}
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Set your password · Rent-a-Cube</title><link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"><link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}"></head><body>
+<main class="container py-5" style="max-width: 560px"><h1>Set your password</h1><p>Use at least eight characters. Avoid common passwords and personal details.</p>
+{% for message in messages %}<p class="cube-alert cube-alert-info" role="alert">{{ message }}</p>{% endfor %}
+<form method="post">{% csrf_token %}<label for="password">New password</label><input class="cube-input mb-3" id="password" name="password" type="password" autocomplete="new-password" required minlength="8"><label for="confirmation">Confirm password</label><input class="cube-input mb-3" id="confirmation" name="cpassword" type="password" autocomplete="new-password" required><button class="cube-btn cube-btn-primary" type="submit">Set password</button></form></main>
+</body></html>

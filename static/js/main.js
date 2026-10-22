@@ -1594,7 +1594,7 @@ $window.on('resize', function(){
 		return;
 	}
 	var navbarScript = document.createElement('script');
-	navbarScript.src = currentScript.src.replace(/main\.js(?:\?.*)?$/, 'responsive-navbar.js');
+	navbarScript.src = currentScript.src.replace(/main\.js(?:\?.*)?$/, 'responsive_navbar.js');
 	navbarScript.defer = true;
 	document.head.appendChild(navbarScript);
 })();

@@ -1,8 +1,9 @@
+from config.admin import CredentialAdmin, FinancialRecordAdmin
 from django.contrib import admin
-from .models import Messages_Tb, cart, refund_tb, request_tb, user_tb
+from .models import Message, Booking, Refund, ServiceRequest, Customer
 
-admin.site.register(user_tb)
-admin.site.register(cart)
-admin.site.register(request_tb)
-admin.site.register(Messages_Tb)
-admin.site.register(refund_tb)
+admin.site.register(Customer, CredentialAdmin)
+admin.site.register(Booking, FinancialRecordAdmin)
+admin.site.register(ServiceRequest)
+admin.site.register(Message)
+admin.site.register(Refund, FinancialRecordAdmin)

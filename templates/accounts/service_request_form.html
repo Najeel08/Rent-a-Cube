@@ -6,35 +6,34 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-	
+
 	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 	<link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
-	<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
+
+<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
 </head>
 
 <body>
-	
-	<div class="preloader">
-		<div class="preloader_image"></div>
-	</div>
+
+
 
 	<div id="canvas">
 		<div id="box_wrapper">
-			
+
 			<header class="cube-navbar d-flex justify-content-between align-items-center">
-				<a class="navbar-brand" href="{% url 'uhome' %}">
-					<img src="{% static 'images/logo.svg' %}" alt="Rent-a-Cube Logo" style="height: 48px; width: auto; object-fit: contain;">
+				<a class="navbar-brand" href="{% url 'dashboard' %}">
+					<img class="brand-logo" width="940" height="580" src="{% static 'images/rent-a-cube-logo.svg' %}" alt="Rent-a-Cube Logo">
 				</a>
 
 				<nav class="d-none d-md-flex">
 					<ul class="cube-nav-links">
 						<li>
-							<a href="{% url 'uhome' %}" class="cube-nav-link">
+							<a href="{% url 'dashboard' %}" class="cube-nav-link">
 								<i class="fa fa-home"></i> Home
 							</a>
 						</li>
 						<li>
-							<a href="{% url 'showworkspace1' %}" class="cube-nav-link">
+							<a href="{% url 'workspace_search' %}" class="cube-nav-link">
 								<i class="fa fa-building"></i> Workspaces
 							</a>
 						</li>
@@ -43,18 +42,18 @@
 								<i class="fa fa-wrench"></i> Service Requests <i class="fa fa-angle-down"></i>
 							</a>
 							<div class="dropdown-menu shadow-sm border-0" style="border-radius: var(--rc-radius-md);">
-								<a class="dropdown-item py-2" href="{% url 'request' %}"><i class="fa fa-plus-circle text-primary mr-2"></i> New Service Request</a>
-								<a class="dropdown-item py-2" href="{% url 'viewrequest' %}"><i class="fa fa-list-alt text-primary mr-2"></i> View Service Requests</a>
+								<a class="dropdown-item py-2" href="{% url 'service_request_create' %}"><i class="fa fa-plus-circle text-primary mr-2"></i> New Service Request</a>
+								<a class="dropdown-item py-2" href="{% url 'service_request_list' %}"><i class="fa fa-list-alt text-primary mr-2"></i> View Service Requests</a>
 							</div>
 						</li>
 						<li>
-							<a href="{% url 'selectownercart' %}" class="cube-nav-link">
+							<a href="{% url 'cart_owner_list' %}" class="cube-nav-link">
 								<i class="fa fa-shopping-cart"></i> Cart
 							</a>
 						</li>
 						{% if request.session.id %}
 						<li>
-							<a href="{% url 'uvieworder' request.session.id %}" class="cube-nav-link">
+							<a href="{% url 'booking_list' request.session.id %}" class="cube-nav-link">
 								<i class="fa fa-calendar-check-o"></i> Bookings
 							</a>
 						</li>
@@ -76,12 +75,12 @@
 				</div>
 			</header>
 
-			
+
 			<section class="py-5" style="background-color: var(--rc-bg-main); min-height: 85vh;">
 				<div class="container">
-					
+
 					{% for msg in messages %}
-					<div class="cube-alert cube-alert-info mb-4" style="max-width: 700px; margin: 0 auto 1.5rem auto;">
+					<div role="status" class="cube-alert cube-alert-info mb-4" style="max-width: 700px; margin: 0 auto 1.5rem auto;">
 						<i class="fa fa-info-circle"></i> {{ msg }}
 					</div>
 					{% endfor %}
@@ -128,7 +127,7 @@
 										<select name="wid" id="wid" class="cube-select" required>
 											<option value="" disabled selected>Select an Owner</option>
 											{% for t in own %}
-											<option value="{{t.id}}">{{t.Name}}</option>
+											<option value="{{t.id}}">{{t.name}}</option>
 											{% endfor %}
 										</select>
 									</div>
@@ -140,7 +139,7 @@
 								<input type="text" name="subject" id="subject" class="cube-input" placeholder="Describe the issue or support needed." required>
 							</div>
 
-							
+
 							<div hidden>
 								<select name="uid">
 									<option value="{{request.session.id|default:''}}">
@@ -157,7 +156,7 @@
 						</form>
 
 						<div class="text-center mt-4">
-							<a href="{% url 'viewrequest' %}" class="small font-weight-bold text-primary">
+							<a href="{% url 'service_request_list' %}" class="small font-weight-bold text-primary">
 								<i class="fa fa-list-alt mr-1"></i> View Service Requests
 							</a>
 						</div>
@@ -165,8 +164,9 @@
 				</div>
 			</section>
 
-			
-			<footer class="cube-footer">
+
+			{% include 'includes/pagination.html' %}
+<footer class="cube-footer">
 				<div class="container text-center">
 					<p style="margin: 0; color: #FFFFFF !important; font-weight: 500; font-size: 0.875rem;">&copy; 2026 Rent-a-Cube Platform. All rights reserved. Designed for optimal workspace efficiency.</p>
 				</div>
@@ -174,9 +174,10 @@
 		</div>
 	</div>
 
-	
-	<script src="{% static 'admin/js/jquery.min.js' %}"></script>
-	<script src="{% static 'admin/js/bootstrap.bundle.min.js' %}"></script>
-	<script src="{% static 'js/responsive-navbar.js' %}"></script>
+
+
+
+	<script src="{% static 'js/responsive_navbar.js' %}"></script>
+<script src="{% static 'js/portal.js' %}"></script>
 </body>
 </html>

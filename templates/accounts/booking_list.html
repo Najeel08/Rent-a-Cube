@@ -6,40 +6,39 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-	
+
 	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 	<link rel="stylesheet" href="{% static 'css/animations.css' %}">
 	<link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
-	
-	
-	<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
+
+
+
 	<link rel="stylesheet" href="{% static 'css/main.css' %}" class="color-switcher-link">
-	<script src="{% static 'js/vendor/modernizr-custom.js' %}"></script>
+
+<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
 </head>
 
 <body>
-	
-	<div class="preloader">
-		<div class="preloader_image"></div>
-	</div>
+
+
 
 	<div id="canvas">
 		<div id="box_wrapper">
-			
+
 			<header class="cube-navbar d-flex justify-content-between align-items-center">
-				<a class="navbar-brand" href="{% url 'uhome' %}">
-					<img src="{% static 'images/logo.svg' %}" alt="Rent-a-Cube Logo" style="height: 42px; width: auto; object-fit: contain;">
+				<a class="navbar-brand" href="{% url 'dashboard' %}">
+					<img class="brand-logo" width="940" height="580" src="{% static 'images/rent-a-cube-logo.svg' %}" alt="Rent-a-Cube Logo">
 				</a>
 
 				<nav class="d-none d-md-flex">
 					<ul class="cube-nav-links">
 						<li>
-							<a href="{% url 'uhome' %}" class="cube-nav-link">
+							<a href="{% url 'dashboard' %}" class="cube-nav-link">
 								<i class="fa fa-home"></i> Home
 							</a>
 						</li>
 						<li>
-							<a href="{% url 'showworkspace1' %}" class="cube-nav-link">
+							<a href="{% url 'workspace_search' %}" class="cube-nav-link">
 								<i class="fa fa-building"></i> Workspaces
 							</a>
 						</li>
@@ -48,18 +47,18 @@
 								<i class="fa fa-wrench"></i> Service Requests <i class="fa fa-angle-down"></i>
 							</a>
 							<div class="dropdown-menu shadow-sm border-0" style="border-radius: var(--rc-radius-md);">
-								<a class="dropdown-item py-2" href="{% url 'request' %}"><i class="fa fa-plus-circle text-primary mr-2"></i> New Service Request</a>
-								<a class="dropdown-item py-2" href="{% url 'viewrequest' %}"><i class="fa fa-list-alt text-primary mr-2"></i> View Service Requests</a>
+								<a class="dropdown-item py-2" href="{% url 'service_request_create' %}"><i class="fa fa-plus-circle text-primary mr-2"></i> New Service Request</a>
+								<a class="dropdown-item py-2" href="{% url 'service_request_list' %}"><i class="fa fa-list-alt text-primary mr-2"></i> View Service Requests</a>
 							</div>
 						</li>
 						<li>
-							<a href="{% url 'selectownercart' %}" class="cube-nav-link">
+							<a href="{% url 'cart_owner_list' %}" class="cube-nav-link">
 								<i class="fa fa-shopping-cart"></i> Cart
 							</a>
 						</li>
 						{% if request.session.id %}
 						<li>
-							<a href="{% url 'uvieworder' request.session.id %}" class="cube-nav-link active">
+							<a href="{% url 'booking_list' request.session.id %}" class="cube-nav-link active">
 								<i class="fa fa-calendar-check-o"></i> Bookings
 							</a>
 						</li>
@@ -81,12 +80,12 @@
 				</div>
 			</header>
 
-			
+
 			<section class="py-5" style="background-color: var(--rc-bg-main); min-height: 85vh;">
 				<div class="container">
-					
+
 					{% for msg in messages %}
-					<div class="cube-alert cube-alert-info mb-4">
+					<div role="status" class="cube-alert cube-alert-info mb-4">
 						<i class="fa fa-info-circle"></i> {{ msg }}
 					</div>
 					{% endfor %}
@@ -100,58 +99,60 @@
 							<p class="text-muted small mb-0">Track all your workspace bookings, payment verifications, and schedules.</p>
 						</div>
 						<div class="mt-3 mt-md-0">
-							<a href="{% url 'showworkspace1' %}" class="cube-btn cube-btn-primary cube-btn-sm">
+							<a href="{% url 'workspace_search' %}" class="cube-btn cube-btn-primary cube-btn-sm">
 								<i class="fa fa-plus"></i> New Reservation
 							</a>
 						</div>
 					</div>
 
-					
+
 					<div class="cube-table-container">
 						<div class="table-responsive">
 							<table class="cube-table">
 								<thead>
 									<tr>
-										<th>Workspace</th>
-										<th>Owner</th>
-										<th>Location</th>
-										<th>Rate</th>
-										<th>Duration</th>
-										<th>Booking Date</th>
-										<th>Created On</th>
-										<th>Payment</th>
-										<th>Reservation</th>
+										<th scope="col">Workspace</th>
+										<th scope="col">Owner</th>
+										<th scope="col">Location</th>
+										<th scope="col">Rate</th>
+										<th scope="col">Duration</th>
+										<th scope="col">Booking Date</th>
+										<th scope="col">Created On</th>
+										<th scope="col">Payment</th>
+										<th scope="col">Reservation</th>
 									</tr>
 								</thead>
 								<tbody>
 									{% for b in bk %}
 									<tr>
 										<td>
-											<div class="font-weight-bold" style="color: var(--rc-dark);">{{b.WsName}}</div>
-											<small class="text-muted">{{b.user.Name}}</small>
+											<div class="font-weight-bold" style="color: var(--rc-dark);">{{b.workspace_name}}</div>
+											<small class="text-muted">{{b.user.name}}</small>
 										</td>
 										<td>
-											<span class="font-weight-600">{{b.owner.Name}}</span>
+											<span class="font-weight-600">{{b.owner.name}}</span>
 										</td>
 										<td>
-											<small class="text-muted"><i class="fa fa-map-marker text-danger mr-1"></i>{{b.Location}}</small>
+											<small class="text-muted"><i class="fa fa-map-marker text-danger mr-1"></i>{{b.location}}</small>
 										</td>
 										<td>
-											<span class="font-weight-bold text-primary">₹{{b.Price}}<small class="text-muted">/hour</small></span>
+											<span class="font-weight-bold text-primary">₹{{b.hourly_rate}}<small class="text-muted">/hour</small></span>
 										</td>
 										<td>
-											<span class="cube-badge cube-badge-info">{{b.nohrs}} hours</span>
+											<span class="cube-badge cube-badge-info">{{b.duration_hours}} hours</span>
 										</td>
 										<td>
-											<span class="small font-weight-bold"><i class="fa fa-calendar-o mr-1"></i>{{b.Date}}</span>
+											<span class="small font-weight-bold"><i class="fa fa-calendar-o mr-1"></i>{{b.date}} {{ b.start_time|time:"H:i" }}</span>
 										</td>
 										<td>
-											<small class="text-muted">{{b.Date_book|date:"d M Y"}}</small>
+											<small class="text-muted">{{b.created_at|date:"d M Y"}}</small>
 										</td>
 										<td><span class="cube-badge cube-badge-success"><i class="fa fa-check-circle"></i> Paid</span></td>
 										<td>
-											<span class="cube-badge cube-badge-primary"><i class="fa fa-calendar-check-o"></i> Reserved</span>
-											{% if b.RazorpayPaymentId %}<small class="d-block text-muted mt-1">{{ b.RazorpayPaymentId }}</small>{% endif %}
+											{% if b.is_refunded %}<span class="cube-badge cube-badge-info">Refunded · reservation released</span>
+{% elif b.payment_review_required %}<span class="cube-badge cube-badge-warning">Payment received · contact owner for refund</span>
+{% else %}<span class="cube-badge cube-badge-primary">Reserved</span>{% endif %}
+											{% if b.razorpay_payment_id %}<small class="d-block text-muted mt-1">{{ b.razorpay_payment_id }}</small>{% endif %}
 										</td>
 									</tr>
 									{% empty %}
@@ -163,7 +164,7 @@
 												</div>
 												<h5 class="font-weight-bold">No Bookings Found</h5>
 												<p class="text-muted small mb-3">You haven't placed any workspace reservations yet.</p>
-												<a href="{% url 'showworkspace1' %}" class="cube-btn cube-btn-primary cube-btn-sm">
+												<a href="{% url 'workspace_search' %}" class="cube-btn cube-btn-primary cube-btn-sm">
 													Explore Workspaces <i class="fa fa-arrow-right ml-1"></i>
 												</a>
 											</div>
@@ -177,8 +178,9 @@
 				</div>
 			</section>
 
-			
-			<footer class="cube-footer">
+
+			{% include 'includes/pagination.html' %}
+<footer class="cube-footer">
 				<div class="container text-center">
 					<p style="margin: 0; color: #FFFFFF !important; font-weight: 500; font-size: 0.875rem;">&copy; 2026 Rent-a-Cube Platform. All rights reserved. Designed for optimal workspace efficiency.</p>
 				</div>
@@ -186,8 +188,10 @@
 		</div>
 	</div>
 
-	
-	<script src="{% static 'js/compressed.js' %}"></script>
-	<script src="{% static 'js/main.js' %}"></script>
+
+
+
+<script src="{% static 'js/responsive_navbar.js' %}"></script>
+<script src="{% static 'js/portal.js' %}"></script>
 </body>
 </html>

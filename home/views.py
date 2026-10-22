@@ -14,7 +14,7 @@ def index(request):
     return render(request, 'public/index.html')
 
 
-def contact4(request):
+def contact(request):
     """Display and accept validated public support inquiries."""
     if request.method == 'POST':
         try:
@@ -28,7 +28,7 @@ def contact4(request):
             return render(request, 'public/contact.html')
         SupportInquiry.objects.create(name=name, email=email, message=message)
         messages.success(request, 'Your inquiry has been received. Our team will reply by email.')
-        return redirect('contact4')
+        return redirect('contact')
     return render(request, 'public/contact.html')
 
 

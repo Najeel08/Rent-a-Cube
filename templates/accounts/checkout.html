@@ -8,20 +8,21 @@
 	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 	<link rel="stylesheet" href="{% static 'css/animations.css' %}">
 	<link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
-	<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
+
 	<link rel="stylesheet" href="{% static 'css/main.css' %}" class="color-switcher-link">
-	<script src="{% static 'js/vendor/modernizr-custom.js' %}"></script>
+
+<link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
 </head>
 <body>
-	<div class="preloader"><div class="preloader_image"></div></div>
+
 	<div id="canvas">
 		<div id="box_wrapper">
 			<header class="cube-navbar d-flex justify-content-between align-items-center">
-				<a class="navbar-brand" href="{% url 'uhome' %}">
-					<img src="{% static 'images/logo.svg' %}" alt="Rent-a-Cube Logo" style="height: 42px; width: auto; object-fit: contain;">
+				<a class="navbar-brand" href="{% url 'dashboard' %}">
+					<img class="brand-logo" width="940" height="580" src="{% static 'images/rent-a-cube-logo.svg' %}" alt="Rent-a-Cube Logo">
 				</a>
 				<div class="d-flex align-items-center gap-3">
-					<a href="{% url 'cartdetails' owner_id %}" class="cube-btn cube-btn-outline cube-btn-sm"><i class="fa fa-arrow-left"></i> Back to Cart</a>
+					<a href="{% url 'cart_detail' owner_id %}" class="cube-btn cube-btn-outline cube-btn-sm"><i class="fa fa-arrow-left"></i> Back to Cart</a>
 					<div class="cube-user-badge d-none d-md-inline-flex">
 						<div class="cube-user-avatar">{{ request.session.Name|default:"U"|slice:":1"|upper }}</div>
 						<span>{{ request.session.Name|default:"Member" }}</span>
@@ -32,7 +33,7 @@
 			<section class="py-5" style="background-color: var(--rc-bg-main); min-height: 85vh;">
 				<div class="container">
 					{% for msg in messages %}
-					<div class="cube-alert cube-alert-info mb-4" style="max-width: 620px; margin: 0 auto 1.5rem auto;"><i class="fa fa-info-circle"></i> {{ msg }}</div>
+					<div role="status" class="cube-alert cube-alert-info mb-4" style="max-width: 620px; margin: 0 auto 1.5rem auto;"><i class="fa fa-info-circle"></i> {{ msg }}</div>
 					{% endfor %}
 
 					<div class="cube-checkout-card shadow-lg">
@@ -42,9 +43,9 @@
 							<p>{% if demo_payment %}Demo payment only. No real money is charged.{% else %}Complete your secure workspace reservation payment.{% endif %}</p>
 						</div>
 
-						<div class="cube-checkout-body">
+						<div class="cube-checkout-body"><p class="small text-muted">Checkout hold ends at {{ booking.checkout_expires_at|date:"H:i" }} (India time).</p>
 							{% if demo_payment %}
-							<div class="cube-alert cube-alert-info mb-4"><i class="fa fa-info-circle"></i> This local demo creates a booking confirmation without processing a financial transaction.</div>
+							<div role="status" class="cube-alert cube-alert-info mb-4"><i class="fa fa-info-circle"></i> This local demo creates a booking confirmation without processing a financial transaction.</div>
 							{% endif %}
 
 							<div class="cube-price-display">
@@ -54,17 +55,17 @@
 							</div>
 
 							<div class="p-3 mb-4 rounded" style="background: var(--rc-bg-surface); border: 1px solid var(--rc-border-light);">
-								<div class="d-flex justify-content-between mb-2 small"><span class="text-muted">Workspace:</span><span class="font-weight-bold text-right">{{ booking.WsName }}</span></div>
-								<div class="d-flex justify-content-between mb-2 small"><span class="text-muted">Location:</span><span class="font-weight-bold text-right">{{ booking.Location }}</span></div>
-								<div class="d-flex justify-content-between mb-2 small"><span class="text-muted">Booking slot:</span><span class="font-weight-bold text-right">{{ booking.Date }}{% if booking.StartTime %}, {{ booking.StartTime|time:"H:i" }}{% endif %}</span></div>
-								<div class="d-flex justify-content-between mb-2 small"><span class="text-muted">Duration:</span><span class="font-weight-bold">{{ booking.nohrs }} hours</span></div>
+								<div class="d-flex justify-content-between mb-2 small"><span class="text-muted">Workspace:</span><span class="font-weight-bold text-right">{{ booking.workspace_name }}</span></div>
+								<div class="d-flex justify-content-between mb-2 small"><span class="text-muted">Location:</span><span class="font-weight-bold text-right">{{ booking.location }}</span></div>
+								<div class="d-flex justify-content-between mb-2 small"><span class="text-muted">Booking slot:</span><span class="font-weight-bold text-right">{{ booking.date }}{% if booking.start_time %}, {{ booking.start_time|time:"H:i" }}{% endif %}</span></div>
+								<div class="d-flex justify-content-between mb-2 small"><span class="text-muted">Duration:</span><span class="font-weight-bold">{{ booking.duration_hours }} hours</span></div>
 								<div class="d-flex justify-content-between small"><span class="text-muted">Payment provider:</span><span class="font-weight-bold text-primary">{% if demo_payment %}Razorpay Demo{% else %}Razorpay{% endif %}</span></div>
 							</div>
 
 							{% if demo_payment %}
-							<button type="button" class="cube-btn cube-btn-primary cube-btn-lg cube-btn-block shadow-sm" data-toggle="modal" data-target="#demo-payment-modal"><i class="fa fa-credit-card mr-2"></i> Proceed to Payment</button>
+							<form method="post" action="{% url 'payment_complete' booking_id %}">{% csrf_token %}<input type="hidden" name="demo_payment" value="1"><input type="hidden" name="razorpay_order_id" value="{{ order_id }}"><button class="cube-btn cube-btn-primary cube-btn-block" type="submit">Confirm demo payment</button></form>
 							{% else %}
-							<form id="payment-success-form" method="post" action="{% url 'payment_success' booking_id %}">
+							<form id="payment-success-form" method="post" action="{% url 'payment_complete' booking_id %}">
 								{% csrf_token %}
 								<input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id">
 								<input type="hidden" name="razorpay_order_id" id="razorpay_order_id">
@@ -74,40 +75,17 @@
 							{% endif %}
 
 							<div class="cube-trust-badges mt-4">
-								<div class="cube-trust-item"><i class="fa fa-check-circle text-primary"></i> Instant confirmation</div>
+								<div class="cube-trust-item"><i class="fa fa-check-circle text-primary"></i> Payment verified by server</div>
 								<div class="cube-trust-item"><i class="fa fa-calendar-check-o text-success"></i> Time slot reserved after payment</div>
 							</div>
 						</div>
 					</div>
 
-					{% if demo_payment %}
-					<div class="modal fade" id="demo-payment-modal" tabindex="-1" role="dialog" aria-labelledby="demo-payment-title" aria-modal="true">
-						<div class="modal-dialog modal-dialog-centered" role="document">
-							<div class="modal-content border-0 shadow-lg">
-								<div class="modal-header" style="background: #0c2454; color: #fff;">
-									<div><div class="small text-uppercase" style="letter-spacing: .08em; opacity: .8;">Razorpay Demo</div><h5 class="modal-title mb-0" id="demo-payment-title">Confirm Demo Payment</h5></div>
-									<button type="button" class="close text-white" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-								</div>
-								<div class="modal-body p-4">
-									<div class="d-flex justify-content-between mb-2"><span>{{ booking.WsName }}</span><strong>&#8377;{{ a }}</strong></div>
-									<p class="text-muted small mb-3">{{ booking.Date }}{% if booking.StartTime %} at {{ booking.StartTime|time:"H:i" }}{% endif %} for {{ booking.nohrs }} hours</p>
-									<div class="p-3 rounded mb-3" style="background: #f5f8ff; border: 1px solid #dce5ff;"><i class="fa fa-flask text-primary mr-2"></i><strong>Demo payment</strong><br><span class="small text-muted">No bank, card, or UPI transaction will be made.</span></div>
-									<form method="post" action="{% url 'payment_success' booking_id %}">
-										{% csrf_token %}
-										<input type="hidden" name="demo_payment" value="1">
-										<input type="hidden" name="razorpay_order_id" value="{{ order_id }}">
-										<button type="submit" class="cube-btn cube-btn-primary cube-btn-block"><i class="fa fa-check-circle mr-2"></i> Pay Now &#8377;{{ a }}</button>
-									</form>
-								</div>
-								<div class="modal-footer border-0 pt-0"><button type="button" class="btn btn-link text-muted" data-dismiss="modal">Cancel</button></div>
-							</div>
-						</div>
-					</div>
-					{% endif %}
 				</div>
 			</section>
 
-			<footer class="cube-footer"><div class="container text-center"><p style="margin: 0; color: #FFFFFF !important; font-weight: 500; font-size: .875rem;">&copy; 2026 Rent-a-Cube Platform. All rights reserved.</p></div></footer>
+			{% include 'includes/pagination.html' %}
+<footer class="cube-footer"><div class="container text-center"><p style="margin: 0; color: #FFFFFF !important; font-weight: 500; font-size: .875rem;">&copy; 2026 Rent-a-Cube Platform. All rights reserved.</p></div></footer>
 		</div>
 	</div>
 
@@ -127,16 +105,18 @@
 				document.getElementById("razorpay_signature").value = response.razorpay_signature;
 				document.getElementById("payment-success-form").submit();
 			},
-			prefill: { name: "{{ request.session.Name }}" },
+			prefill: { name: "{{ request.session.Name|escapejs }}" },
 			notes: { address: "Rent-a-Cube booking" },
 			theme: { color: "#4F46E5" }
 		};
 		var rzp1 = new Razorpay(options);
-		rzp1.on('payment.failed', function () { window.location.href = "{% url 'cartdetails' owner_id %}"; });
+		rzp1.on('payment.failed', function () { window.location.href = "{% url 'cart_detail' owner_id %}"; });
 		document.getElementById('rzp-button1').onclick = function (event) { rzp1.open(); event.preventDefault(); };
 	</script>
 	{% endif %}
-	<script src="{% static 'js/compressed.js' %}"></script>
-	<script src="{% static 'js/main.js' %}"></script>
+
+
+<script src="{% static 'js/responsive_navbar.js' %}"></script>
+<script src="{% static 'js/portal.js' %}"></script>
 </body>
 </html>
