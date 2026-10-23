@@ -157,7 +157,7 @@
 
 									<div class="cube-form-group mb-3">
 										<label class="cube-label" for="nohrs">Duration (Hours) <span class="text-danger">*</span></label>
-										<input type="number" id="nohrs" name="nohrs" value="{{ request.POST.nohrs|default:1 }}" min="1" max="72" class="cube-input" placeholder="e.g. 4" required oninput="calculateTotal()">
+										<input type="number" id="nohrs" name="nohrs" value="{{ request.POST.nohrs|default:1 }}" min="1" max="72" class="cube-input" placeholder="e.g. 4" required>
 									</div>
 
 
@@ -211,7 +211,7 @@
 	</div>
 
 
-	<script>
+	<script nonce="{{ request.csp_nonce }}">
 		function calculateTotal() {
 			const priceInput = document.getElementById('unit_price');
 			const hoursInput = document.getElementById('nohrs');
@@ -242,6 +242,9 @@
 
 
 <script src="{% static 'js/responsive_navbar.js' %}"></script>
+<script nonce="{{ request.csp_nonce }}">
+    document.getElementById('nohrs').addEventListener('input', function (event) { calculateTotal(); });
+</script>
 <script src="{% static 'js/portal.js' %}"></script>
 </body>
 </html>

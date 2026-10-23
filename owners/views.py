@@ -104,7 +104,7 @@ def sign_in(request):
         password = request.POST.get('password', '')
         owner = Owner.objects.filter(email__iexact=email).first()
 
-        if owner and password_matches(password, owner.password):
+        if password_matches(password, owner.password if owner else None) and owner:
             if owner.accept and not owner.reject:
                 upgrade_password_if_needed(owner, 'password', password)
                 login_role(request, 'owner', owner, owner.name)
@@ -487,7 +487,10 @@ def send_technician_login(request, technician_id):
         recipient = technician.email
         name = technician.name
 
-        if not settings.DEBUG and settings.EMAIL_BACKEND == 'django.core.mail.backends.console.EmailBackend':
+        if not settings.DEBUG and settings.EMAIL_BACKEND in {
+            'django.core.mail.backends.console.EmailBackend',
+            'config.security.RedactedConsoleEmailBackend',
+        }:
             messages.error(request, 'Configure a delivery email backend before sending setup links.')
             return redirect('owner_technician_list')
         token = signing.dumps({'id': technician.pk, 'auth': session_auth_hash(technician)}, salt='technician-setup')

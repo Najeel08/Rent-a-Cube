@@ -76,10 +76,19 @@
     document.addEventListener('click', function (event) {
         if (!event.target.closest('.dropdown')) closeDropdowns();
     });
+    document.querySelectorAll('[data-digits-only]').forEach(function (input) {
+        input.addEventListener('input', function () {
+            input.value = input.value.replace(/[^0-9]/g, '').slice(0, 10);
+        });
+    });
     // Visible completion feedback, while retaining server-side idempotency.
     document.querySelectorAll('form').forEach(function (form) {
         form.addEventListener('submit', function (event) {
             if (event.defaultPrevented || !form.checkValidity()) return;
+            if (form.dataset.confirm && !window.confirm(form.dataset.confirm)) {
+                event.preventDefault();
+                return;
+            }
             var button = event.submitter;
             if (!button) return;
             button.setAttribute('aria-busy', 'true');

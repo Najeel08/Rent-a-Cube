@@ -168,7 +168,7 @@
 												<i class="fa fa-lock"></i> Processed
 											</span>
 											{% elif b.refund_state != "none" %}<span class="cube-badge cube-badge-warning">{{ b.refund_state|title }} · contact support</span>{% else %}
-											<form method="post" action="{% url 'refund_process' b.id %}" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to refund ₹{{ b.total_amount }} through Razorpay?');">
+											<form method="post" action="{% url 'refund_process' b.id %}" style="display:inline-block;" data-confirm="Are you sure you want to refund ₹{{ b.total_amount }} through Razorpay?">
 												{% csrf_token %}
 												<button type="submit" class="cube-btn cube-btn-danger cube-btn-sm">
 													<i class="fa fa-undo mr-1"></i> Process Refund

@@ -60,7 +60,8 @@ def sign_in(request):
         password = request.POST.get('password', '')
         technician = Technician.objects.select_related('owner').filter(email__iexact=email).first()
 
-        if technician and technician.owner.accept and not technician.owner.reject and password_matches(password, technician.password):
+        valid_password = password_matches(password, technician.password if technician else None)
+        if valid_password and technician and technician.owner.accept and not technician.owner.reject:
             upgrade_password_if_needed(technician, 'password', password)
             login_role(request, 'technician', technician, technician.name)
             return redirect('technician_dashboard')

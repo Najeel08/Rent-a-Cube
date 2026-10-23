@@ -170,9 +170,12 @@ class PaymentFlowTests(UserTestCase):
         booking_date = (date.today() + timedelta(days=7)).isoformat()
         response = self.client.post(reverse('workspace_book', args=[self.workspace.id]), {
             'nohrs': '3', 'date': booking_date, 'start_time': '14:00',
+            'price': '1', 'total_amount': '1',
         })
         self.assertRedirects(response, reverse('cart_owner_list'))
         booking = Booking.objects.get(workspace=self.workspace, date=booking_date, start_time=time(14))
+        self.assertEqual(booking.hourly_rate, 250)
+        self.assertEqual(booking.total_amount, 750)
         self.assertContains(self.client.get(reverse('cart_detail', args=[self.owner.id])), self.workspace.name)
         self.assertContains(self.client.post(reverse('checkout', args=[booking.id])), 'Payment Gateway')
         booking.refresh_from_db()

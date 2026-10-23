@@ -194,7 +194,7 @@
 
 
 
-	<script>
+	<script nonce="{{ request.csp_nonce }}">
 		document.addEventListener("DOMContentLoaded", function() {
 			var chatBox = document.getElementById("chatMessagesBox");
 			if (chatBox) {

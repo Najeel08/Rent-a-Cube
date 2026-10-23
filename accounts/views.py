@@ -96,7 +96,7 @@ def sign_in(request):
         password = request.POST.get('password', '')
         user = Customer.objects.filter(email__iexact=email).first()
 
-        if user and password_matches(password, user.password):
+        if password_matches(password, user.password if user else None) and user:
             upgrade_password_if_needed(user, 'password', password)
             login_role(request, 'user', user, user.name)
             return redirect('dashboard')
@@ -385,6 +385,7 @@ def workspace_book(request, workspace_id):
             owner_id=workspace.owner_id,
             image=workspace.image.name,
             duration_hours=hours,
+            total_amount=price * hours,
             date=booking_date,
             start_time=start_time,
             workspace=workspace,

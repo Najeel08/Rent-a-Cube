@@ -101,14 +101,14 @@
 								<div class="col-md-6">
 									<div class="cube-form-group">
 										<label for="name" class="cube-label">Full Name <span class="text-danger">*</span></label>
-										<input type="text" name="name" id="name" class="cube-input" placeholder="Your full name" value="{{ request.session.Name|default:'' }}" oninput="this.value = this.value.replace( /^[^a-zA-Z\s]+$/g, '').replace(/(\..*)\./g, '$1');" required>
+										<input type="text" name="name" id="name" class="cube-input" placeholder="Your full name" value="{{ request.session.Name|default:'' }}" required>
 									</div>
 								</div>
 
 								<div class="col-md-6">
 									<div class="cube-form-group">
 										<label for="phone" class="cube-label">Phone Number <span class="text-danger">*</span></label>
-										<input type="tel" minlength="10" maxlength="10" name="phone" id="phone" class="cube-input" placeholder="10-digit mobile number" pattern="^[6-9][0-9]{9}$" title="Please enter a valid 10-digit mobile number starting with 6, 7, 8, or 9" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);" required>
+										<input type="tel" minlength="10" maxlength="10" name="phone" id="phone" class="cube-input" placeholder="10-digit mobile number" pattern="^[6-9][0-9]{9}$" title="Please enter a valid 10-digit mobile number starting with 6, 7, 8, or 9" data-digits-only required>
 									</div>
 								</div>
 							</div>
@@ -178,6 +178,9 @@
 
 
 	<script src="{% static 'js/responsive_navbar.js' %}"></script>
+<script nonce="{{ request.csp_nonce }}">
+    document.getElementById('name').addEventListener('input', function (event) { this.value = this.value.replace( /^[^a-zA-Z\s]+$/g, '').replace(/(\..*)\./g, '$1'); });
+</script>
 <script src="{% static 'js/portal.js' %}"></script>
 </body>
 </html>

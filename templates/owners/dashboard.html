@@ -136,48 +136,36 @@
 					</div>
 
 
-					<div class="cube-stat-grid mb-5">
-						<a href="{% url 'owner_workspace_list' %}" class="cube-stat-box text-decoration-none">
-							<div class="cube-stat-icon primary">
-								<i class="fa fa-building"></i>
+					<div class="mb-5">
+						<div class="cube-card overflow-hidden shadow-sm">
+							<div class="p-3 bg-white border-bottom d-flex align-items-center justify-content-between">
+								<h5 class="mb-0 font-weight-bold" style="font-size: 1.05rem;">
+									<i class="fa fa-image text-primary mr-2"></i> Workspace Inspiration & Spaces
+								</h5>
+								<span class="cube-badge cube-badge-info">Commercial Hub</span>
 							</div>
-							<div class="cube-stat-info">
-								<span class="cube-stat-val">Workspaces</span>
-								<span class="cube-stat-label">Manage listings & capacity</span>
+							<div class="page_slider">
+								<div class="workspace-gallery" role="region" aria-label="Workspace inspiration" tabindex="0">
+									<ul class="slides">
+										<li class="cs text-center">
+											<img alt="Workspace 1" src="{% static 'images/10.jpg' %}" style="max-height: 380px; width: 100%; object-fit: cover;">
+										</li>
+										<li class="cs text-center">
+											<img alt="Workspace 2" src="{% static 'images/12.jpg' %}" style="max-height: 380px; width: 100%; object-fit: cover;">
+										</li>
+										<li class="cs text-center">
+											<img alt="Workspace 3" src="{% static 'images/13.jpg' %}" style="max-height: 380px; width: 100%; object-fit: cover;">
+										</li>
+										<li class="cs text-center">
+											<img alt="Workspace 4" src="{% static 'images/14.jpg' %}" style="max-height: 380px; width: 100%; object-fit: cover;">
+										</li>
+										<li class="cs text-center">
+											<img alt="Workspace 5" src="{% static 'images/15.jpg' %}" style="max-height: 380px; width: 100%; object-fit: cover;">
+										</li>
+									</ul>
+								</div>
 							</div>
-						</a>
-
-						{% if request.session.id %}
-						<a href="{% url 'owner_booking_list' request.session.id %}" class="cube-stat-box text-decoration-none">
-							<div class="cube-stat-icon success">
-								<i class="fa fa-calendar-check-o"></i>
-							</div>
-							<div class="cube-stat-info">
-								<span class="cube-stat-val">Bookings</span>
-								<span class="cube-stat-label">Review and confirm payments</span>
-							</div>
-						</a>
-						{% endif %}
-
-						<a href="{% url 'owner_service_request_list' %}" class="cube-stat-box text-decoration-none">
-							<div class="cube-stat-icon warning">
-								<i class="fa fa-wrench"></i>
-							</div>
-							<div class="cube-stat-info">
-								<span class="cube-stat-val">Service Requests</span>
-								<span class="cube-stat-label">Assign technicians to tickets</span>
-							</div>
-						</a>
-
-						<a href="{% url 'owner_chat_inbox' %}" class="cube-stat-box text-decoration-none">
-							<div class="cube-stat-icon info">
-								<i class="fa fa-comments"></i>
-							</div>
-							<div class="cube-stat-info">
-								<span class="cube-stat-val">User Chat</span>
-								<span class="cube-stat-label">Direct inquiries & support</span>
-							</div>
-						</a>
+						</div>
 					</div>
 
 
@@ -261,37 +249,50 @@
 					</div>
 
 
-					<div class="mt-4">
-						<div class="cube-card overflow-hidden shadow-sm">
-							<div class="p-3 bg-white border-bottom d-flex align-items-center justify-content-between">
-								<h5 class="mb-0 font-weight-bold" style="font-size: 1.05rem;">
-									<i class="fa fa-image text-primary mr-2"></i> Workspace Inspiration & Spaces
-								</h5>
-								<span class="cube-badge cube-badge-info">Commercial Hub</span>
+					<div class="cube-stat-grid mt-3 mb-5">
+						<a href="{% url 'owner_workspace_list' %}" class="cube-stat-box text-decoration-none">
+							<div class="cube-stat-icon primary">
+								<i class="fa fa-building"></i>
 							</div>
-							<div class="page_slider">
-								<div class="workspace-gallery" role="region" aria-label="Workspace inspiration" tabindex="0">
-									<ul class="slides">
-										<li class="cs text-center">
-											<img alt="Workspace 1" src="{% static 'images/10.jpg' %}" style="max-height: 380px; width: 100%; object-fit: cover;">
-										</li>
-										<li class="cs text-center">
-											<img alt="Workspace 2" src="{% static 'images/12.jpg' %}" style="max-height: 380px; width: 100%; object-fit: cover;">
-										</li>
-										<li class="cs text-center">
-											<img alt="Workspace 3" src="{% static 'images/13.jpg' %}" style="max-height: 380px; width: 100%; object-fit: cover;">
-										</li>
-										<li class="cs text-center">
-											<img alt="Workspace 4" src="{% static 'images/14.jpg' %}" style="max-height: 380px; width: 100%; object-fit: cover;">
-										</li>
-										<li class="cs text-center">
-											<img alt="Workspace 5" src="{% static 'images/15.jpg' %}" style="max-height: 380px; width: 100%; object-fit: cover;">
-										</li>
-									</ul>
-								</div>
+							<div class="cube-stat-info">
+								<span class="cube-stat-val">Workspaces</span>
+								<span class="cube-stat-label">Manage listings & capacity</span>
 							</div>
-						</div>
+						</a>
+
+						{% if request.session.id %}
+						<a href="{% url 'owner_booking_list' request.session.id %}" class="cube-stat-box text-decoration-none">
+							<div class="cube-stat-icon success">
+								<i class="fa fa-calendar-check-o"></i>
+							</div>
+							<div class="cube-stat-info">
+								<span class="cube-stat-val">Bookings</span>
+								<span class="cube-stat-label">Review and confirm payments</span>
+							</div>
+						</a>
+						{% endif %}
+
+						<a href="{% url 'owner_service_request_list' %}" class="cube-stat-box text-decoration-none">
+							<div class="cube-stat-icon warning">
+								<i class="fa fa-wrench"></i>
+							</div>
+							<div class="cube-stat-info">
+								<span class="cube-stat-val">Service Requests</span>
+								<span class="cube-stat-label">Assign technicians to tickets</span>
+							</div>
+						</a>
+
+						<a href="{% url 'owner_chat_inbox' %}" class="cube-stat-box text-decoration-none">
+							<div class="cube-stat-icon info">
+								<i class="fa fa-comments"></i>
+							</div>
+							<div class="cube-stat-info">
+								<span class="cube-stat-val">User Chat</span>
+								<span class="cube-stat-label">Direct inquiries & support</span>
+							</div>
+						</a>
 					</div>
+
 
 				</div>
 			</main>

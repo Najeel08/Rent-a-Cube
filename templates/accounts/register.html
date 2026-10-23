@@ -56,7 +56,7 @@
 							<p class="cube-form-subtitle mb-0">Book flexible Workspaces, desks, and meeting rooms.</p>
 						</div>
 
-						<form method="post" action="" enctype="multipart/form-data" id="userRegForm" onsubmit="return validateForm()">
+						<form method="post" action="" enctype="multipart/form-data" id="userRegForm">
 							{% csrf_token %}
 
 							<div class="row">
@@ -73,7 +73,7 @@
 								<div class="col-md-6">
 									<div class="cube-form-group">
 										<label for="phone" class="cube-label">Phone Number <span class="text-danger">*</span></label>
-										<input type="tel" name="phone" id="phone" class="cube-input" placeholder="10-digit mobile number" minlength="10" maxlength="10" pattern="^[6-9][0-9]{9}$" title="Please enter a valid 10-digit mobile number starting with 6, 7, 8, or 9" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);" required>
+										<input type="tel" name="phone" id="phone" class="cube-input" placeholder="10-digit mobile number" minlength="10" maxlength="10" pattern="^[6-9][0-9]{9}$" title="Please enter a valid 10-digit mobile number starting with 6, 7, 8, or 9" data-digits-only required>
 										<small id="phoneError" class="text-danger mt-1 d-block"></small>
 									</div>
 								</div>
@@ -84,7 +84,7 @@
 								<div class="col-md-6">
 									<div class="cube-form-group">
 										<label for="email" class="cube-label">Email Address <span class="text-danger">*</span></label>
-										<input type="email" name="email" id="email" class="cube-input" placeholder="alex@company.com" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Please enter a valid email address (e.g. name@domain.com)" oninput="validateEmailField(this, 'emailError')" required>
+										<input type="email" name="email" id="email" class="cube-input" placeholder="alex@company.com" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Please enter a valid email address (e.g. name@domain.com)" required>
 										<small id="emailError" class="text-danger mt-1 d-block"></small>
 									</div>
 								</div>
@@ -111,7 +111,7 @@
 								<div class="col-md-6">
 									<div class="cube-form-group">
 										<label for="password" class="cube-label">Password <span class="text-danger">*</span></label>
-										<input type="password" name="password" id="password" class="cube-input" placeholder="Min 8 chars (letters, number, symbol)" minlength="8" maxlength="20" required oninput="checkPasswordStrength()">
+										<input type="password" name="password" id="password" class="cube-input" placeholder="Min 8 chars (letters, number, symbol)" minlength="8" maxlength="20" required>
 
 
 										<div class="p-2 mt-2 rounded bg-light border" style="font-size: 0.78rem;">
@@ -132,7 +132,7 @@
 								<div class="col-md-6">
 									<div class="cube-form-group">
 										<label for="cpassword" class="cube-label">Confirm Password <span class="text-danger">*</span></label>
-										<input type="password" name="cpassword" id="cpassword" class="cube-input" placeholder="Re-enter password" minlength="8" maxlength="20" required oninput="checkPasswordMatch()">
+										<input type="password" name="cpassword" id="cpassword" class="cube-input" placeholder="Re-enter password" minlength="8" maxlength="20" required>
 										<small id="cpasswordError" class="text-danger mt-1 d-block"></small>
 									</div>
 								</div>
@@ -168,7 +168,7 @@
 
 
 
-	<script>
+	<script nonce="{{ request.csp_nonce }}">
 		function validateEmailField(input, errorId) {
 			const email = input.value.trim();
 			const errElem = document.getElementById(errorId);
@@ -278,6 +278,12 @@
 		}
 	</script>
 <script src="{% static 'js/responsive_navbar.js' %}"></script>
+<script nonce="{{ request.csp_nonce }}">
+    document.getElementById('userRegForm').addEventListener('submit', function (event) { if (!validateForm()) event.preventDefault(); });
+    document.getElementById('email').addEventListener('input', function (event) { validateEmailField(this, 'emailError'); });
+    document.getElementById('password').addEventListener('input', function (event) { checkPasswordStrength(); });
+    document.getElementById('cpassword').addEventListener('input', function (event) { checkPasswordMatch(); });
+</script>
 <script src="{% static 'js/portal.js' %}"></script>
 </body>
 </html>

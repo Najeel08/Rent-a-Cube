@@ -86,12 +86,14 @@ def hash_password(raw_password):
 
 
 def password_matches(raw_password, stored_password):
-    """Only accept hashes; historical password migrations handle legacy values."""
-    if not raw_password or not stored_password:
+    """Check credentials without giving missing accounts a faster failure path."""
+    if not stored_password or not password_is_hashed(stored_password):
+        # Match Django's authentication backend: burn the default hasher's work
+        # even when an account is absent or has not set its password yet.
+        make_password(raw_password or '')
         return False
-    if password_is_hashed(stored_password):
-        return check_password(raw_password, stored_password)
-    return False
+    valid = check_password(raw_password or '', stored_password)
+    return bool(raw_password) and valid
 
 
 def upgrade_password_if_needed(obj, field_name, raw_password):

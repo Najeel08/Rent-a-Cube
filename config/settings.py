@@ -1,5 +1,6 @@
 """Django settings for Rent-a-Cube project."""
 from pathlib import Path
+from ipaddress import ip_network
 import os
 from django.core.exceptions import ImproperlyConfigured
 from django.core.management.utils import get_random_secret_key
@@ -72,6 +73,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'config.middleware.TrustedProxyMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -140,6 +142,18 @@ SECURE_PROXY_SSL_HEADER = (
     if env_bool('DJANGO_USE_X_FORWARDED_PROTO')
     else None
 )
+TRUSTED_PROXY_IPS = [
+    value.strip() for value in os.environ.get('DJANGO_TRUSTED_PROXY_IPS', '').split(',')
+    if value.strip()
+]
+try:
+    for proxy in TRUSTED_PROXY_IPS:
+        if ip_network(proxy, strict=False).prefixlen == 0:
+            raise ValueError('Trusting every address is not allowed.')
+except ValueError as exc:
+    raise ImproperlyConfigured('DJANGO_TRUSTED_PROXY_IPS must contain valid IP addresses or CIDR networks.') from exc
+if SECURE_PROXY_SSL_HEADER and not TRUSTED_PROXY_IPS:
+    raise ImproperlyConfigured('Set DJANGO_TRUSTED_PROXY_IPS before trusting forwarded HTTPS headers.')
 SECURE_HSTS_SECONDS = env_int('DJANGO_SECURE_HSTS_SECONDS', 31536000 if not DEBUG else 0)
 SECURE_HSTS_INCLUDE_SUBDOMAINS = env_bool(
     'DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS', not DEBUG
@@ -162,6 +176,11 @@ RAZORPAY_API_SECRET_KEY = os.environ.get('RAZORPAY_API_SECRET_KEY', '')
 ALLOW_DEMO_PAYMENTS = DEBUG and env_bool('ALLOW_DEMO_PAYMENTS')
 BOOKING_HOLD_MINUTES = 15
 SESSION_COOKIE_AGE = 60 * 60 * 12
+ADMIN_IDLE_TIMEOUT = 15 * 60
+TECHNICIAN_IDLE_TIMEOUT = 30 * 60
+PRIVILEGED_SESSION_MAX_AGE = 8 * 60 * 60
+# Enable after exercising the provider's sandbox checkout with this policy.
+CHECKOUT_CSP_ENFORCE = env_bool('DJANGO_CHECKOUT_CSP_ENFORCE')
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_REFERRER_POLICY = 'same-origin'
 DATA_UPLOAD_MAX_MEMORY_SIZE = 12 * 1024 * 1024
@@ -176,8 +195,38 @@ EMAIL_BACKEND = os.environ.get(
     'EMAIL_BACKEND',
     'django.core.mail.backends.smtp.EmailBackend'
     if EMAIL_HOST_USER and EMAIL_HOST_PASSWORD
-    else 'django.core.mail.backends.console.EmailBackend',
+    else 'config.security.RedactedConsoleEmailBackend',
 )
+if EMAIL_BACKEND == 'django.core.mail.backends.console.EmailBackend':
+    EMAIL_BACKEND = 'config.security.RedactedConsoleEmailBackend'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
+
+# Fail closed if local HTTP settings accidentally accompany a production launch.
+if not DEBUG:
+    if len(SECRET_KEY) < 50 or len(set(SECRET_KEY)) < 5 or SECRET_KEY.startswith(('django-insecure-', 'replace-')):
+        raise ImproperlyConfigured('Production requires a strong DJANGO_SECRET_KEY of at least 50 characters.')
+    if not ALLOWED_HOSTS or '*' in ALLOWED_HOSTS:
+        raise ImproperlyConfigured('Production requires explicit DJANGO_ALLOWED_HOSTS.')
+    if not all((SECURE_SSL_REDIRECT, SESSION_COOKIE_SECURE, CSRF_COOKIE_SECURE)):
+        raise ImproperlyConfigured('Production requires HTTPS redirection and secure session/CSRF cookies. Do not load local HTTP settings.')
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {'redact_setup_links': {'()': 'config.security.SetupLinkFilter'}},
+    'formatters': {
+        'safe': {'()': 'config.security.SafeFormatter', 'format': '{levelname} {message}', 'style': '{'},
+        'server': {'()': 'config.security.SafeServerFormatter', 'format': '[{server_time}] {message}', 'style': '{'},
+    },
+    'handlers': {
+        'console': {'class': 'logging.StreamHandler', 'filters': ['redact_setup_links'], 'formatter': 'safe'},
+        'django.server': {'class': 'logging.StreamHandler', 'filters': ['redact_setup_links'], 'formatter': 'server'},
+    },
+    'loggers': {
+        'django': {'handlers': ['console'], 'level': 'INFO', 'propagate': False},
+        'django.server': {'handlers': ['django.server'], 'level': 'INFO', 'propagate': False},
+    },
+    'root': {'handlers': ['console'], 'level': 'WARNING'},
+}

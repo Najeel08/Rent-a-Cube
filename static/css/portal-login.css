@@ -6,8 +6,7 @@
     --login-accent-ink: var(--rc-bg-card);
     --login-tint: var(--rc-primary-light);
     --login-divider: #a99cff;
-    --login-photo-shade: rgba(16, 23, 58, .78);
-    --login-photo: url('../images/7.jpg');
+    --login-photo: url('../images/Moody Blue Office with Dashboard View.png');
     --login-geometry: #e9ecfc;
     --login-shadow: 0 18px 48px rgba(30, 41, 85, .1);
     --login-input-border: #8491a3;
@@ -27,8 +26,7 @@
     --login-accent-ink: var(--rc-dark);
     --login-tint: #fff6e8;
     --login-divider: #ffd681;
-    --login-photo-shade: rgba(4, 22, 39, .38);
-    --login-photo: url('../images/technician-workshop.jpg');
+    --login-photo: url('../images/Cinematic Technician Workshop Workbench.png');
     --login-geometry: #f7eddf;
     --login-shadow: 0 18px 48px rgba(121, 82, 27, .12);
 }
@@ -46,7 +44,12 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(var(--login-photo-shade), var(--login-photo-shade)), var(--login-photo) center / cover;
+    background-image: var(--login-photo);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* Frame the wide supplied image against the viewport inside the clipped panel. */
+    background-attachment: fixed;
     clip-path: polygon(0 0, calc(100% - 9px) 0, calc(54% - 9px) 100%, 0 100%);
 }
 
@@ -55,10 +58,7 @@
     clip-path: polygon(0 0, 59% 0, 100% 100%, 0 100%);
 }
 
-/* Workshop photo: camera obscura, Unsplash, https://unsplash.com/photos/v-LAxH7JSzI
-   Used under the Unsplash License: https://unsplash.com/license */
 .portal-login--technician .portal-login-photo::before {
-    background-position: center, 66% center;
     clip-path: polygon(0 0, calc(59% - 9px) 0, calc(100% - 9px) 100%, 0 100%);
 }
 

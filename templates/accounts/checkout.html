@@ -91,7 +91,7 @@
 
 	{% if not demo_payment %}
 	<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-	<script>
+	<script nonce="{{ request.csp_nonce }}">
 		var options = {
 			key: "{{ api_key }}",
 			amount: "{{ amount_paise }}",

@@ -28,7 +28,7 @@ def sign_in(request):
         password = request.POST.get('password', '')
         admin = PlatformAdmin.objects.filter(email__iexact=email).first()
 
-        if admin and password_matches(password, admin.password):
+        if password_matches(password, admin.password if admin else None) and admin:
             upgrade_password_if_needed(admin, 'password', password)
             login_role(request, 'admin', admin)
             request.session['email'] = admin.email

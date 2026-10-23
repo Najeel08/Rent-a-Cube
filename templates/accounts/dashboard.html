@@ -83,7 +83,7 @@
 
 			<section class="py-5" style="background: linear-gradient(180deg, var(--rc-primary-light) 0%, var(--rc-bg-main) 100%);">
 				<div class="container">
-					<div class="row align-items-center mb-5">
+					<div class="row align-items-center">
 						<div class="col-lg-8">
 							<span class="cube-badge cube-badge-primary mb-2">
 								<i class="fa fa-bolt"></i> Premium Workspace Network
@@ -103,6 +103,61 @@
 					</div>
 
 
+				</div>
+			</section>
+
+
+			<section class="pt-3 pb-5 bg-white">
+				<div class="container">
+					<div class="text-center mb-4">
+						<h2 class="font-weight-bold text-dark mt-0 mb-2">Designed for Every Working Style</h2>
+						<p class="text-muted">Compare the amenities each owner lists before choosing your workspace.</p>
+					</div>
+
+					<div class="row">
+						<div class="col-md-4 mb-4">
+							<div class="cube-card">
+								<div class="cube-card-img-wrap" style="height: 220px;">
+									<img src="{% static 'images/1u.jpg' %}" alt="Workspace" class="cube-card-img">
+									<span class="cube-card-type-badge">Dedicated Desk</span>
+								</div>
+								<div class="cube-card-body">
+									<h4 class="cube-card-title">Focus Pods & Quiet Desks</h4>
+									<p class="text-muted small">Ideal for deep work, uninterrupted focus, and individual productivity.</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4 mb-4">
+							<div class="cube-card">
+								<div class="cube-card-img-wrap" style="height: 220px;">
+									<img src="{% static 'images/5u.jpg' %}" alt="Workspace" class="cube-card-img">
+									<span class="cube-card-type-badge">Team Cabin</span>
+								</div>
+								<div class="cube-card-body">
+									<h4 class="cube-card-title">Private Team Suites</h4>
+									<p class="text-muted small">Fully furnished private spaces built for modern remote teams & startups.</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4 mb-4">
+							<div class="cube-card">
+								<div class="cube-card-img-wrap" style="height: 220px;">
+									<img src="{% static 'images/2u.jpg' %}" alt="Workspace" class="cube-card-img">
+									<span class="cube-card-type-badge">Meeting Room</span>
+								</div>
+								<div class="cube-card-body">
+									<h4 class="cube-card-title">Conference & Board Rooms</h4>
+									<p class="text-muted small">Equipped with 4K screens, audio conferencing, and whiteboards.</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+
+			<section class="py-5" style="background: linear-gradient(180deg, var(--rc-primary-light) 0%, var(--rc-bg-main) 100%);">
+				<div class="container">
 					<div class="cube-stat-grid mb-5">
 						<div class="cube-stat-box">
 							<div class="cube-stat-icon primary">
@@ -208,56 +263,6 @@
 								<a href="{% url 'service_request_create' %}" class="cube-btn cube-btn-outline-primary cube-btn-sm mt-auto">
 									Submit Ticket <i class="fa fa-arrow-right ml-1"></i>
 								</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
-
-
-			<section class="py-5 bg-white">
-				<div class="container">
-					<div class="text-center mb-5">
-						<span class="cube-badge cube-badge-info mb-2">Workspace Gallery</span>
-						<h2 class="font-weight-bold">Designed for Every Working Style</h2>
-						<p class="text-muted">Compare the amenities each owner lists before choosing your workspace.</p>
-					</div>
-
-					<div class="row">
-						<div class="col-md-4 mb-4">
-							<div class="cube-card">
-								<div class="cube-card-img-wrap" style="height: 220px;">
-									<img src="{% static 'images/1u.jpg' %}" alt="Workspace" class="cube-card-img">
-									<span class="cube-card-type-badge">Dedicated Desk</span>
-								</div>
-								<div class="cube-card-body">
-									<h4 class="cube-card-title">Focus Pods & Quiet Desks</h4>
-									<p class="text-muted small">Ideal for deep work, uninterrupted focus, and individual productivity.</p>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 mb-4">
-							<div class="cube-card">
-								<div class="cube-card-img-wrap" style="height: 220px;">
-									<img src="{% static 'images/5u.jpg' %}" alt="Workspace" class="cube-card-img">
-									<span class="cube-card-type-badge">Team Cabin</span>
-								</div>
-								<div class="cube-card-body">
-									<h4 class="cube-card-title">Private Team Suites</h4>
-									<p class="text-muted small">Fully furnished private spaces built for modern remote teams & startups.</p>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-4 mb-4">
-							<div class="cube-card">
-								<div class="cube-card-img-wrap" style="height: 220px;">
-									<img src="{% static 'images/2u.jpg' %}" alt="Workspace" class="cube-card-img">
-									<span class="cube-card-type-badge">Meeting Room</span>
-								</div>
-								<div class="cube-card-body">
-									<h4 class="cube-card-title">Conference & Board Rooms</h4>
-									<p class="text-muted small">Equipped with 4K screens, audio conferencing, and whiteboards.</p>
-								</div>
 							</div>
 						</div>
 					</div>

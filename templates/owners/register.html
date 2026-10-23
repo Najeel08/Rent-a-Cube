@@ -65,7 +65,7 @@
 						</div>
 						{% endif %}
 
-						<form method="post" action="" enctype="multipart/form-data" id="ownerRegForm" onsubmit="return validateOwnerForm()">
+						<form method="post" action="" enctype="multipart/form-data" id="ownerRegForm">
 							{% csrf_token %}
 
 							<div class="row">
@@ -86,7 +86,7 @@
 										<label class="cube-label" for="phonenumber">
 											Phone Number <span class="text-danger">*</span>
 										</label>
-										<input type="tel" name="phonenumber" id="phonenumber" class="cube-input" placeholder="10-digit mobile number" minlength="10" maxlength="10" pattern="^[6-9][0-9]{9}$" title="Please enter a valid 10-digit mobile number starting with 6, 7, 8, or 9" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);" required>
+										<input type="tel" name="phonenumber" id="phonenumber" class="cube-input" placeholder="10-digit mobile number" minlength="10" maxlength="10" pattern="^[6-9][0-9]{9}$" title="Please enter a valid 10-digit mobile number starting with 6, 7, 8, or 9" data-digits-only required>
 										<small id="phoneError" class="text-danger mt-1 d-block"></small>
 									</div>
 								</div>
@@ -97,7 +97,7 @@
 										<label class="cube-label" for="email">
 											Email Address <span class="text-danger">*</span>
 										</label>
-										<input type="email" name="email" id="email" class="cube-input" placeholder="vikram@cowork.in" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Please enter a valid email address (e.g. vikram@cowork.in)" oninput="validateOwnerEmailField(this, 'emailError')" required>
+										<input type="email" name="email" id="email" class="cube-input" placeholder="vikram@cowork.in" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Please enter a valid email address (e.g. vikram@cowork.in)" required>
 										<small id="emailError" class="text-danger mt-1 d-block"></small>
 									</div>
 								</div>
@@ -167,7 +167,7 @@
 										<label class="cube-label" for="password">
 											Password <span class="text-danger">*</span>
 										</label>
-										<input type="password" name="password" id="password" class="cube-input" placeholder="Min 8 characters" minlength="8" maxlength="20" required oninput="checkOwnerPasswordStrength()">
+										<input type="password" name="password" id="password" class="cube-input" placeholder="Min 8 characters" minlength="8" maxlength="20" required>
 
 
 										<div class="p-2 mt-2 rounded bg-light border" style="font-size: 0.78rem;">
@@ -190,7 +190,7 @@
 										<label class="cube-label" for="cpassword">
 											Confirm Password <span class="text-danger">*</span>
 										</label>
-										<input type="password" name="cpassword" id="cpassword" class="cube-input" placeholder="Repeat password" minlength="8" maxlength="20" required oninput="checkOwnerPasswordMatch()">
+										<input type="password" name="cpassword" id="cpassword" class="cube-input" placeholder="Repeat password" minlength="8" maxlength="20" required>
 										<small id="cpasswordError" class="text-danger mt-1 d-block"></small>
 									</div>
 								</div>
@@ -223,7 +223,7 @@
 	</div>
 
 
-	<script>
+	<script nonce="{{ request.csp_nonce }}">
 		function validateOwnerEmailField(input, errorId) {
 			const email = input.value.trim();
 			const errElem = document.getElementById(errorId);
@@ -333,6 +333,12 @@
 		}
 	</script>
 	<script src="{% static 'js/responsive_navbar.js' %}"></script>
+<script nonce="{{ request.csp_nonce }}">
+    document.getElementById('ownerRegForm').addEventListener('submit', function (event) { if (!validateOwnerForm()) event.preventDefault(); });
+    document.getElementById('email').addEventListener('input', function (event) { validateOwnerEmailField(this, 'emailError'); });
+    document.getElementById('password').addEventListener('input', function (event) { checkOwnerPasswordStrength(); });
+    document.getElementById('cpassword').addEventListener('input', function (event) { checkOwnerPasswordMatch(); });
+</script>
 <script src="{% static 'js/portal.js' %}"></script>
 </body>
 </html>

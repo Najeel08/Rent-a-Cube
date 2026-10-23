@@ -125,7 +125,7 @@
 	</div>
 
 
-	<script>
+	<script nonce="{{ request.csp_nonce }}">
 		document.addEventListener("DOMContentLoaded", function() {
 			const chatContainer = document.getElementById("chat-box-scroll");
 			if (chatContainer) {

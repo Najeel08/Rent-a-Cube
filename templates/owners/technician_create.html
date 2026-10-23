@@ -152,7 +152,7 @@
 										<label class="cube-label" for="phonenumber">
 											Phone Number <span class="text-danger">*</span>
 										</label>
-										<input type="tel" minlength="10" maxlength="10" name="phonenumber" id="phonenumber" class="cube-input" placeholder="10-digit mobile number" pattern="^[6-9][0-9]{9}$" title="Please enter a valid 10-digit mobile number starting with 6, 7, 8, or 9" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);" required>
+										<input type="tel" minlength="10" maxlength="10" name="phonenumber" id="phonenumber" class="cube-input" placeholder="10-digit mobile number" pattern="^[6-9][0-9]{9}$" title="Please enter a valid 10-digit mobile number starting with 6, 7, 8, or 9" data-digits-only required>
 									</div>
 								</div>
 
