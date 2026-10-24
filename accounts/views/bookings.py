@@ -31,16 +31,22 @@ def booking_list(request, pk=None):
     return render_page(request, 'accounts/booking_list.html', 'bk', orders)
 
 
+def _add_cart_totals(items):
+    """Attach each display amount and return the total without saving bookings."""
+    total = 0
+    for item in items:
+        item.line_total = item.hourly_rate * item.duration_hours
+        total += item.line_total
+    return total
+
+
 def cart_list(request):
     """Show unpaid cart items with calculated totals."""
     guard = _user_guard(request)
     if guard:
         return guard
     items = Booking.objects.filter(user_id=request.session['id'], is_paid=False)
-    total = 0
-    for item in items:
-        item.line_total = item.hourly_rate * item.duration_hours
-        total += item.line_total
+    total = _add_cart_totals(items)
     return render(request, 'accounts/cart_list.html', {'book_obj': items, 'sum': total})
 
 
@@ -73,9 +79,7 @@ def cart_detail(request, pk):
         is_paid=False,
     )
     # Keep the provider total for display while retaining the true amount per item.
-    total = sum(item.hourly_rate * item.duration_hours for item in cart_items)
-    for item in cart_items:
-        item.line_total = item.hourly_rate * item.duration_hours
+    total = _add_cart_totals(cart_items)
     return render(
         request,
         'accounts/cart_detail.html',
@@ -120,9 +124,12 @@ def checkout(request, booking_id):
         if not item.razorpay_order_id:
             total = item.hourly_rate * item.duration_hours
             try:
-                order_id = (f'demo_order_{secrets.token_hex(12)}' if demo else client.order.create({
-                    'amount': total * 100, 'currency': 'INR', 'receipt': f'booking-{item.pk}',
-                })['id'])
+                if demo:
+                    order_id = f'demo_order_{secrets.token_hex(12)}'
+                else:
+                    order_id = client.order.create({
+                        'amount': total * 100, 'currency': 'INR', 'receipt': f'booking-{item.pk}',
+                    })['id']
             except Exception:
                 messages.error(request, 'Unable to start payment. Please try again.')
                 return redirect('cart_detail', pk=item.owner_id)

@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 
-from accounts.messaging import create_message
+from accounts.messaging import create_message, recent_messages
 from accounts.models import Booking, Customer, Message, ServiceRequest
 from config.validation import positive_integer
 
@@ -43,7 +43,7 @@ def conversation(request, user_id):
         elif len(message) > 500:
             messages.info(request, 'Messages must be 500 characters or fewer.')
 
-    messages_qs = list(reversed(Message.objects.filter(customer=user, owner=owner).order_by('-id')[:200]))
+    messages_qs = recent_messages(customer=user, owner=owner)
 
     return render(
         request,

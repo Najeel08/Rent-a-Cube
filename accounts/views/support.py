@@ -7,8 +7,8 @@ from config.pagination import render_page
 from config.validation import positive_integer, required_text
 from owners.models import Owner
 
-from ..messaging import create_message
-from ..models import Customer, Message, ServiceRequest
+from ..messaging import create_message, recent_messages
+from ..models import Customer, ServiceRequest
 from .auth import _user_guard
 
 
@@ -68,8 +68,7 @@ def customer_conversation(request, owner_id):
         elif len(message) > 500:
             messages.info(request, 'Messages must be 500 characters or fewer.')
 
-    messages_qs = Message.objects.filter(customer=user, owner=owner).order_by('-id')[:200]
-    messages_qs = list(reversed(messages_qs))
+    messages_qs = recent_messages(customer=user, owner=owner)
 
     return render(
         request,

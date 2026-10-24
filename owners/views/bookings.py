@@ -78,11 +78,13 @@ def process_refund(request, booking_id):
         booking.refund_state = 'pending'
         booking.save(update_fields=['refund_state'])
     try:
-        result = ({'id': f'demo_refund_{booking.pk}', 'status': 'processed'} if demo else
-                  client.payment.refund(booking.razorpay_payment_id, {
-                      'amount': booking.total_amount * 100, 'speed': 'normal',
-                      'notes': {'booking_id': str(booking.pk)},
-                  }))
+        if demo:
+            result = {'id': f'demo_refund_{booking.pk}', 'status': 'processed'}
+        else:
+            result = client.payment.refund(booking.razorpay_payment_id, {
+                'amount': booking.total_amount * 100, 'speed': 'normal',
+                'notes': {'booking_id': str(booking.pk)},
+            })
         if not result.get('id'):
             raise ValueError('Refund reference missing')
     except Exception:

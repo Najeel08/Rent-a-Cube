@@ -147,13 +147,16 @@ def profile_edit(request, profile_id=None):
             )
             if not is_valid_email(new_email):
                 raise ValidationError('Please enter a valid email address.')
-            if (new_email != profile.email or request.POST.get('password')) and not password_matches(request.POST.get('current_password', ''), profile.password):
+            new_password = request.POST.get('password')
+            changing_credentials = new_email != profile.email or bool(new_password)
+            if changing_credentials and not password_matches(request.POST.get('current_password', ''), profile.password):
                 raise ValidationError('Enter your current password to change your email or password.')
-            phone = validate_phone_number(request.POST.get('phonenumber'))
-            workex = required_text(request.POST, 'workex', 'Work experience', max_length=25)
+            phone_number = validate_phone_number(request.POST.get('phonenumber'))
+            work_experience = required_text(request.POST, 'workex', 'Work experience', max_length=25)
             place = required_text(request.POST, 'place', 'Place', max_length=50)
-            if request.FILES.get('image'):
-                validate_image_upload(request.FILES['image'], 'Profile image')
+            image = request.FILES.get('image')
+            if image:
+                validate_image_upload(image, 'Profile image')
         except ValidationError as exc:
             messages.info(request, '; '.join(exc.messages))
             return render(request, 'owners/profile_edit.html', {'pl': profile})
@@ -161,16 +164,15 @@ def profile_edit(request, profile_id=None):
             messages.info(request, "email already exists")
             return render(request, 'owners/profile_edit.html', {'pl': profile})
 
-        if request.FILES.get("image"):
-            profile.image = request.FILES["image"]
+        if image:
+            profile.image = image
 
         profile.name = name
         profile.email = new_email
-        profile.phone_number = phone
-        profile.work_experience = workex
+        profile.phone_number = phone_number
+        profile.work_experience = work_experience
         profile.place = place
 
-        new_password = request.POST.get("password")
         confirm_password = request.POST.get("cpassword")
         if new_password:
             if new_password != confirm_password:

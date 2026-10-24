@@ -132,9 +132,9 @@ def owner_proof(request, owner_id):
     guard = _admin_guard(request)
     if guard:
         return guard
-    owner = get_object_or_404(Owner, id=owner_id) if str(owner_id).isdecimal() else None
-    if owner is None:
+    if not str(owner_id).isdecimal():
         raise Http404('Owner not found')
+    owner = get_object_or_404(Owner, id=owner_id)
     return render(request, "admin_portal/owner_proof.html", {'Umm': owner})
 
 
@@ -143,9 +143,9 @@ def owner_proof_file(request, owner_id):
     guard = _admin_guard(request)
     if guard:
         return guard
-    owner = get_object_or_404(Owner, id=owner_id) if str(owner_id).isdecimal() else None
-    if owner is None:
+    if not str(owner_id).isdecimal():
         raise Http404('Owner not found')
+    owner = get_object_or_404(Owner, id=owner_id)
     if not owner.proof_document:
         raise Http404('Proof document not found')
     try:
@@ -159,9 +159,9 @@ def workspace_image(request, workspace_id):
     guard = _admin_guard(request)
     if guard:
         return guard
-    image = get_object_or_404(Workspace, id=workspace_id) if str(workspace_id).isdecimal() else None
-    if image is None:
+    if not str(workspace_id).isdecimal():
         raise Http404('Workspace not found')
+    image = get_object_or_404(Workspace, id=workspace_id)
     return render(request, "admin_portal/workspace_image.html", {'Uii': image})
 
 

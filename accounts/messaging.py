@@ -4,6 +4,12 @@ from django.utils import timezone
 from .models import Message
 
 
+def recent_messages(*, customer, owner):
+    """Return the latest 200 messages in display order for one conversation."""
+    newest_first = Message.objects.filter(customer=customer, owner=owner).order_by('-id')[:200]
+    return list(reversed(newest_first))
+
+
 def create_message(*, customer, owner, sender_role, body):
     if sender_role == 'user':
         sender, receiver = customer, owner

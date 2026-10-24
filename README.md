@@ -71,6 +71,14 @@ Create a local `.env` file using `.env.example` as a reference. Set the required
 .\.venv\Scripts\python.exe manage.py migrate
 ```
 
+The migrations provide a fresh baseline for the current models and are intended
+for an empty database. Before using an existing database from the older migration
+history, check that its schema and recorded migrations match this baseline.
+Generating migration files does not apply them or reset existing data.
+
+Django splits the owners baseline into `0001_initial` and `0002_initial` to
+resolve its references to the accounts app. Both files are required.
+
 ### 6. Start the Development Server
 
 ```powershell
@@ -113,6 +121,13 @@ To run only one app or one test file, use its Python module path:
 .\.venv\Scripts\python.exe manage.py test accounts.tests.test_payments
 ```
 
+Registration JavaScript has separate checks using Node's built-in test runner;
+they require no npm packages:
+
+```powershell
+node --test --test-isolation=none tests/js/registration.test.cjs
+```
+
 Before running the tests, you can also check the configuration and migration state:
 
 ```powershell
@@ -137,6 +152,11 @@ portals still use a single `views.py` file. Existing URLs have not changed.
 Shared customer-owner message creation is in `accounts/messaging.py`. Reservation
 conflicts and payment recording remain in `accounts/reservations.py` and
 `accounts/payments.py`. Role and session checks stay in `config/auth_utils.py`.
+
+`accounts/messaging.py` also selects the latest conversation messages for both
+portals. Registration feedback is shared through `static/js/registration.js`;
+each registration template supplies its form and phone field IDs. The owner and
+workspace administration lists share `templates/includes/admin_owner_sidebar.html`.
 
 Models and migrations stay in their original apps. Some app labels and database
 table names retain older names to keep existing databases compatible; do not

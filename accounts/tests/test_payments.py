@@ -3,13 +3,80 @@ from datetime import date, time, timedelta
 from unittest.mock import patch
 from django.test import override_settings
 from django.urls import reverse
-from config.auth_utils import hash_password
-from accounts.models import Booking, Customer
+from config.auth_utils import hash_password, session_auth_hash
+from accounts.models import Booking, Customer, Refund
 from accounts.tests.base import UserTestCase
 
 
 @override_settings(DEBUG=True, ALLOW_DEMO_PAYMENTS=True)
 class PaymentFlowTests(UserTestCase):
+    @patch('accounts.views.bookings.razorpay_client')
+    def test_order_creation_failure_does_not_save_an_order_or_hold(self, client_factory):
+        client_factory.return_value.order.create.side_effect = RuntimeError('Provider unavailable')
+        self.assertRedirects(
+            self.client.post(reverse('checkout', args=[self.booking.pk])),
+            reverse('cart_detail', args=[self.owner.pk]),
+        )
+        self.booking.refresh_from_db()
+        self.assertEqual(self.booking.razorpay_order_id, '')
+        self.assertEqual(self.booking.payment_mode, '')
+        self.assertEqual(self.booking.total_amount, 0)
+        self.assertIsNone(self.booking.checkout_expires_at)
+        self.assertFalse(self.booking.is_paid)
+
+    @patch('owners.views.bookings.razorpay_client')
+    def test_demo_refund_is_recorded_once_without_a_provider_refund(self, client_factory):
+        self.booking.is_paid = True
+        self.booking.payment_mode = 'demo'
+        self.booking.total_amount = 500
+        self.booking.save()
+        session = self.client.session
+        session.update({'role': 'owner', 'id': self.owner.pk, 'auth_hash': session_auth_hash(self.owner)})
+        session.save()
+        for _ in range(2):
+            self.assertRedirects(
+                self.client.post(reverse('refund_process', args=[self.booking.pk])),
+                reverse('owner_refund_list'),
+            )
+        self.booking.refresh_from_db()
+        self.assertTrue(self.booking.is_refunded)
+        self.assertEqual(self.booking.refund_state, 'processed')
+        self.assertEqual(self.booking.razorpay_refund_id, f'demo_refund_{self.booking.pk}')
+        self.assertEqual(Refund.objects.filter(booking=self.booking).count(), 1)
+        refund = Refund.objects.get(booking=self.booking)
+        self.assertTrue(refund.is_processed)
+        self.assertEqual(refund.amount, 500)
+        client_factory.return_value.payment.refund.assert_not_called()
+
+    @patch('owners.views.bookings.razorpay_client')
+    def test_live_refund_preserves_provider_amount_and_pending_or_processed_status(self, client_factory):
+        session = self.client.session
+        session.update({'role': 'owner', 'id': self.owner.pk, 'auth_hash': session_auth_hash(self.owner)})
+        session.save()
+        for status in ['pending', 'processed']:
+            with self.subTest(status=status):
+                booking = Booking.objects.create(
+                    workspace_name='Desk', location='Kochi', date=self.booking.date,
+                    hourly_rate=250, duration_hours=2, user=self.user, owner=self.owner,
+                    is_paid=True, total_amount=500, payment_mode='razorpay',
+                    razorpay_payment_id=f'pay_{status}',
+                )
+                client_factory.return_value.payment.refund.return_value = {'id': f'refund_{status}', 'status': status}
+                self.assertRedirects(
+                    self.client.post(reverse('refund_process', args=[booking.pk])),
+                    reverse('owner_refund_list'),
+                )
+                client_factory.return_value.payment.refund.assert_called_with(
+                    f'pay_{status}', {'amount': 50000, 'speed': 'normal', 'notes': {'booking_id': str(booking.pk)}},
+                )
+                booking.refresh_from_db()
+                self.assertEqual(booking.refund_state, status)
+                self.assertEqual(booking.is_refunded, status == 'processed')
+                self.assertEqual(booking.razorpay_refund_id, f'refund_{status}')
+                refund = Refund.objects.get(booking=booking)
+                self.assertEqual(refund.is_processed, status == 'processed')
+                self.assertEqual(refund.amount, 500)
+
     @patch('accounts.views.bookings.razorpay_client', return_value=None)
     def test_renamed_booking_flow_from_workspace_to_confirmation(self, _client_factory):
         booking_date = (date.today() + timedelta(days=7)).isoformat()

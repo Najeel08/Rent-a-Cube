@@ -10,8 +10,9 @@ class AbuseWindowMigrationTests(TransactionTestCase):
     def test_unapplied_migration_blocks_login_and_migration_restores_it(self):
         """Reproduce the exact missing table, only inside Django's test database."""
         self.assertIn('homeapp_abusewindow', connection.introspection.table_names())
+        migrate_to = MigrationExecutor(connection).loader.graph.leaf_nodes('homeapp')
         try:
-            MigrationExecutor(connection).migrate([('homeapp', '0001_supportinquiry')])
+            MigrationExecutor(connection).migrate([('homeapp', None)])
             self.assertNotIn('homeapp_abusewindow', connection.introspection.table_names())
             for role in ['technician', 'admin']:
                 with self.assertLogs('config.middleware', level='ERROR'):
@@ -19,7 +20,7 @@ class AbuseWindowMigrationTests(TransactionTestCase):
                 self.assertEqual(response.status_code, 503)
                 self.assertNotIn('role', self.client.session)
         finally:
-            MigrationExecutor(connection).migrate([('homeapp', '0002_abusewindow')])
+            MigrationExecutor(connection).migrate(migrate_to)
         self.assertIn('homeapp_abusewindow', connection.introspection.table_names())
         for role in ['technician', 'admin']:
             response = self.client.post(reverse(role + '_login'), {'email': 'unknown@example.test', 'password': 'wrong'})
