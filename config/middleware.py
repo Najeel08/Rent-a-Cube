@@ -87,6 +87,10 @@ class PortalSecurityMiddleware:
 
     @staticmethod
     def _check_limits(view_func, name, identities, window, now):
+        module = view_func.__module__
+        # Keep existing counters when a portal view moves into a focused module.
+        if module.startswith(('accounts.views.', 'owners.views.')):
+            module = '.'.join(module.split('.')[:2])
         with transaction.atomic():
             # Bound cleanup work so an expired backlog cannot hold the SQLite
             # writer lock for an entire bulk delete during someone else's login.
@@ -94,7 +98,7 @@ class PortalSecurityMiddleware:
             if expired:
                 AbuseWindow.objects.filter(pk__in=expired).delete()
             for kind, value, limit in identities:
-                key = salted_hmac('abuse-window', f'{view_func.__module__}:{name}:{kind}:{value}:{window}').hexdigest()
+                key = salted_hmac('abuse-window', f'{module}:{name}:{kind}:{value}:{window}').hexdigest()
                 counter, _ = AbuseWindow.objects.select_for_update().get_or_create(
                     key=key, defaults={'expires_at': now + timedelta(minutes=16)},
                 )
@@ -154,7 +158,7 @@ class PortalSecurityMiddleware:
             "object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'"
         )
         view = getattr(getattr(request, 'resolver_match', None), 'func', None)
-        checkout = view and view.__module__ == 'accounts.views' and view.__name__ == 'checkout'
+        checkout = view and view.__module__ == 'accounts.views.bookings' and view.__name__ == 'checkout'
         if checkout and not settings.CHECKOUT_CSP_ENFORCE:
             # The provider's iframe/scripts can change independently of this
             # repository. Validate in its sandbox before enforcing on checkout.

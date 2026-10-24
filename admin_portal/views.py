@@ -50,7 +50,7 @@ def dashboard(request):
     return render(
         request,
         'admin_portal/dashboard.html',
-        {'ow': owners, 'us': users, 'ct': bookings, 'ad': technicians, 'recent_bookings': bookings.select_related('owner', 'user').order_by('-pk')[:10]},
+        {'ow': owners, 'us': users, 'ct': bookings, 'ad': technicians, 'recent_bookings': bookings.order_by('-pk')[:10]},
     )
 
 

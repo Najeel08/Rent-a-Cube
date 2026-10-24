@@ -101,9 +101,8 @@ def _update_original_request(assignment, accept):
     raise ValidationError('This legacy assignment needs an explicit service request link.')
 
 
-@transaction.atomic
-def assignment_accept(request, assignment_id):
-    """Accept a work assignment and update the original request status."""
+def _respond_to_assignment(request, assignment_id, accept):
+    """Apply either response with the same ownership and request-link checks."""
     guard = _tech_guard(request)
     if guard:
         return guard
@@ -111,25 +110,20 @@ def assignment_accept(request, assignment_id):
         technician = get_object_or_404(Technician, id=request.session['id'])
         assignment = get_object_or_404(ServiceAssignment.objects.select_for_update(), id=assignment_id, technician=technician, owner=technician.owner)
         try:
-            _update_original_request(assignment, True)
-            messages.info(request, "Request accepted")
+            _update_original_request(assignment, accept)
+            messages.info(request, 'Request accepted' if accept else 'Request rejected')
         except ValidationError as exc:
             messages.error(request, '; '.join(exc.messages))
     return redirect('technician_service_request_list')
+
+
+@transaction.atomic
+def assignment_accept(request, assignment_id):
+    """Accept a work assignment and update the original request status."""
+    return _respond_to_assignment(request, assignment_id, True)
 
 
 @transaction.atomic
 def assignment_reject(request, assignment_id):
     """Reject a work assignment and update the original request status."""
-    guard = _tech_guard(request)
-    if guard:
-        return guard
-    if request.method == "POST":
-        technician = get_object_or_404(Technician, id=request.session['id'])
-        assignment = get_object_or_404(ServiceAssignment.objects.select_for_update(), id=assignment_id, technician=technician, owner=technician.owner)
-        try:
-            _update_original_request(assignment, False)
-            messages.info(request, "Request rejected")
-        except ValidationError as exc:
-            messages.error(request, '; '.join(exc.messages))
-    return redirect('technician_service_request_list')
+    return _respond_to_assignment(request, assignment_id, False)

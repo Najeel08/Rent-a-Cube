@@ -102,6 +102,46 @@ Run the following command to execute the project's automated tests:
 .\.venv\Scripts\python.exe manage.py test
 ```
 
+Each app keeps its tests in a `tests/` folder, grouped by feature. Shared test
+accounts and workspaces are created by `accounts/tests/base.py`. Tests use
+Django's separate test database rather than your development records.
+
+To run only one app or one test file, use its Python module path:
+
+```powershell
+.\.venv\Scripts\python.exe manage.py test owners.tests
+.\.venv\Scripts\python.exe manage.py test accounts.tests.test_payments
+```
+
+Before running the tests, you can also check the configuration and migration state:
+
+```powershell
+.\.venv\Scripts\python.exe manage.py check
+.\.venv\Scripts\python.exe manage.py makemigrations --check --dry-run
+```
+
+## Finding Your Way Around the Code
+
+The two larger portals use a `views/` folder to keep related pages together:
+
+- `accounts/views/`: `auth.py` for customer accounts, `workspaces.py` for browsing
+  and reservations, `bookings.py` for the cart and checkout, and `support.py` for
+  service requests and conversations.
+- `owners/views/`: `auth.py` for owner accounts and profiles, `workspaces.py` for
+  listings, `staff.py` for technicians and assignments, `bookings.py` for bookings
+  and refunds, and `messaging.py` for conversations.
+
+Each folder's `__init__.py` exposes the views used by `urls.py`. The smaller
+portals still use a single `views.py` file. Existing URLs have not changed.
+
+Shared customer-owner message creation is in `accounts/messaging.py`. Reservation
+conflicts and payment recording remain in `accounts/reservations.py` and
+`accounts/payments.py`. Role and session checks stay in `config/auth_utils.py`.
+
+Models and migrations stay in their original apps. Some app labels and database
+table names retain older names to keep existing databases compatible; do not
+rename them or remove old migrations as a cleanup step.
+
 ## Security Notes
 
 - Keep secret keys, passwords, and API credentials private.
