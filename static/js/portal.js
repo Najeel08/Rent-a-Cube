@@ -5,11 +5,16 @@
         var slides = slideshow.querySelectorAll('.hero-slide');
         var pagination = slideshow.querySelector('.hero-pagination');
         var dots = slideshow.querySelectorAll('.hero-dot');
+        var pauseButton = slideshow.querySelector('.hero-pause');
         var motion = window.matchMedia('(prefers-reduced-motion: reduce)');
         var current = 0;
+        var requestedSlide = 0;
+        var paused = false;
+        var hovered = false;
+        var focused = false;
         var timer;
 
-        function showSlide(index) {
+        function activateSlide(index) {
             slides[current].classList.remove('active');
             slides[current].setAttribute('aria-hidden', 'true');
             dots[current].removeAttribute('aria-current');
@@ -19,9 +24,35 @@
             dots[current].setAttribute('aria-current', 'true');
         }
 
+        function showSlide(index) {
+            requestedSlide = index;
+            var next = slides[index];
+            if (next.complete && next.naturalWidth && !next.dataset.src) {
+                activateSlide(index);
+                return;
+            }
+            next.addEventListener('load', function () {
+                if (requestedSlide === index) activateSlide(index);
+            }, { once: true });
+            next.loading = 'eager';
+            if (next.dataset.srcset) {
+                next.srcset = next.dataset.srcset;
+                next.removeAttribute('data-srcset');
+            }
+            if (next.dataset.src) {
+                next.src = next.dataset.src;
+                next.removeAttribute('data-src');
+            }
+        }
+
         function startSlideshow() {
             window.clearInterval(timer);
-            if (!motion.matches && !document.hidden) {
+            if (pauseButton) {
+                pauseButton.hidden = motion.matches;
+                pauseButton.textContent = paused ? 'Play' : 'Pause';
+                pauseButton.setAttribute('aria-label', paused ? 'Play workspace slideshow' : 'Pause workspace slideshow');
+            }
+            if (!paused && !hovered && !focused && !motion.matches && !document.hidden) {
                 timer = window.setInterval(function () {
                     showSlide((current + 1) % slides.length);
                 }, 5000);
@@ -35,6 +66,19 @@
                     showSlide(index);
                     startSlideshow();
                 });
+            });
+            if (pauseButton) {
+                pauseButton.addEventListener('click', function () {
+                    paused = !paused;
+                    startSlideshow();
+                });
+            }
+            slideshow.addEventListener('pointerenter', function () { hovered = true; startSlideshow(); });
+            slideshow.addEventListener('pointerleave', function () { hovered = false; startSlideshow(); });
+            slideshow.addEventListener('focusin', function () { focused = true; startSlideshow(); });
+            slideshow.addEventListener('focusout', function (event) {
+                focused = slideshow.contains(event.relatedTarget);
+                startSlideshow();
             });
             motion.addEventListener('change', startSlideshow);
             document.addEventListener('visibilitychange', startSlideshow);

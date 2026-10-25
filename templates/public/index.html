@@ -8,14 +8,11 @@
 	<meta name="description" content="Book desks, offices, and meeting rooms with Rent-a-Cube.">
 
 
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
 
 	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 	<link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
 
+{% include 'includes/fonts.html' %}
 <link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
 </head>
 
@@ -56,17 +53,18 @@
 					<div class="hero-visual-card">
 
                         <div class="hero-slideshow" id="heroSlideshow" role="group" aria-label="Workspace photos">
-                            <img src="{% static 'images/1u.jpg' %}" alt="Bright coworking lounge with desks and seating" class="hero-slide active" width="1920" height="1280" fetchpriority="high">
-                            <img src="{% static 'images/2u.jpg' %}" alt="Shared workspace with city views and relaxed seating" class="hero-slide" width="1920" height="1280" aria-hidden="true">
-                            <img src="{% static 'images/4u.jpg' %}" alt="Open workspace lounge with natural light and plants" class="hero-slide" width="1920" height="1280" aria-hidden="true">
-                            <img src="{% static 'images/3u.jpg' %}" alt="Shared office lounge beside glass-fronted private workspaces" class="hero-slide" width="1920" height="1280" aria-hidden="true">
-                            <img src="{% static 'images/5u.jpg' %}" alt="Coworking space with shared desks, lounge seating and indoor plants" class="hero-slide" width="1920" height="1280" aria-hidden="true">
+                            <img src="{% static 'images/optimized/1u-960.webp' %}" srcset="{% static 'images/optimized/1u-480.webp' %} 480w, {% static 'images/optimized/1u-960.webp' %} 960w, {% static 'images/optimized/1u-1440.webp' %} 1440w" sizes="(min-width: 1200px) 560px, (min-width: 992px) 45vw, calc(100vw - 48px)" decoding="async" alt="Bright coworking lounge with desks and seating" class="hero-slide active" width="1920" height="1280" fetchpriority="high">
+                            <img data-src="{% static 'images/optimized/2u-960.webp' %}" data-srcset="{% static 'images/optimized/2u-480.webp' %} 480w, {% static 'images/optimized/2u-960.webp' %} 960w, {% static 'images/optimized/2u-1440.webp' %} 1440w" sizes="(min-width: 1200px) 560px, (min-width: 992px) 45vw, calc(100vw - 48px)" decoding="async" loading="lazy" alt="Shared workspace with city views and relaxed seating" class="hero-slide" width="1920" height="1280" aria-hidden="true">
+                            <img data-src="{% static 'images/optimized/4u-960.webp' %}" data-srcset="{% static 'images/optimized/4u-480.webp' %} 480w, {% static 'images/optimized/4u-960.webp' %} 960w, {% static 'images/optimized/4u-1440.webp' %} 1440w" sizes="(min-width: 1200px) 560px, (min-width: 992px) 45vw, calc(100vw - 48px)" decoding="async" loading="lazy" alt="Open workspace lounge with natural light and plants" class="hero-slide" width="1920" height="1280" aria-hidden="true">
+                            <img data-src="{% static 'images/optimized/3u-960.webp' %}" data-srcset="{% static 'images/optimized/3u-480.webp' %} 480w, {% static 'images/optimized/3u-960.webp' %} 960w, {% static 'images/optimized/3u-1440.webp' %} 1440w" sizes="(min-width: 1200px) 560px, (min-width: 992px) 45vw, calc(100vw - 48px)" decoding="async" loading="lazy" alt="Shared office lounge beside glass-fronted private workspaces" class="hero-slide" width="1920" height="1280" aria-hidden="true">
+                            <img data-src="{% static 'images/optimized/5u-960.webp' %}" data-srcset="{% static 'images/optimized/5u-480.webp' %} 480w, {% static 'images/optimized/5u-960.webp' %} 960w, {% static 'images/optimized/5u-1440.webp' %} 1440w" sizes="(min-width: 1200px) 560px, (min-width: 992px) 45vw, calc(100vw - 48px)" decoding="async" loading="lazy" alt="Coworking space with shared desks, lounge seating and indoor plants" class="hero-slide" width="1920" height="1280" aria-hidden="true">
                             <div class="hero-pagination" role="group" aria-label="Choose a workspace photo" hidden>
                                 <button type="button" class="hero-dot" aria-label="Show workspace photo 1 of 5" aria-current="true" aria-controls="heroSlideshow"></button>
                                 <button type="button" class="hero-dot" aria-label="Show workspace photo 2 of 5" aria-controls="heroSlideshow"></button>
                                 <button type="button" class="hero-dot" aria-label="Show workspace photo 3 of 5" aria-controls="heroSlideshow"></button>
                                 <button type="button" class="hero-dot" aria-label="Show workspace photo 4 of 5" aria-controls="heroSlideshow"></button>
                                 <button type="button" class="hero-dot" aria-label="Show workspace photo 5 of 5" aria-controls="heroSlideshow"></button>
+                                <button type="button" class="hero-pause" aria-label="Pause workspace slideshow" aria-controls="heroSlideshow">Pause</button>
                             </div>
                         </div>
 					</div>

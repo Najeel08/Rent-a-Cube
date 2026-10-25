@@ -110,7 +110,8 @@
             });
         });
         panel.addEventListener('click', function (event) {
-            if (event.target.closest('a[href]')) {
+            var link = event.target.closest('a[href]');
+            if (link && !link.matches('[data-toggle="dropdown"], [data-nav-dropdown]')) {
                 closeMenu(header);
             }
         });

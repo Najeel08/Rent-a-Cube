@@ -1,0 +1,252 @@
+{
+  "1u": {
+    "source": "1u.jpg",
+    "source_bytes": 793717,
+    "source_sha256": "82b946458c10a1c6b461e4385c6a2a646684ca95e598cf9e8ae9b85db8cf67d1",
+    "variants": [
+      {
+        "file": "1u-480.webp",
+        "width": 480,
+        "height": 320,
+        "bytes": 36270
+      },
+      {
+        "file": "1u-960.webp",
+        "width": 960,
+        "height": 640,
+        "bytes": 114926
+      },
+      {
+        "file": "1u-1440.webp",
+        "width": 1440,
+        "height": 961,
+        "bytes": 236616
+      }
+    ]
+  },
+  "2u": {
+    "source": "2u.jpg",
+    "source_bytes": 794125,
+    "source_sha256": "c642dc0d4c420d845395545154277de2fddbe56d34cc62d2c01a0292fd12d895",
+    "variants": [
+      {
+        "file": "2u-480.webp",
+        "width": 480,
+        "height": 320,
+        "bytes": 28066
+      },
+      {
+        "file": "2u-960.webp",
+        "width": 960,
+        "height": 640,
+        "bytes": 79946
+      },
+      {
+        "file": "2u-1440.webp",
+        "width": 1440,
+        "height": 960,
+        "bytes": 147262
+      }
+    ]
+  },
+  "4u": {
+    "source": "4u.jpg",
+    "source_bytes": 667379,
+    "source_sha256": "a15ad116fda1b1ecba08556edbfafb2b0225012b410c3b145c8990e7884069a7",
+    "variants": [
+      {
+        "file": "4u-480.webp",
+        "width": 480,
+        "height": 320,
+        "bytes": 31590
+      },
+      {
+        "file": "4u-960.webp",
+        "width": 960,
+        "height": 640,
+        "bytes": 97120
+      },
+      {
+        "file": "4u-1440.webp",
+        "width": 1440,
+        "height": 960,
+        "bytes": 194906
+      }
+    ]
+  },
+  "3u": {
+    "source": "3u.jpg",
+    "source_bytes": 629444,
+    "source_sha256": "7828126e4b589bcda6c955d01d9183b309409186db61058bdeadaa5b989d3faa",
+    "variants": [
+      {
+        "file": "3u-480.webp",
+        "width": 480,
+        "height": 320,
+        "bytes": 29750
+      },
+      {
+        "file": "3u-960.webp",
+        "width": 960,
+        "height": 640,
+        "bytes": 87524
+      },
+      {
+        "file": "3u-1440.webp",
+        "width": 1440,
+        "height": 960,
+        "bytes": 176372
+      }
+    ]
+  },
+  "5u": {
+    "source": "5u.jpg",
+    "source_bytes": 872414,
+    "source_sha256": "b648f9166560ae3296c313a912bf0058d92f7f4c1b2693fa5cc462327bbed158",
+    "variants": [
+      {
+        "file": "5u-480.webp",
+        "width": 480,
+        "height": 320,
+        "bytes": 50094
+      },
+      {
+        "file": "5u-960.webp",
+        "width": 960,
+        "height": 640,
+        "bytes": 150840
+      },
+      {
+        "file": "5u-1440.webp",
+        "width": 1440,
+        "height": 960,
+        "bytes": 291258
+      }
+    ]
+  },
+  "10": {
+    "source": "10.jpg",
+    "source_bytes": 1088492,
+    "source_sha256": "e81dafec24f0592943a1cffa5d98a610f53e3b7737b05846337564dca964eb7d",
+    "variants": [
+      {
+        "file": "10-480.webp",
+        "width": 480,
+        "height": 320,
+        "bytes": 35886
+      },
+      {
+        "file": "10-960.webp",
+        "width": 960,
+        "height": 640,
+        "bytes": 105610
+      },
+      {
+        "file": "10-1440.webp",
+        "width": 1440,
+        "height": 960,
+        "bytes": 215824
+      }
+    ]
+  },
+  "12": {
+    "source": "12.jpg",
+    "source_bytes": 575420,
+    "source_sha256": "5e56fd69e613750faa7833ebaf7b54db15b9f8727c21e0716be0c80477e7f2dd",
+    "variants": [
+      {
+        "file": "12-480.webp",
+        "width": 480,
+        "height": 320,
+        "bytes": 33658
+      },
+      {
+        "file": "12-960.webp",
+        "width": 960,
+        "height": 640,
+        "bytes": 91924
+      },
+      {
+        "file": "12-1440.webp",
+        "width": 1440,
+        "height": 960,
+        "bytes": 166246
+      }
+    ]
+  },
+  "13": {
+    "source": "13.jpg",
+    "source_bytes": 1936207,
+    "source_sha256": "1a11644daea9d0475c9f4a71b58ebeb2b13ddcf44fa2c8d06223dcb06cdd6991",
+    "variants": [
+      {
+        "file": "13-480.webp",
+        "width": 480,
+        "height": 320,
+        "bytes": 40426
+      },
+      {
+        "file": "13-960.webp",
+        "width": 960,
+        "height": 640,
+        "bytes": 131274
+      },
+      {
+        "file": "13-1440.webp",
+        "width": 1440,
+        "height": 960,
+        "bytes": 268564
+      }
+    ]
+  },
+  "14": {
+    "source": "14.jpg",
+    "source_bytes": 1732711,
+    "source_sha256": "6927656484c29d6957288505e96027735ec210374bbff62f8aa038b0dca37d7d",
+    "variants": [
+      {
+        "file": "14-480.webp",
+        "width": 480,
+        "height": 270,
+        "bytes": 35368
+      },
+      {
+        "file": "14-960.webp",
+        "width": 960,
+        "height": 540,
+        "bytes": 104864
+      },
+      {
+        "file": "14-1440.webp",
+        "width": 1440,
+        "height": 810,
+        "bytes": 186104
+      }
+    ]
+  },
+  "15": {
+    "source": "15.jpg",
+    "source_bytes": 309522,
+    "source_sha256": "ca3e674440d5f87a58887f43f5664fff154e05d77c69354fa7ad82dcf713e950",
+    "variants": [
+      {
+        "file": "15-480.webp",
+        "width": 480,
+        "height": 320,
+        "bytes": 32146
+      },
+      {
+        "file": "15-960.webp",
+        "width": 960,
+        "height": 640,
+        "bytes": 92964
+      },
+      {
+        "file": "15-1440.webp",
+        "width": 1440,
+        "height": 960,
+        "bytes": 163422
+      }
+    ]
+  }
+}

@@ -13,8 +13,9 @@
 
 
 
-	<link rel="stylesheet" href="{% static 'css/main.css' %}" class="color-switcher-link">
+	<link rel="stylesheet" href="{% static 'css/legacy-layout.css' %}" class="color-switcher-link">
 
+{% include 'includes/fonts.html' %}
 <link rel="stylesheet" href="{% static 'css/rentacube-core.css' %}">
 </head>
 
@@ -88,7 +89,7 @@
 							<i class="fa fa-map-marker"></i> Nationwide Spaces
 						</span>
 						<h1 class="font-weight-bold" style="font-size: 2.2rem;">Find Your Next Workspace</h1>
-						<p class="text-muted">Browse flexible desks, modern meeting suites, and private cabins across prime cities.</p>
+						<p style="color: var(--rc-text-main);">Browse flexible desks, modern meeting suites, and private cabins across prime cities.</p>
 					</div>
 
 
@@ -99,7 +100,7 @@
 								<div class="pl-3 pr-2 text-muted">
 									<i class="fa fa-search" style="color: var(--rc-primary); font-size: 1.15rem;"></i>
 								</div>
-								<input type="text" name="city" value="{{ request.GET.city }}" maxlength="50" aria-label="City" class="form-control border-0 shadow-none bg-transparent" placeholder="Search by city (e.g., Bangalore, Mumbai, Kochi, Chennai)..." style="font-size: 1rem; outline: none;">
+								<input type="text" name="city" value="{{ request.GET.city }}" maxlength="50" aria-label="City" class="form-control workspace-search-input border-0 shadow-none bg-transparent" placeholder="Search by city (e.g., Bangalore, Mumbai, Kochi, Chennai)..." style="font-size: 1rem;">
 								<button type="submit" class="cube-btn cube-btn-primary cube-btn-sm rounded-pill px-4">
 									Search Spaces
 								</button>
