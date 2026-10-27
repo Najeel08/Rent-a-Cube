@@ -74,8 +74,8 @@
 						</div>
 						<span class="d-none d-sm-inline">{{ request.session.Name|default:"Member" }}</span>
 					</div>
-					<form method="get" action="{% url 'logout' %}" class="cube-logout-form">
-
+					<form method="post" action="{% url 'logout' %}" class="cube-logout-form">
+{% csrf_token %}
 <button type="submit" class="cube-btn cube-btn-outline cube-btn-sm" title="Log Out"><i class="fa fa-sign-out"></i> <span class="d-none d-sm-inline">Log Out</span></button>
 </form>
 				</div>
@@ -95,12 +95,12 @@
 
 					<div class="row justify-content-center">
 						<div class="col-lg-8">
-							<form method="get" class="p-2 bg-white rounded-pill shadow-sm border d-flex align-items-center">
+							<form method="get" class="workspace-search-form p-2 bg-white rounded-pill shadow-sm border d-flex align-items-center">
 
 								<div class="pl-3 pr-2 text-muted">
 									<i class="fa fa-search" style="color: var(--rc-primary); font-size: 1.15rem;"></i>
 								</div>
-								<input type="text" name="city" value="{{ request.GET.city }}" maxlength="50" aria-label="City" class="form-control workspace-search-input border-0 shadow-none bg-transparent" placeholder="Search by city (e.g., Bangalore, Mumbai, Kochi, Chennai)..." style="font-size: 1rem;">
+								<input type="text" name="city" value="{{ request.GET.city }}" maxlength="50" aria-label="City" class="form-control workspace-search-input border-0 shadow-none bg-transparent" placeholder="City" style="font-size: 1rem;">
 								<button type="submit" class="cube-btn cube-btn-primary cube-btn-sm rounded-pill px-4">
 									Search Spaces
 								</button>

@@ -11,8 +11,13 @@ function registrationPage(template, formId, phoneId) {
     const elements = new Map();
     const document = { getElementById: id => elements.get(id), activeElement: null };
     for (const [, id] of html.matchAll(/\bid="([^"]+)"/g)) {
+        const tag = html.match(new RegExp(`<[^>]*\\bid="${id}"[^>]*>`))[0];
         elements.set(id, {
             value: '', textContent: '', className: '', style: {}, listeners: {},
+            attributes: Object.fromEntries([...tag.matchAll(/([\w-]+)="([^"]*)"/g)].map(match => [match[1], match[2]])),
+            setAttribute(name, value) { this.attributes[name] = value; },
+            getAttribute(name) { return this.attributes[name] ?? null; },
+            removeAttribute(name) { delete this.attributes[name]; },
             addEventListener(name, listener) { this.listeners[name] = listener; },
             focus() { document.activeElement = this; },
             fire(name) {
@@ -41,6 +46,46 @@ for (const [template, formId, phoneId] of [
     ['accounts/register.html', 'userRegForm', 'phone'],
     ['owners/register.html', 'ownerRegForm', 'phonenumber'],
 ]) {
+    test(`${template}: feedback is associated with its field and announced`, () => {
+        const { get } = registrationPage(template, formId, phoneId);
+        for (const [id, feedback] of [['email', 'emailError'], [phoneId, 'phoneError'], ['password', 'passwordError'], ['cpassword', 'cpasswordError']]) {
+            assert.ok(get(id).getAttribute('aria-describedby')?.split(' ').includes(feedback));
+            assert.equal(get(feedback).getAttribute('aria-live'), 'polite');
+        }
+    });
+
+    test(`${template}: invalid states clear when validation succeeds`, () => {
+        const { get, submit } = registrationPage(template, formId, phoneId);
+        get('email').value = 'invalid';
+        get('email').fire('input');
+        assert.equal(get('email').getAttribute('aria-invalid'), 'true');
+        get('email').value = 'alex@example.test';
+        get('email').fire('input');
+        assert.equal(get('email').getAttribute('aria-invalid'), 'false');
+        get(phoneId).value = '1234567890';
+        assert.equal(submit().defaultPrevented, true);
+        assert.equal(get(phoneId).getAttribute('aria-invalid'), 'true');
+        get(phoneId).value = '9876543210';
+        get(phoneId).fire('input');
+        assert.equal(get(phoneId).getAttribute('aria-invalid'), 'false');
+        assert.equal(get('phoneError').textContent, '');
+        get('password').value = 'weak';
+        assert.equal(submit().defaultPrevented, true);
+        assert.equal(get(phoneId).getAttribute('aria-invalid'), 'false');
+        assert.equal(get('password').getAttribute('aria-invalid'), 'true');
+        get('password').value = 'Valid-password!29';
+        get('password').fire('input');
+        assert.equal(get('password').getAttribute('aria-invalid'), 'false');
+        assert.equal(get('passwordError').textContent, '');
+        get('cpassword').value = 'Different-password!29';
+        assert.equal(submit().defaultPrevented, true);
+        assert.equal(get('cpassword').getAttribute('aria-invalid'), 'true');
+        get('cpassword').value = get('password').value;
+        assert.equal(submit().defaultPrevented, false);
+        assert.equal(get('password').getAttribute('aria-invalid'), 'false');
+        assert.equal(get('cpassword').getAttribute('aria-invalid'), 'false');
+    });
+
     test(`${template}: email feedback preserves text and classes`, () => {
         const { get } = registrationPage(template, formId, phoneId);
         for (const [value, message, className] of [
@@ -59,13 +104,13 @@ for (const [template, formId, phoneId] of [
         const { get } = registrationPage(template, formId, phoneId);
         get('password').fire('input');
         for (const id of ['critLength', 'critUpper', 'critLower', 'critNumber', 'critSpecial']) {
-            assert.equal(get(id).style.color, '#10B981');
+            assert.equal(get(id).style.color, 'var(--rc-success-text)');
             assert.equal(get(id).style.fontWeight, '600');
         }
         assert.equal(get('cpasswordError').textContent, 'Passwords match.');
         get('password').value = 'weak';
         get('password').fire('input');
-        assert.equal(get('critLength').style.color, '#64748B');
+        assert.equal(get('critLength').style.color, 'var(--rc-text-muted)');
         assert.equal(get('critLength').style.fontWeight, 'normal');
         assert.equal(get('cpasswordError').textContent, 'Passwords do not match.');
         get('cpassword').value = '';

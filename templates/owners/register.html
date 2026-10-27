@@ -87,8 +87,8 @@
 										<label class="cube-label" for="phonenumber">
 											Phone Number <span class="text-danger">*</span>
 										</label>
-										<input type="tel" name="phonenumber" id="phonenumber" class="cube-input" placeholder="10-digit mobile number" minlength="10" maxlength="10" pattern="^[6-9][0-9]{9}$" title="Please enter a valid 10-digit mobile number starting with 6, 7, 8, or 9" data-digits-only required>
-										<small id="phoneError" class="text-danger mt-1 d-block"></small>
+										<input type="tel" name="phonenumber" id="phonenumber" class="cube-input" placeholder="10-digit mobile number" minlength="10" maxlength="10" pattern="^[6-9][0-9]{9}$" title="Please enter a valid 10-digit mobile number starting with 6, 7, 8, or 9" data-digits-only required aria-describedby="phoneError" autocomplete="tel">
+										<small id="phoneError" aria-live="polite" aria-atomic="true" class="text-danger mt-1 d-block"></small>
 									</div>
 								</div>
 
@@ -98,8 +98,8 @@
 										<label class="cube-label" for="email">
 											Email Address <span class="text-danger">*</span>
 										</label>
-										<input type="email" name="email" id="email" class="cube-input" placeholder="vikram@cowork.in" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Please enter a valid email address (e.g. vikram@cowork.in)" required>
-										<small id="emailError" class="text-danger mt-1 d-block"></small>
+										<input type="email" name="email" id="email" class="cube-input" placeholder="vikram@cowork.in" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Please enter a valid email address (e.g. vikram@cowork.in)" required aria-describedby="emailError" autocomplete="email">
+										<small id="emailError" aria-live="polite" aria-atomic="true" class="text-danger mt-1 d-block"></small>
 									</div>
 								</div>
 
@@ -128,8 +128,8 @@
 
 								<div class="col-md-6 mb-3">
 									<div class="cube-form-group">
-										<label class="cube-label">Gender <span class="text-danger">*</span></label>
-										<div class="d-flex align-items-center gap-4 pt-2">
+										<label id="genderLabel" class="cube-label">Gender <span class="text-danger">*</span></label>
+										<div class="registration-gender-options d-flex align-items-center gap-4 pt-2" role="group" aria-labelledby="genderLabel">
 											<label class="d-flex align-items-center gap-2 mb-0" style="cursor: pointer;">
 												<input type="radio" name="gender" value="male" required> Male
 											</label>
@@ -146,7 +146,7 @@
 										<label class="cube-label" for="image">
 											Owner Photo / Avatar <span class="text-danger">*</span>
 										</label>
-										<input type="file" name="image" id="image" class="cube-input" accept="image/*" required>
+										<input type="file" name="image" id="image" class="cube-input" accept=".jpg,.jpeg,.png,.webp" required>
 										<small class="text-muted mt-1 d-block">JPG, PNG, or WebP format</small>
 									</div>
 								</div>
@@ -157,8 +157,8 @@
 										<label class="cube-label" for="proof">
 											Verification Proof (ID / GST Document) <span class="text-danger">*</span>
 										</label>
-										<input type="file" name="proof" id="proof" class="cube-input" accept="image/*,.pdf" required>
-										<small class="text-muted mt-1 d-block">Official document (PDF or Image)</small>
+										<input type="file" name="proof" id="proof" class="cube-input" accept=".jpg,.jpeg,.png,.webp" aria-describedby="proofHelp" required>
+										<small id="proofHelp" class="text-muted mt-1 d-block">JPG, PNG, or WebP image, up to 5 MB.</small>
 									</div>
 								</div>
 
@@ -168,11 +168,11 @@
 										<label class="cube-label" for="password">
 											Password <span class="text-danger">*</span>
 										</label>
-										<input type="password" name="password" id="password" class="cube-input" placeholder="Min 8 characters" minlength="8" maxlength="20" required>
+										<input type="password" name="password" id="password" class="cube-input" placeholder="Min 8 characters" minlength="8" maxlength="20" required aria-describedby="pwdCriteria passwordError" autocomplete="new-password">
 
 
-										<div class="p-2 mt-2 rounded bg-light border" style="font-size: 0.78rem;">
-											<span class="font-weight-bold text-dark d-block mb-1"><i class="fa fa-shield text-primary mr-1"></i> Recommended Strong Password:</span>
+										<div class="registration-password-hint p-2 mt-2 rounded bg-light border">
+											<span class="font-weight-bold text-dark d-block mb-1"><i class="fa fa-shield text-primary mr-1"></i> Password requirements:</span>
 											<ul class="pl-3 mb-0 text-muted" id="pwdCriteria" style="line-height: 1.4;">
 												<li id="critLength">At least 8 characters</li>
 												<li id="critUpper">At least 1 uppercase letter (A-Z)</li>
@@ -181,7 +181,7 @@
 												<li id="critSpecial">At least 1 special symbol (@$!%*?&#)</li>
 											</ul>
 										</div>
-										<small id="passwordError" class="text-danger mt-1 d-block"></small>
+										<small id="passwordError" aria-live="polite" aria-atomic="true" class="text-danger mt-1 d-block"></small>
 									</div>
 								</div>
 
@@ -191,14 +191,14 @@
 										<label class="cube-label" for="cpassword">
 											Confirm Password <span class="text-danger">*</span>
 										</label>
-										<input type="password" name="cpassword" id="cpassword" class="cube-input" placeholder="Repeat password" minlength="8" maxlength="20" required>
-										<small id="cpasswordError" class="text-danger mt-1 d-block"></small>
+										<input type="password" name="cpassword" id="cpassword" class="cube-input" placeholder="Repeat password" minlength="8" maxlength="20" required aria-describedby="cpasswordError" autocomplete="new-password">
+										<small id="cpasswordError" aria-live="polite" aria-atomic="true" class="text-danger mt-1 d-block"></small>
 									</div>
 								</div>
 							</div>
 
 
-							<div class="mt-4 pt-3 border-top d-flex gap-3">
+							<div class="owner-registration-actions mt-4 pt-3 border-top d-flex gap-3">
 								<button type="submit" id="contact_form_submit" name="contact_submit" class="cube-btn cube-btn-primary cube-btn-lg flex-fill">
 									<i class="fa fa-paper-plane mr-1"></i> Submit Partner Application
 								</button>

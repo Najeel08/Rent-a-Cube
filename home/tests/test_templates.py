@@ -5,11 +5,30 @@ from inspect import signature
 import re
 from django.conf import settings
 from django.contrib.staticfiles import finders
-from django.test import TestCase
+from django.test import RequestFactory, TestCase
 from django.template.loader import get_template
+from django.urls import reverse
+
+from config.validation import ALLOWED_IMAGE_EXTENSIONS
 
 
 class TemplateAndAssetSmokeTests(TestCase):
+    def test_search_logout_matches_the_existing_post_and_csrf_contract(self):
+        request = RequestFactory().get(reverse('workspace_search'))
+        request.session = {'id': 1, 'Name': 'Review Customer'}
+        html = get_template('accounts/workspace_search_results.html').render(request=request)
+        logout = re.search(r'<form\b([^>]*)action="/logout/"([^>]*)>(.*?)</form>', html, re.S)
+        self.assertIsNotNone(logout)
+        self.assertIn('method="post"', logout.group(1) + logout.group(2))
+        self.assertIn('name="csrfmiddlewaretoken"', logout.group(3))
+
+    def test_owner_proof_picker_matches_the_server_supported_formats(self):
+        response = self.client.get(reverse('owner_register'))
+        proof = re.search(r'<input\b[^>]*name="proof"[^>]*>', response.content.decode())
+        self.assertIsNotNone(proof)
+        accept = re.search(r'accept="([^"]+)"', proof.group())
+        self.assertEqual(set(accept.group(1).split(',')), ALLOWED_IMAGE_EXTENSIONS)
+
     def test_canonical_and_legacy_routes_match_view_arguments(self):
         for package in ['home', 'accounts', 'owners', 'technicians', 'admin_portal']:
             for pattern in import_module(f'{package}.urls').urlpatterns:

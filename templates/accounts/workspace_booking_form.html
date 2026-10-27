@@ -53,8 +53,9 @@
 				<div class="container">
 
 					{% for msg in messages %}
-					<div role="status" class="cube-alert cube-alert-info mb-4">
-						<i class="fa fa-info-circle"></i> {{ msg }}
+					<div {% if forloop.first %}id="bookingFeedback"{% endif %} role="status" class="cube-alert cube-alert-info mb-4 booking-feedback">
+						<i class="fa fa-info-circle" aria-hidden="true"></i> <span>{{ msg }}</span>
+						{% if forloop.first and request.method == 'POST' %}<a id="bookingFeedbackLink" href="#booking_date">Review booking details</a>{% endif %}
 					</div>
 					{% endfor %}
 
@@ -174,7 +175,7 @@
 										<hr class="my-2" style="border-color: var(--rc-border-focus);">
 										<div class="d-flex justify-content-between align-items-center">
 											<span class="font-weight-bold" style="color: var(--rc-dark);">Estimated Total:</span>
-											<span class="font-weight-bold text-primary" style="font-size: 1.35rem;" id="calc_total">₹{{ t.hourly_rate }}</span>
+											<span class="font-weight-bold text-primary" style="font-size: 1.35rem;" id="calc_total" aria-live="polite" aria-atomic="true">₹{{ t.hourly_rate }}</span>
 										</div>
 									</div>
 
@@ -231,11 +232,28 @@
 			}
 		}
 		document.addEventListener("DOMContentLoaded", function() {
+			calculateTotal();
 			const dateInput = document.getElementById('booking_date');
 			if (dateInput) {
 				const today = new Intl.DateTimeFormat('en-CA', {timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit'}).format(new Date());
 				dateInput.setAttribute('min', today);
 			}
+			{% if request.method == 'POST' %}
+			const feedback = document.getElementById('bookingFeedback');
+			if (dateInput && feedback) {
+				const invalidField = Array.from(dateInput.form.elements).find(field => field.willValidate && !field.validity.valid);
+				if (invalidField) {
+					invalidField.setAttribute('aria-invalid', 'true');
+					const description = invalidField.getAttribute('aria-describedby');
+					invalidField.setAttribute('aria-describedby', [description, 'bookingFeedback'].filter(Boolean).join(' '));
+					const feedbackLink = document.getElementById('bookingFeedbackLink');
+					if (feedbackLink) feedbackLink.setAttribute('href', '#' + invalidField.id);
+					invalidField.addEventListener('input', function () {
+						if (this.validity.valid) this.removeAttribute('aria-invalid');
+					});
+				}
+			}
+			{% endif %}
 		});
 	</script>
 

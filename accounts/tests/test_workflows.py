@@ -23,6 +23,17 @@ from admin_portal.models import PlatformAdmin
 
 
 class WorkflowRegressionTests(UserTestCase):
+    def test_invalid_booking_retains_hours_and_links_to_the_form_feedback(self):
+        self.login_as_user()
+        response = self.client.post(reverse('workspace_book', args=[self.workspace.pk]), {
+            'date': 'invalid', 'start_time': '10:00', 'nohrs': '4',
+        })
+        self.assertContains(response, 'id="bookingFeedback"')
+        self.assertContains(response, 'id="bookingFeedbackLink"')
+        self.assertContains(response, 'href="#booking_date"')
+        self.assertContains(response, 'value="4"')
+        self.assertFalse(Booking.objects.filter(user=self.user).exists())
+
     def test_owner_password_change_requires_current_password(self):
         self.set_role('owner', self.owner)
         old = self.owner.password

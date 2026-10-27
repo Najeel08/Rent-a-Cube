@@ -74,8 +74,8 @@
 								<div class="col-md-6">
 									<div class="cube-form-group">
 										<label for="phone" class="cube-label">Phone Number <span class="text-danger">*</span></label>
-										<input type="tel" name="phone" id="phone" class="cube-input" placeholder="10-digit mobile number" minlength="10" maxlength="10" pattern="^[6-9][0-9]{9}$" title="Please enter a valid 10-digit mobile number starting with 6, 7, 8, or 9" data-digits-only required>
-										<small id="phoneError" class="text-danger mt-1 d-block"></small>
+										<input type="tel" name="phone" id="phone" class="cube-input" placeholder="10-digit mobile number" minlength="10" maxlength="10" pattern="^[6-9][0-9]{9}$" title="Please enter a valid 10-digit mobile number starting with 6, 7, 8, or 9" data-digits-only required aria-describedby="phoneError" autocomplete="tel">
+										<small id="phoneError" aria-live="polite" aria-atomic="true" class="text-danger mt-1 d-block"></small>
 									</div>
 								</div>
 							</div>
@@ -85,8 +85,8 @@
 								<div class="col-md-6">
 									<div class="cube-form-group">
 										<label for="email" class="cube-label">Email Address <span class="text-danger">*</span></label>
-										<input type="email" name="email" id="email" class="cube-input" placeholder="alex@company.com" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Please enter a valid email address (e.g. name@domain.com)" required>
-										<small id="emailError" class="text-danger mt-1 d-block"></small>
+										<input type="email" name="email" id="email" class="cube-input" placeholder="alex@company.com" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Please enter a valid email address (e.g. name@domain.com)" required aria-describedby="emailError" autocomplete="email">
+										<small id="emailError" aria-live="polite" aria-atomic="true" class="text-danger mt-1 d-block"></small>
 									</div>
 								</div>
 
@@ -103,7 +103,7 @@
 
 							<div class="cube-form-group">
 								<label for="image" class="cube-label">Profile Photo <span class="text-danger">*</span></label>
-								<input type="file" name="image" id="image" class="cube-input" accept="image/*" required>
+								<input type="file" name="image" id="image" class="cube-input" accept=".jpg,.jpeg,.png,.webp" required>
 								<small class="text-muted mt-1 d-block">Upload a clear photo (JPG, PNG, WebP)</small>
 							</div>
 
@@ -112,11 +112,11 @@
 								<div class="col-md-6">
 									<div class="cube-form-group">
 										<label for="password" class="cube-label">Password <span class="text-danger">*</span></label>
-										<input type="password" name="password" id="password" class="cube-input" placeholder="Min 8 chars (letters, number, symbol)" minlength="8" maxlength="20" required>
+										<input type="password" name="password" id="password" class="cube-input" placeholder="Min 8 chars (letters, number, symbol)" minlength="8" maxlength="20" required aria-describedby="pwdCriteria passwordError" autocomplete="new-password">
 
 
-										<div class="p-2 mt-2 rounded bg-light border" style="font-size: 0.78rem;">
-											<span class="font-weight-bold text-dark d-block mb-1"><i class="fa fa-shield text-primary mr-1"></i> Recommended Strong Password:</span>
+										<div class="registration-password-hint p-2 mt-2 rounded bg-light border">
+											<span class="font-weight-bold text-dark d-block mb-1"><i class="fa fa-shield text-primary mr-1"></i> Password requirements:</span>
 											<ul class="pl-3 mb-0 text-muted" id="pwdCriteria" style="line-height: 1.4;">
 												<li id="critLength">At least 8 characters</li>
 												<li id="critUpper">At least 1 uppercase letter (A-Z)</li>
@@ -125,7 +125,7 @@
 												<li id="critSpecial">At least 1 special symbol (@$!%*?&#)</li>
 											</ul>
 										</div>
-										<small id="passwordError" class="text-danger mt-1 d-block"></small>
+										<small id="passwordError" aria-live="polite" aria-atomic="true" class="text-danger mt-1 d-block"></small>
 									</div>
 								</div>
 
@@ -133,8 +133,8 @@
 								<div class="col-md-6">
 									<div class="cube-form-group">
 										<label for="cpassword" class="cube-label">Confirm Password <span class="text-danger">*</span></label>
-										<input type="password" name="cpassword" id="cpassword" class="cube-input" placeholder="Re-enter password" minlength="8" maxlength="20" required>
-										<small id="cpasswordError" class="text-danger mt-1 d-block"></small>
+										<input type="password" name="cpassword" id="cpassword" class="cube-input" placeholder="Re-enter password" minlength="8" maxlength="20" required aria-describedby="cpasswordError" autocomplete="new-password">
+										<small id="cpasswordError" aria-live="polite" aria-atomic="true" class="text-danger mt-1 d-block"></small>
 									</div>
 								</div>
 							</div>
